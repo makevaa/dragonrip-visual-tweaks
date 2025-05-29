@@ -14,13 +14,12 @@
 (() => {
     'use strict';
 
-
     const settings = {
-        removeGameLogo:true,
-        clearGameLogoHtml:true, //remove all elements from game area, eg <br> tags
-        fancyBars:true, // hp, stam, xp bar styling
+        removeGameLogo:true, // Remove the large Dragonrip.com logo
+        clearGameLogoHtml:true, // Remove all elements from game area, eg. <br> tags
+        addInfoBox:true, // Add info box to game logo box
+        fancyBars:true, // Hp, stam, xp bar styling
         animateXpBar:true,
-
         usernameToShow:'paxu',
 
         serverTime: {
@@ -32,7 +31,6 @@
         }
     }
     
-
 
     const mainCss = `
         *, :after, :before {
@@ -130,8 +128,6 @@
             width:40%;
         }
 
-
-
         .player > .bar > .healthbar:after{
             content: '';
             position: absolute;
@@ -165,8 +161,6 @@
             border-right:2px solid rgba(152, 78, 255, 0.9)!important;
         }
 
-        
-
         /* Bar text */
         .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar {
             xborder:1px solid lime!important;
@@ -187,11 +181,7 @@
             position: absolute;
             width:100%;
             height:100%;
-            
             background-color: rgb(0, 55, 103);
-            xbackground-color: rgb(0, 65, 25);
-
-            xbackground-color: linear-gradient(90deg, rgba(10, 0, 103, 0.9) 0%, rgba(93,0,255,0.5) 100%);
             opacity:0.9;
             filter:saturate(5);
         }
@@ -207,9 +197,6 @@
         .player > .bar > .healthbar:nth-child(5) > .healthbar2:after{
             background-color: rgb(18, 0, 46);
         }
-        
-
-        
     `;
 
     const animatedXpBarCss = `
@@ -224,7 +211,6 @@
                 background-position: 0% -300px; /*  */
                 xbackground-position: -500px 0%; 
             }
-        }
         }
     `;
 
@@ -266,7 +252,6 @@
         body > div.logo > .info > .item > .left {
             xdisplay:flex;
             width:35%;
-            xborder:1px solid grey;
             text-align:right;
             margin-right:10px;
         }
@@ -288,7 +273,7 @@
 
         body > div.logo > .info > .item.user > .name {
             color: #6633ff;
-           color:rgb(111, 111, 255);
+            color:rgb(111, 111, 255);
         } 
 
 
@@ -298,7 +283,7 @@
             text-wrap:no-wrap;
             width:100%;
             height:20px;
-             xwhite-space: nowrap;
+            xwhite-space: nowrap;
             overflow: hidden;
         }
     `;
@@ -357,7 +342,6 @@
 
     const log = console.log;
 
-    
     const getTime = () => {
         let options = {
             timeZone: 'UTC',
@@ -377,8 +361,6 @@
 
     
     const createClock = () => {
-        //const target = document.querySelector('body > div.logo');
-
         const elem = document.createElement('div');
         elem.classList.add('item');
         elem.classList.add('dragonrip-server-time-cont');
@@ -462,20 +444,11 @@
     }
 
     
-    
-
     const insertLogoAreaInfo = () => {
         const targetElem = document.querySelector('body > div.logo');
 
         const infoArea = document.createElement('div');
         infoArea.classList.add('info');
-
-   
-
-
-      
-
-        //createClock();
 
         const addressElem = document.createElement('span');
         addressElem.classList.add('item');
@@ -484,13 +457,9 @@
         address = address.replace('https://dragonrip.com', '');
         addressElem.innerText = address;
 
-
-
    
         infoArea.append(createGameTitle());
         infoArea.append(createClock());
-
-        //updateClock();
  
         if (settings.serverTime.keepRunning) {
             setInterval( () => {
@@ -500,9 +469,6 @@
 
         infoArea.append(createUsernameLabel());
         infoArea.append(addressElem);
-
-
-
         targetElem.append(infoArea);
     }
 
@@ -516,35 +482,31 @@
     const waitForUI = () => {
         const checkElem = setInterval( () => {
             if (document.querySelector('ul.navbar') !== null) {
+
                 clearInterval(checkElem); 
+
                 if (settings.fancyBars) { 
                     setCustomCss(fancyBarsCss); 
                     insertXpBarElems();
-
-                    if (settings.animateXpBar) {
-                        setCustomCss(animatedXpBarCss); 
-                    }
+                    if (settings.animateXpBar) { setCustomCss(animatedXpBarCss); }
                 } 
 
-                if (settings.clearGameLogoHtml) { 
-                    clearGameLogoHtml();
-                } 
-
-
-                
-
-                setCustomCss(infoAreaCss); 
-                insertLogoAreaInfo();
-                updateClock();
+                if (settings.clearGameLogoHtml) { clearGameLogoHtml(); }
+               
+                if (settings.addInfoBox) {
+                    insertLogoAreaInfo();
+                    updateClock();
+                }
             }
         }, 5);
     }
 
 
     setCustomCss(mainCss);
+    setCustomCss(infoAreaCss); 
     setCustomCss(serverTimeMainCss);
     
-        if (settings.serverTime.fancyBox) { 
+    if (settings.serverTime.fancyBox) { 
         setCustomCss(serverTimeFancyBoxCss); 
     } 
 
