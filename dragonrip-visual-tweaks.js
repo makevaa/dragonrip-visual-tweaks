@@ -72,14 +72,13 @@
             padding:0px!important;
         }
 
-        a:hover {
-            outline:1px solid grey;	
+       
+        td > a:hover,
+        td > a:hover div,
+        .leftsidemdfk > a:hover div {
+            outline: 1px solid grey!important;
         }
 
-        td > a:hover {
-            outline:2px solid grey!important;	
-            xbackground-color:grey;
-        }
         /* inv. equipemnt etc tabs on right side of screen */
         #pirki > tbody > tr > td {
             xcursor:pointer;
