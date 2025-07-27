@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.14
+// @version      1.0.15
 // @description  Visual CSS tweaks for Dragonrip.com
-// @author       Kronos1
+// @author       paxu
 // @match         *://*.dragonrip.com/*
 // @icon         https://i.imgur.com/Vn0ku7D.png
 // @grant        none
@@ -21,6 +21,7 @@
         fancyBars:true, // Hp, stam, xp bar styling
         animateXpBar:true,
         usernameToShow:'paxu',
+        changeBarLabels: true, //change HP, stam and xp bar labels to shorter ones
 
         serverTime: {
             label: "Server time:",
@@ -49,25 +50,29 @@
                 
         /* HP, Stamina, XP bars */
         .healthbar {
-            outline:2px solid black!important;
+            xoutline:5px solid lime!important;
             border-radius:0px!important;
             border:none!important;
             padding:0px!important;
+            --shadow-color: rgba(255, 255, 255, 0.5);
+            xbox-shadow: 0px 0px 2px var(--shadow-color)!important;
+            xfilter: drop-shadow(0px 0px 1px var(--shadow-color));
+
+            display:flex;
+            align-items:center!important;
+            justify-content:start;
+            xbox-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2);
         }
         /* Filled interior of bar */
         .healthbar2 {
             border-radius:0px!important;
             border:none!important;
-                padding:0px!important;
+            padding:0px!important;
             height:100%!important;
         }
         /* Bar text label */
         .tekstasHealthbar {
-            xcolor:black;
-            xfont-family:consolas, monospace;
-            xcolor: #b133ff!important;
             color:black!important;
-            xtext-shadow:1px 1px 0px black;
             border:none!important;
             padding:0px!important;
         }
@@ -107,24 +112,25 @@
 
         /* Bar container */
         .player > .bar > .healthbar {
-            xborder:1px solid lime!important;
-            xwidth:50%;
+            --border-color: rgba(40, 41, 44, 1);
             background-color: #1a1a1a;
             background-color:rgba(0,0,0,0.2);
-
+            padding:0px!important;
             background-color:black;
             position:relative;
             border:2px solid grey;
 
-            outline:2px solid black!important;
+            outline: 5px ridge var(--border-color)!important;
 
+            box-shadow: inset 0px 0px 5px 5px rgba(255, 0, 0, 0.9)
             xborder:none!important;
-            padding:0px!important;
+    
+            
         }
 
         .player > .bar > .healthbar:nth-child(1), 
         .player > .bar > .healthbar:nth-child(3)  {
-            width:40%;
+            width:100%;
         }
 
         .player > .bar > .healthbar:after{
@@ -135,6 +141,8 @@
             width: calc(100% - 0px);
             height: 50%;
             background: linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+            xbox-shadow: inset 0px 0px 5px red;
+                       
         }
 
         /* Filled, colored bar */
@@ -150,7 +158,17 @@
             xborder-right: 4px solid rgb(0, 40, 93);
             xtransition: width 0.1s filter 0.5s;
             background-repeat: repeat;
-         
+           
+        }
+
+        /* Health bar, colored inner bar */
+        .player > .bar > .healthbar:nth-child(1) > .healthbar2 {
+            border-right:2px solid rgba(255, 78, 78, 0.9)!important;
+        }
+            
+        /* Stamina bar, colored inner bar */
+        .player > .bar > .healthbar:nth-child(3) > .healthbar2 {
+            border-right:2px solid rgba(78, 113, 255, 0.9)!important;
         }
 
         /* XP bar, colored inner bar */
@@ -166,6 +184,8 @@
             position:absolute;
             color: #ffffff!important;
             padding-top:1px!important;
+            font-family:consolas,monospace;
+            font-size:1.1em;
             text-shadow: 
                 -1px 0px 0px black,
                 1px 0px 0px black,
@@ -183,6 +203,8 @@
             background-color: rgb(0, 55, 103);
             opacity:0.9;
             filter:saturate(5);
+
+                  
         }
 
         .player > .bar > .healthbar:nth-child(1) > .healthbar2:after{
@@ -331,10 +353,11 @@
     const serverTimeFancyBoxCss = `    
         .dragonrip-server-time-cont {
             border:2px solid rgba(255,255,255,0.15);
-            box-shadow:0px 0px 5px 0px rgba(0, 0, 0, 0.8);
+            box-shadow:0px 0px 5px 5px rgba(0, 0, 0, 0.8);
 
             background-image: url('https://i.imgur.com/vjJ8ugC.jpeg');
             background-size:cover;
+          
         }
     `;
 
@@ -471,6 +494,22 @@
         targetElem.append(infoArea);
     }
 
+    // Change labels of hp, stam and xp bar
+    const changeMainBarTexts = () => {
+        const labels = {
+            health: 'HP', stamina: 'SP', experience: 'XP'
+        }
+
+        const textElemHp = document.querySelector('.player > .bar > .healthbar:nth-child(1)  > .healthbar2 > .tekstasHealthbar');
+        textElemHp.innerHTML = textElemHp.innerText.replace('HEALTH', `${labels.health}&nbsp;&nbsp;`);
+
+        const textElemStam = document.querySelector('.player > .bar > .healthbar:nth-child(3)  > .healthbar2 > .tekstasHealthbar');
+        textElemStam.innerHTML = textElemStam.innerText.replace('STAMINA', `${labels.stamina}&nbsp;&nbsp;`);
+
+        const textElemXp = document.querySelector('.player > .bar > .healthbar:nth-child(5)  > .healthbar2 > .tekstasHealthbar');
+        textElemXp.innerHTML = textElemXp.innerText.replace('EXPERIENCE', `${labels.experience}&nbsp;&nbsp;`);
+    }
+
     const setCustomCss = str => {
         const styleElem = document.createElement("style");
         styleElem.textContent = str;
@@ -496,6 +535,14 @@
                     insertLogoAreaInfo();
                     updateClock();
                 }
+
+                // Change bar texts, even in combat when bars refresh
+                if (settings.changeBarLabels) {
+                    changeMainBarTexts();
+                    const changeBarTexts = setInterval( () => {
+                        changeMainBarTexts();
+                    }, 25);
+                }
             }
         }, 5);
     }
@@ -513,8 +560,7 @@
         setCustomCss(removeGameLogoCss); 
     } 
 
-
-
     waitForUI();
 
+    //changeMainBarTexts();
 })();
