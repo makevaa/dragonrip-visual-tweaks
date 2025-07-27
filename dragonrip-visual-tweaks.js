@@ -19,9 +19,9 @@
         clearGameLogoHtml:true, // Remove all elements from game area, eg. <br> tags
         addInfoBox:true, // Add info box to game logo box
         fancyBars:true, // Hp, stam, xp bar styling
-        animateXpBar:true,
+        animateXpBar: false,
         usernameToShow:'paxu',
-        changeBarLabels: true, //change HP, stam and xp bar labels to shorter ones
+        changeBarLabels: false, //change HP, stam and xp bar labels to shorter ones
 
         serverTime: {
             label: "Server time:",
@@ -57,7 +57,7 @@
             --shadow-color: rgba(255, 255, 255, 0.5);
             xbox-shadow: 0px 0px 2px var(--shadow-color)!important;
             xfilter: drop-shadow(0px 0px 1px var(--shadow-color));
-
+            background-color: black;
             display:flex;
             align-items:center!important;
             justify-content:start;
