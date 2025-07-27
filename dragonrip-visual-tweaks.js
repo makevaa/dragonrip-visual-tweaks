@@ -57,7 +57,7 @@
             --shadow-color: rgba(255, 255, 255, 0.5);
             xbox-shadow: 0px 0px 2px var(--shadow-color)!important;
             xfilter: drop-shadow(0px 0px 1px var(--shadow-color));
-            background-color: black;
+            xbackground-color: black;
             display:flex;
             align-items:center!important;
             justify-content:start;
