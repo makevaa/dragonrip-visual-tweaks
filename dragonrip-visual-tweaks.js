@@ -129,35 +129,100 @@
 
         div.player {
             height:68px;
+            display:flex;
+            justify-content: start;
+            align-items:start;
+            padding: 5px 5px 5px 0px;!important;
         }
 
         div.player > div.picture {
-            width: 50px!important;
-            height:50px!important;
-            margin-right:30px!important;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+
+            margin:0px!important;
+            margin-left: 0px!important;
+            padding-left: 0px!important;
+            width: 15%!important;
+            min-width:60px;
+            aspect-ratio: 1/1;
+            height: 100%!important;
+          
+
+     
+  
         }
 
+        div.player > div.picture > a {
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            aspect-ratio: 1/1;
+            xwidth:100%;
+            height:100%;
+
+        }
+       
+
         div.player > div.picture > a > div.kovsd {
-            background-size:contain!important;
-            width: 50px!important;
-            height:50px!important;
-            max-height: 50px!important;
-            min-height: 50px!important;
             display:flex;
             flex-direction:column;
             justify-content: end;
+            background-size: cover!important;
+            background-repeat: no-repeat;
+            outline: 4px double rgba(255, 255, 255, 0.35)!important;
+            xborder-radius:100% 100% 0% 0%!important;
+            xborder-radius:0% 0% 100% 100%!important;
+            border-radius: 100%;
+            aspect-ratio: 1/1;
+            width: 90%!important;
+            height: 90%!important;
+            max-height: 90%!important;
+            min-height: 90%!important;
+            overflow:hidden!important;
+            box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8), 0px 0px 5px 5px rgba(0, 0, 0, 0.5), 5px 5px 5px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        div.player > div.picture > a > div.kovsd:hover {
+            filter: brightness(1.1);
+   
+        }
+
+        div.player > div.picture > a > div.kovsd:active {
+            filter: brightness(0.9);
         }
 
         div.player > div.picture > a > div.kovsd > span.amoutina {
+            display:flex;
+            align-items:center;
+            justify-content: center;
+
             width:100%!important;
+            height:30%;
             margin-top: 0px!important;
-            color: lime!important;
+            xborder-top: 4px double grey;
+
+            font-family: consolas,monospace;
+            xborder-radius: 0px 4px!important;
+            font-size: 0.8em;
+           
             color:rgb(111, 111, 255)!important;
-            font-family:consolas,monospace;
+            color: #f5e9d8!important;
+            text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+ 
+
+        /* The sword icon next to player level */
+        div.player > div.picture > a > div.kovsd > span.amoutina > b > img {
+            filter: drop-shadow(0px 0px 3px white);
+            display: none;
         }
 
         div.player > div.bar {
             padding-top:0px!important;
+            xpadding:0px!important;
         }
 
         div.logo {
@@ -437,53 +502,6 @@
         }
     `;
 
-    const smallerVanillaTopbarsCss = `
-        div.player {
-            height:68px;
-        }
-        div.player > div.picture {
-            width: 50px!important;
-            height:50px!important;
-            margin-right:30px!important;
-        }
-        div.player > div.picture > a > div.kovsd {
-            background-size:contain!important;
-            width: 50px!important;
-            height:50px!important;
-            max-height: 50px!important;
-            min-height: 50px!important;
-            display:flex;
-            flex-direction:column;
-            justify-content: end;
-        }
-
-        div.player > div.picture > a > div.kovsd > span.amoutina {
-            width:100%!important;
-            margin-top: 0px!important;
-            color: lime!important;
-            color:rgb(111, 111, 255)!important;
-            font-family:consolas,monospace;
-        }
-
-        div.player > div.bar {
-            padding-top:0px!important;
-        }
-
-        div.logo {
-            height:68px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-        }
-
-        div.logo > br {
-            height:0px!important;
-        }
-
-        div.logo > img {
-            height:80%;
-        }
-    `;
 
 
     const log = console.log;
