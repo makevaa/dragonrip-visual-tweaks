@@ -21,7 +21,8 @@
         fancyBars:true, // Hp, stam, xp bar styling
         animateXpBar: false,
         usernameToShow:'paxu',
-        changeBarLabels: false, //change HP, stam and xp bar labels to shorter ones
+        customBarText: true, //change HP, stam and xp bar labels to shorter ones
+        barLabels: { health: 'HP', stamina: 'SP', experience: 'XP' },
 
         serverTime: {
             label: "Server time:",
@@ -40,6 +41,8 @@
             box-sizing: border-box;
         }
 
+
+
         body, html {
             background:#262626 url('https://i.imgur.com/gnerbEH.jpeg')!important;
             background-image: url('https://i.imgur.com/gnerbEH.jpeg')!important;
@@ -50,7 +53,6 @@
                 
         /* HP, Stamina, XP bars */
         .healthbar {
-            xoutline:5px solid lime!important;
             border-radius:0px!important;
             border:none!important;
             padding:0px!important;
@@ -71,10 +73,16 @@
             height:100%!important;
         }
         /* Bar text label */
-        .tekstasHealthbar {
+       .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar {
+
             color:black!important;
             border:none!important;
             padding:0px!important;
+            display:flex;
+            align-items:center;
+            justify-content:start;
+            position:absolute;
+            height:100%;
         }
 
        
@@ -100,6 +108,22 @@
             background-size:contain;
         }
 
+        /* Custom main bar percent value */
+        .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar > .bar-percent {
+            xcolor: grey!important;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            margin-left:5px;
+            xpadding:5px;
+            xpadding-left:-5px;
+            xborder-radius:100%;
+            xoutline:2px solid grey;
+            height:100%;
+            xaspect-ratio:1/1;
+            xbackground-color:rgba(0, 0, 0, 0.5);
+        }
+
     `;
 
     const removeGameLogoCss = `
@@ -109,6 +133,8 @@
     `;
 
     const fancyBarsCss = `
+
+
 
         /* Bar container */
         .player > .bar > .healthbar {
@@ -141,29 +167,20 @@
             width: calc(100% - 0px);
             height: 50%;
             background: linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.1));
-            xbox-shadow: inset 0px 0px 5px red;
-                       
         }
 
         /* Filled, colored bar */
         .player > .bar > .healthbar > .healthbar2 {
-            xborder:1px solid lime!important;
-            width:100%;
-            position:relative;
-
+            position:absolute;
+            xwidth:100%!important;
             background-position: 0% 0%;
-            xfilter:contrast(200%) brightness(4) saturate(0.75);
-
-            xborder-right: 2px solid rgb(0, 61, 140);
-            xborder-right: 4px solid rgb(0, 40, 93);
-            xtransition: width 0.1s filter 0.5s;
             background-repeat: repeat;
-           
+            
         }
 
         /* Health bar, colored inner bar */
         .player > .bar > .healthbar:nth-child(1) > .healthbar2 {
-            border-right:2px solid rgba(255, 78, 78, 0.9)!important;
+            border-right:2px solid rgba(173, 55, 55, 0.9)!important;
         }
             
         /* Stamina bar, colored inner bar */
@@ -176,13 +193,14 @@
             xanimation: xpBarSlide 80s linear infinite;
             background-image: url('https://i.imgur.com/VeK3PfN.jpeg');
             border-right:2px solid rgba(152, 78, 255, 0.9)!important;
+             position:absolute;
         }
 
         /* Bar text */
         .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar {
-            xborder:1px solid lime!important;
             position:absolute;
             color: #ffffff!important;
+          
             padding-top:1px!important;
             font-family:consolas,monospace;
             font-size:1.1em;
@@ -193,6 +211,8 @@
                 0px 1px 0px black
             ;
             z-index:1;
+            xborder:1px solid lime!important;
+            width:1000px!important;
         } 
 
         .player > .bar > .healthbar > .healthbar2:after{
@@ -208,7 +228,7 @@
         }
 
         .player > .bar > .healthbar:nth-child(1) > .healthbar2:after{
-            background-color: rgb(33, 0, 0);
+            background-color: rgba(21, 0, 0, 1);
         }
 
         .player > .bar > .healthbar:nth-child(3) > .healthbar2:after{
@@ -218,6 +238,7 @@
         .player > .bar > .healthbar:nth-child(5) > .healthbar2:after{
             background-color: rgb(18, 0, 46);
         }
+
     `;
 
     const animatedXpBarCss = `
@@ -494,6 +515,30 @@
         targetElem.append(infoArea);
     }
 
+    // Get current and max values from eg. "250/1500" string
+    const getBarValues = str => {
+        str = str.trim();
+        const values = str.split('/');
+
+        let percent = (values[0]/values[1] * 100).toFixed(0);
+        if (parseInt(percent) < 10) {
+            percent = `&nbsp;${percent}`;
+        }
+
+        const data = {
+            current: numberWithCommas(values[0]),
+            max: numberWithCommas(values[1]),
+            percent: percent
+        }
+        return data;
+    }
+
+    const getCustomBarText = (elem, originalLabel) => {
+        const barData = getBarValues(elem.innerText.replace(originalLabel.toUpperCase(), ''))
+        const str = `<span class='bar-percent'>${barData.percent}%</span> &nbsp; ${settings.barLabels[originalLabel]} &nbsp; ${barData.current} / ${barData.max}`;
+        return str;
+    }
+
     // Change labels of hp, stam and xp bar
     const changeMainBarTexts = () => {
         const labels = {
@@ -501,13 +546,29 @@
         }
 
         const textElemHp = document.querySelector('.player > .bar > .healthbar:nth-child(1)  > .healthbar2 > .tekstasHealthbar');
-        textElemHp.innerHTML = textElemHp.innerText.replace('HEALTH', `${labels.health}&nbsp;&nbsp;`);
+
+        if (textElemHp.innerText.includes('HEALTH')) {
+            textElemHp.innerHTML = getCustomBarText(textElemHp, 'health')
+            
+        }
+   
 
         const textElemStam = document.querySelector('.player > .bar > .healthbar:nth-child(3)  > .healthbar2 > .tekstasHealthbar');
-        textElemStam.innerHTML = textElemStam.innerText.replace('STAMINA', `${labels.stamina}&nbsp;&nbsp;`);
+        if (textElemStam.innerText.includes('STAMINA')) {
+            textElemStam.innerHTML = getCustomBarText(textElemStam, 'stamina')
+        }
 
         const textElemXp = document.querySelector('.player > .bar > .healthbar:nth-child(5)  > .healthbar2 > .tekstasHealthbar');
-        textElemXp.innerHTML = textElemXp.innerText.replace('EXPERIENCE', `${labels.experience}&nbsp;&nbsp;`);
+        if (textElemXp.innerText.includes('EXPERIENCE')) {
+            textElemXp.innerHTML = getCustomBarText(textElemXp, 'experience')
+        }
+
+    }
+
+    // Number with commas function by Elias Zamaria
+    // Source: https://stackoverflow.com/a/2901298
+    const numberWithCommas = x => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     const setCustomCss = str => {
@@ -537,7 +598,7 @@
                 }
 
                 // Change bar texts, even in combat when bars refresh
-                if (settings.changeBarLabels) {
+                if (settings.customBarText) {
                     changeMainBarTexts();
                     const changeBarTexts = setInterval( () => {
                         changeMainBarTexts();
