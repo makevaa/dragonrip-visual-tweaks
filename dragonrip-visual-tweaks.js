@@ -108,21 +108,25 @@
             background-size:contain;
         }
 
-        /* Custom main bar percent value */
+        /* Custom main bar percent value, value and symbol */
         .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar > .bar-percent {
             xcolor: grey!important;
             display:inline-flex;
             align-items:center;
-            justify-content:center;
+            justify-content:start;
             margin-left:5px;
-            xpadding:5px;
-            xpadding-left:-5px;
             xborder-radius:100%;
             xoutline:2px solid grey;
             height:100%;
             xaspect-ratio:1/1;
             xbackground-color:rgba(0, 0, 0, 0.5);
         }
+        /* Custom main bar percent symbol only*/
+        .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar > .bar-percent > .symbol {
+            display:inline-block;
+            margin-left:2px;
+        }
+
 
     `;
 
@@ -133,10 +137,15 @@
     `;
 
     const fancyBarsCss = `
-
-
-
+        
         /* Bar container */
+        .player > .bar {
+            xborder:1px solid lime;
+            width:85%;
+        }
+
+
+        /* Bars */
         .player > .bar > .healthbar {
             --border-color: rgba(40, 41, 44, 1);
             background-color: #1a1a1a;
@@ -150,7 +159,7 @@
 
             box-shadow: inset 0px 0px 5px 5px rgba(255, 0, 0, 0.9)
             xborder:none!important;
-    
+            width:100%!important;
             
         }
 
@@ -522,6 +531,8 @@
 
         let percent = (values[0]/values[1] * 100).toFixed(0);
         if (parseInt(percent) < 10) {
+            percent = `&nbsp;&nbsp;${percent}`;
+        } else if (parseInt(percent) < 100) {
             percent = `&nbsp;${percent}`;
         }
 
@@ -535,7 +546,7 @@
 
     const getCustomBarText = (elem, originalLabel) => {
         const barData = getBarValues(elem.innerText.replace(originalLabel.toUpperCase(), ''))
-        const str = `<span class='bar-percent'>${barData.percent}%</span> &nbsp; ${settings.barLabels[originalLabel]} &nbsp; ${barData.current} / ${barData.max}`;
+        const str = `<span class='bar-percent'>${barData.percent}<span class='symbol'>%</span></span> &nbsp; ${settings.barLabels[originalLabel]} &nbsp; ${barData.current} / ${barData.max}`;
         return str;
     }
 
