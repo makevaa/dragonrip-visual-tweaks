@@ -15,7 +15,8 @@
     'use strict';
 
     const settings = {
-        removeGameLogo:true, // Remove the large Dragonrip.com logo
+        removeGameLogo: true, // Remove the large Dragonrip.com logo
+        removeGameFooter: true, // Remove the vanilla footer from the end of page
         clearGameLogoHtml:true, // Remove all elements from game area, eg. <br> tags
         addInfoBox:true, // Add info box to game logo box
         fancyBars:true, // Hp, stam, xp bar styling
@@ -246,6 +247,14 @@
             display:none;
         }	
     `;
+    
+    const removeGameFooterCss = `
+        body > .footer {
+            display:none;
+        }	
+    `;
+
+    
 
     const fancyBarsCss = `
         
@@ -313,7 +322,7 @@
             xanimation: xpBarSlide 80s linear infinite;
             background-image: url('https://i.imgur.com/VeK3PfN.jpeg');
             border-right:2px solid rgba(152, 78, 255, 0.9)!important;
-             position:absolute;
+            position:absolute;
         }
 
         /* Bar text */
@@ -495,9 +504,26 @@
         .dragonrip-server-time-cont {
             border:2px solid rgba(255,255,255,0.15);
             box-shadow:0px 0px 5px 5px rgba(0, 0, 0, 0.8);
-
             background-image: url('https://i.imgur.com/vjJ8ugC.jpeg');
             background-size:cover;
+        }
+    `;
+
+    const extraBoxCss = `    
+        .extra-box {
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow:5px 5px 5px 0px rgba(0, 0, 0, 0.8);
+            background: url('/img/mc/center.jpg');
+            background-position: center center;
+            background-repeat: repeat;
+
+            xwidth:150px;
+            height:100vh;
+            xfloat:right;
+            position:absolute;
+            top:0;
+            right:0;
+            margin: 5px 20px 0px 20px
           
         }
     `;
@@ -694,11 +720,41 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
+    const createExtraBox = () => {
+        const elem = document.createElement('div');
+        elem.classList.add('extra-box');
+
+
+        // Calculate box width ciewport width from footer and viewport width
+
+        const footer = document.querySelector('body > .chatting');
+        const footerW = footer.clientWidth;
+        //log(footerW)
+
+        const viewportW = document.documentElement.clientWidth
+        //log(viewportW)
+
+        let boxW = 1-(Number(footerW)/Number(viewportW));
+        boxW = Math.floor((boxW*100))
+        boxW = `${boxW-3}%`
+        log(boxW)
+        
+        elem.style.width = boxW;
+
+
+        const target = document.querySelector('body');
+        target.append(elem);
+    }
+
+
+
     const setCustomCss = str => {
         const styleElem = document.createElement("style");
         styleElem.textContent = str;
         document.body.appendChild(styleElem);
     }
+
+
 
     // Wait for game UI to load, then insert elements
     const waitForUI = () => {
@@ -727,6 +783,12 @@
                         changeMainBarTexts();
                     }, 25);
                 }
+
+                // Add extra box to the right of UI
+                if (true) {
+                    setCustomCss(extraBoxCss);
+                    createExtraBox();
+                }
             }
         }, 5);
     }
@@ -743,6 +805,12 @@
     if (settings.removeGameLogo) { 
         setCustomCss(removeGameLogoCss); 
     } 
+
+    if (settings.removeGameFooter) { 
+        setCustomCss(removeGameFooterCss); 
+    } 
+
+    
 
 
    
