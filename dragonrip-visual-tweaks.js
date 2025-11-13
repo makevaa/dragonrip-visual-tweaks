@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.15
+// @version      1.0.19
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -16,22 +16,53 @@
 
     const settings = {
         removeGameLogo: true, // Remove the large Dragonrip.com logo
+        clearGameLogoHtml: true, // Remove all elements from game logo area, eg. <br> tags
+        addInfoBox: true, // Add info box to game logo box
+        usernameToShow: 'paxu', // Username to show in infobox
         removeGameFooter: true, // Remove the vanilla footer from the end of page
-        clearGameLogoHtml:true, // Remove all elements from game area, eg. <br> tags
-        addInfoBox:true, // Add info box to game logo box
-        fancyBars:true, // Hp, stam, xp bar styling
+
+        fancyBars: true, // Hp, stam, xp bar styling
         animateXpBar: false,
-        usernameToShow:'paxu',
-        customBarText: true, //change HP, stam and xp bar labels to shorter ones
+
+        customBarText: true, // Change HP, stam and xp bar labels to shorter ones
         barLabels: { health: 'HP', stamina: 'SP', experience: 'XP' },
 
         serverTime: {
             label: "Server time:",
-            keepRunning:true,  // Keep updating clock time (updates every second)
+            keepRunning: true,  // Keep updating clock time (updates every second)
             seconds: false, // Include seconds in the time
             hours24: true,  // Toggle between 12h/24h time format
             fancyBox: false, // Additional styling for the time box element
-        }
+        },
+
+        // Create big extra box on the right side of game area
+        createExtraBox: true,
+        extraBoxContents: {
+            "Clan": {
+                "Members":     {icon:'/game/images/bossimages/zolton.png', url:'/game/clan.php?go=5'},
+                "Log":         {icon:'/game/images/itema/scroll2.png', url:'/game/clanlog.php'},
+                "Vault":       {icon:'/game/images/blacksm/bank.png', url:'/game/cvault.php'},
+                "Resources":   {icon:'/game/images/blacksm/bar.png', url:'/game/clan.php?go=9'},
+                "Buildings":   {icon:'/game/images/clanbuu/dark/3.png', url:'/game/clanbuu.php'},
+                "Clan Bosses": {icon:'/game/images/bossimages/earth.png', url:'/game/clan.php?go=10'},
+                "Clan Games":  {icon:'/game/images/tool/axe/5.png', url:'/game/clang.php'},
+                "Clan Temple": {icon:'/game/images/ruins/relsh.png', url:'/game/clant.php'},
+                "Clan Wars":   {icon:'/game/images/itema/sossoso.png', url:'/game/clanw.php'},
+            },
+            "Market": {
+                "Resources": {icon:'/game/images/icons/res.png', url:'/game/market.php?go=2'},
+                "Combat gear": {icon:'/game/images/icons/armor.png', url:'/game/market.php?go=1'},
+                "My listings": {icon:'/game/images/icons/market.png', url:'/game/mymark.php'},
+                "My requests": {icon:'/game/images/icons/market.png', url:'/game/myrequ.php'},
+            },
+            "Misc": {
+                "Players": {icon:'/game/images/icons/res.png', url:'https://chazu.arkku.net/dragonrip/player-index/'},
+            }
+
+        },
+
+        chatStyling: true, // Add custom styling to chat
+
     }
     
 
@@ -261,6 +292,7 @@
         /* Bar container */
         .player > .bar {
             xborder:1px solid lime;
+            xoutline: 2px solid lime !important;
             width:85%;
         }
 
@@ -341,7 +373,8 @@
             ;
             z-index:1;
             xborder:1px solid lime!important;
-            width:1000px!important;
+            width: 100% !important;
+            min-width: 500px !important;
         } 
 
         .player > .bar > .healthbar > .healthbar2:after{
@@ -512,19 +545,290 @@
     const extraBoxCss = `    
         .extra-box {
             border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 2px;
             box-shadow:5px 5px 5px 0px rgba(0, 0, 0, 0.8);
             background: url('/img/mc/center.jpg');
             background-position: center center;
             background-repeat: repeat;
 
-            xwidth:150px;
+            xbackground-image: url('https://i.imgur.com/vjJ8ugC.jpeg');
+            xbackground-position: center;
+            xbackground-repeat: no-repeat;
+            xbackground-size: cover;
+
             height:100vh;
-            xfloat:right;
+            xoverflow-y: scroll;
+            scrollbar-width: thin;
             position:absolute;
             top:0;
             right:0;
-            margin: 5px 20px 0px 20px
-          
+            margin: 5px 20px 0px 20px;
+            padding: 10px 5px 10px 5px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+
+            /* border simple https://i.imgur.com/c7Oeu0F.png'  */
+            /* border ornamental https://i.imgur.com/j7xNFLn.png  */
+            border-image-source: url('https://i.imgur.com/j7xNFLn.png');
+            border-image-slice: 150;
+            border-image-width: 40px;
+            border-image-outset: 0;
+            border-image-repeat: repeat;
+            box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.6), inset 0px 0px 10px 10px rgba(0, 0, 0, 0.8);
+            xbox-shadow: inset 0px 0px 10px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .extra-box > .box {
+            xborder: 1px solid grey;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            xmargin-bottom: 0px;
+            xpadding: 5px 5px 5px 5px;
+
+            xbackground-color: rgba(21, 21, 21, 1);
+            xbackground-image: url('https://i.imgur.com/vjJ8ugC.jpeg');
+            background-size:contain;
+        }
+
+        .extra-box > .box > .top {
+            xborder: 1px solid lime;
+            color: grey;
+            width: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 25px;
+            margin-bottom: 5px;
+            padding-left: 10%;
+            xborder-bottom: 4px double rgba(68, 68, 68, 1);
+
+           
+            xtext-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
+
+            xbackground: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.8) 70%, rgba(0,0,0,0) 90%);
+        }
+
+        .extra-box > .box > .top > .title {
+            font-size: 1.1em;
+            font-family: Georgia, serif;
+            color: #f5e9d8;
+        }
+
+        .extra-box > .box > .top > .button {
+            xborder: 1px solid grey;
+            aspect-ratio: 1/1;
+            height: 100%;
+            margin-right: 10%;
+            pointer-events: auto;
+            user-select: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://i.imgur.com/wQPBolf.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            text-align: center;
+            font-size: 1em;
+            font-family: Georgia, serif;
+            text-transform: uppercase;
+            color: #ffffff;
+            text-shadow: 0px 0px 10px orange, 0px 0px 5px rgb(160, 160, 160);
+            filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.9));
+        }
+
+        .extra-box > .box > .top > .button:hover {
+               filter: brightness(0.9);
+   
+        }
+
+        .extra-box > .box > .top > .button:active {
+               background-image: url('  https://i.imgur.com/Rq1EfYg.png');
+   
+        }
+
+       
+
+        .extra-box > .box > .separator-line {
+            xborder: 1px solid lime;
+            width: 100%;
+            height: 4px;
+            background-color: rgba(44, 44, 44, 1);
+            margin-top: 10px;
+            margin-bottom: 5px;
+            box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.7);
+            border-top: 1px solid rgba(88, 88, 88, 1);
+            border-bottom: 1px solid rgba(21, 21, 21, 1);
+        }
+
+        .extra-box > .box > .list {
+            border: 1ps solid lime;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            overflow: hidden;
+        }
+
+        .extra-box > .box > .list.hidden {
+            height: 0px;
+        }
+
+        .extra-box > .box > .list > .item {
+            xborder: 1px solid rgba(255, 255, 255, 0.25);
+            border: 4px double rgba(41, 41, 41, 1);
+            border-left: none;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            width: 100%;
+            height: 35px;
+            background-color: rgba(0, 0, 0, 0.5);
+            xmargin-bottom: 5px;
+            xmargin-top: -5px;
+            box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8), 0px 0px 5px 5px rgba(0, 0, 0, 0.5);
+
+            border-radius: 30px 10px 10px 30px;
+            xborder-radius: 50px;
+
+            xbackground: #000000;
+            xbackground: linear-gradient(90deg,rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 100%);
+
+ 
+        }
+
+        .extra-box > .box > .list > .item > * {
+            pointer-events: none;
+        }
+
+        .extra-box > .box > .list > .item:hover {
+            filter: brightness(1.4);
+        } 
+
+        .extra-box > .box > .item:active {
+            filter: brightness(1.0);
+        } 
+
+        
+        .extra-box > .box > .list > .item > .image-cont {
+            xborder: 1px solid grey;
+            height: 120%;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+   
+            margin: 0px 5px 0px 0px;
+            background-color: rgba(21, 21, 21, 1);
+
+            border: 4px double rgba(255, 255, 255, 0.35);
+            border: 4px double rgba(41, 41, 41, 1);
+            xbox-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8);
+      
+            border-radius: 100%;
+            overflow: hidden;
+
+        }
+
+        .extra-box > .box > .list > .item > .image-cont > .image {
+            xborder: 2px double grey;
+            xborder: 1px solid lime;
+            width: 100%;
+            aspect-ratio: 1/1;
+            xheight: 100%;
+            box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8);
+      
+            xfilter: sepia(1) hue-rotate(105deg);
+            filter: saturate(0.75);
+
+        }
+
+        .extra-box > .box > .list > .item > .label {
+            xborder: 1px solid lime;
+            text-align: left;
+
+            font-family: consolas, monospace;
+
+            font-size: 0.9em;
+            font-family: Georgia, serif;
+            color: rgba(152, 152, 152, 1);
+            text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5);
+            xcolor: #f5e9d8;
+            
+            xtext-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
+        }
+    `;
+
+
+    const chatCss = `    
+
+        /* Chat tab buttons */
+        .chatting > .chatenemy > input[type="button"] {
+           -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            xborder: 1px solid lime !important;
+            cursor: pointer;
+            font-family:  consolas, monospace !important;
+            xcolor: white !important;
+            xfont-size: 1.1em !important;
+            xfont-weight: 800;
+     
+            width: 10% !important;
+            border-radius: 2px !important;
+            margin-right: 5px !important;
+            background-color: rgba(0, 0, 0, 0.4) !important;
+            outline: 1px solid grey !important;
+            
+            text-shadow:
+                0px 0px 3px black,
+                0px 0px 3px black,
+                0px 0px 3px black,
+                0px 0px 3px black,
+                0px 0px 3px black,
+                0px 0px 3px black,
+                0px 0px 3px black
+            ;
+
+            box-shadow: 
+                inset 0px 0px 3px 1px rgba(0, 0, 0, 0.0), 
+                3px 3px 3px 0px rgba(0, 0, 0, 0.5)
+            ;
+        }
+
+        .chatting > .chatenemy > input[type="button"]:hover {
+            background-color: rgba(20, 20, 20, 1) !important;
+            outline: 1px solid grey !important;
+        } 
+
+        /* Selected chat tab */
+        .chatting > .chatenemy > input[type="button"].active {
+            outline: 1px solid #fea528ff !important;
+            color: lime !important;
+            background-color: rgba(0, 0, 0, 0.5) !important;
+
+            color: #ffd748 !important;
+            text-shadow: 
+                0 0 1vw #FA1C16, 
+                0 0 3vw #FA1C16, 
+                0 0 10vw #FA1C16, 
+                0 0 10vw #FA1C16, 
+                0 0 .4vw #FED128
+            ;
+
+            box-shadow: 
+                0px 0px 3px 0px rgba(255, 183, 0, 0.5)
+            ;
+
+            
         }
     `;
 
@@ -742,8 +1046,107 @@
         elem.style.width = boxW;
 
 
+        // Create extra box contents
+
+        const boxNames = Object.getOwnPropertyNames(settings.extraBoxContents);
+
+        for (const boxName of boxNames) {
+
+            //const title = boxName;
+
+            const boxElem = document.createElement('div');
+            boxElem.classList.add('box');
+
+            // Box top area with bos title and hide button
+            const top = document.createElement('div');
+            top.classList.add('top');
+
+            const title = document.createElement('div');
+            title.classList.add('title');
+            title.innerText = boxName;
+            top.append(title);
+
+            // Create button to hide/view link list
+            const hideButton = document.createElement('div');
+            hideButton.classList.add('button');
+            hideButton.classList.add('hide');
+            hideButton.setAttribute('data-target', boxName);
+            hideButton.innerText = '△';
+
+            hideButton.addEventListener("click", (e) => {
+                const listName = hideButton.getAttribute('data-target');
+                const listElem = boxElem.querySelector(`.list.${listName}`);
+                listElem.classList.toggle('hidden');
+
+            });
+
+            top.append(hideButton);
+
+            boxElem.append(top);
+
+            const linkItems = Object.getOwnPropertyNames(settings.extraBoxContents[boxName]);
+
+            const list = document.createElement('div');
+            list.classList.add('list');
+            list.classList.add(boxName);
+
+            if (linkItems.length === 0) {
+                continue;
+            }
+
+            for (const linkName of linkItems) {
+
+                const linkElem = document.createElement('a');
+                linkElem.classList.add('item');
+                linkElem.setAttribute('href', settings.extraBoxContents[boxName][linkName].url);
+
+                const imageCont =  document.createElement('div');
+                imageCont.classList.add('image-cont');
+
+                const image = document.createElement('img');
+                image.classList.add('image');
+
+                image.src = settings.extraBoxContents[boxName][linkName].icon;
+                imageCont.append(image);
+                linkElem.append(imageCont);
+
+                const label =  document.createElement('div');
+                label.classList.add('label');
+                label.innerText = linkName;
+                linkElem.append(label);
+
+                list.append(linkElem);
+            }
+
+            boxElem.append(list);
+
+            // Insert a separator line between link boxes
+            const separator = document.createElement('div');
+            separator.classList.add('separator-line');
+            boxElem.append(separator);
+
+            elem.append(boxElem);
+        }
+
+
+
         const target = document.querySelector('body');
         target.append(elem);
+    }
+
+    const setChatStyles = () => {
+        setCustomCss(chatCss);
+        
+        // Remove random whitepsaces from between some chat tabs (bug in vanilla game?)
+        const chatTabContainer = document.querySelector('.chatting > .chatenemy');
+        const childNodes = chatTabContainer.childNodes;
+        for (const node of childNodes) {
+            log(node)
+            if (node.nodeName === '#text') {
+                node.remove();
+            }
+        }
+
     }
 
 
@@ -776,6 +1179,10 @@
                     updateClock();
                 }
 
+                if (settings.chatStyling) {
+                    setChatStyles();
+                }
+
                 // Change bar texts, even in combat when bars refresh
                 if (settings.customBarText) {
                     changeMainBarTexts();
@@ -785,7 +1192,7 @@
                 }
 
                 // Add extra box to the right of UI
-                if (true) {
+                if (settings.createExtraBox) {
                     setCustomCss(extraBoxCss);
                     createExtraBox();
                 }
