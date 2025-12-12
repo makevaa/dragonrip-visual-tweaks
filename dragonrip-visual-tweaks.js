@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.19
+// @version      1.0.21
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -15,6 +15,7 @@
     'use strict';
 
     const settings = {
+        sessionId: '567fbb9ef99a13ffa5889f95fbb4c362', // PHPSESSID cookie value, needed for some fetch requests
         removeGameLogo: true, // Remove the large Dragonrip.com logo
         clearGameLogoHtml: true, // Remove all elements from game logo area, eg. <br> tags
         addInfoBox: true, // Add info box to game logo box
@@ -63,6 +64,11 @@
 
         chatStyling: true, // Add custom styling to chat
 
+        // Create custom context menu for inventory items
+        invContextMenu: {
+            enable: true,
+            isOpen: false,
+        },
     }
     
 
@@ -556,7 +562,7 @@
             xbackground-repeat: no-repeat;
             xbackground-size: cover;
 
-            height:100vh;
+            min-height:100vh;
             xoverflow-y: scroll;
             scrollbar-width: thin;
             position:absolute;
@@ -572,7 +578,7 @@
 
             /* border simple https://i.imgur.com/c7Oeu0F.png'  */
             /* border ornamental https://i.imgur.com/j7xNFLn.png  */
-            border-image-source: url('https://i.imgur.com/j7xNFLn.png');
+            border-image-source: url('https://i.imgur.com/c7Oeu0F.png');
             border-image-slice: 150;
             border-image-width: 40px;
             border-image-outset: 0;
@@ -615,6 +621,7 @@
         }
 
         .extra-box > .box > .top > .title {
+            xborder: 1px solid grey;
             font-size: 1.1em;
             font-family: Georgia, serif;
             color: #f5e9d8;
@@ -832,9 +839,166 @@
         }
     `;
 
+    const invContextMenuCss = `
+        /* The area where inventory items are shown */
+        .burbul > .leftsidemdfk {
+            xpointer-events: none;
+        }
+
+        /* the link element is the small item amount number element */
+        .burbul > .leftsidemdfk > a {
+            xpointer-events: none;
+        }
+
+        .burbul > .leftsidemdfk > a > div > span.amouti {
+            pointer-events: none;
+        }
+
+        .inv-context-menu {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box; 
+            position: absolute;
+            z-index: 1000;
+            background-color: rgba(21, 21, 21, 0.95);
+            border: 1px solid grey;
+            box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.8);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            sfont-family: consolas, monospace;
+            user-select: none;
+            padding: 5px 0px 5px 0px;
+        }
+
+        .inv-context-menu * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .inv-context-menu > .top {
+            width: 100%;
+            height: 30px;
+            xborder-bottom: 2px solid grey;  
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            padding: 5px;
+
+        }
+
+        .inv-context-menu > .top > .item-image {
+            width: 24px;
+            height: 24px;
+            margin-right: 3px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .inv-context-menu > .top > .item-name {
+            xborder: 1px solid grey;
+            display: flex;
+            align-items: center;
+            xtext-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
+            font-size: 0.9em;
+            color: #e6e6e6ff;
+            font-family: Georgia, serif;
+        }
+
+        .inv-context-menu > .top > .amount-owned {
+            xborder: 1px solid grey;
+            xmin-width: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            margin: 0px 0px 0px 10px;
+            xtext-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
+            font-size: 0.8em;
+            color: #b0b0b0ff;
+            xfont-family: Georgia, serif;
+        }
+
+        .inv-context-menu > .menu-items {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            font-family: consolas, monospace;
+        }
+
+        .inv-context-menu > .menu-items > .menu-item {
+            width: 100%;
+            padding: 0px 5px 5px 5px;
+            xborder-bottom: 1px solid grey;
+            font-size: 0.8em;
+            color: white;
+            xcursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+        }
+
+        .inv-context-menu > .menu-items > .menu-item > .amount-input {
+            width: 60px !important;
+            height: 30px;
+            padding: 5px;
+            margin-left: 5px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 0px;
+            border: 1px solid grey;
+        }
+
+        .inv-context-menu > .menu-items > .menu-item > .button {
+            width: 100px !important;
+            padding: 5px;
+            margin-right: 5px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 1px solid grey;
+            cursor: pointer;
+        }
 
 
-    const log = console.log;
+
+        .inv-context-menu > .menu-items > .menu-item > .button:hover {
+            background-color: rgba(100, 100, 100, 0.2);
+        }
+
+        .inv-context-menu > .menu-items > .menu-item > .button:active {
+            background-color: rgba(150, 150, 150, 0.4);
+        }
+
+        .custom-float-text {
+            position: absolute;
+            z-index: 1001;
+            background-color: rgba(0, 0, 0, 0.8);   
+            color: white;
+            padding: 3px 5px 3px 5px;
+            border-radius: 3px;
+            xbox-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.8);
+            xfont-family: consolas, monospace;
+            font-family: Georgia, serif;
+            font-size: 1em;
+            user-select: none;
+            
+            transition: opacity 2s, transform 2s;
+            transition-timing-function: linear;
+          
+            
+        }
+    
+           
+    `;
+
+
+
+    const log = str => {
+        console.log(`[Dragonrip Visual Tweaks]: ${str}`);
+    }
 
     const getTime = () => {
         let options = {
@@ -921,16 +1085,6 @@
         return elem;
      }
 
-    const insertXpBarElems = () => {
-        // Insert elems inside the colored bar part
-        const bars = document.querySelectorAll('body > .player > .bar');
-        const xpBar = bars[2];
-
-
-        // stone.jpg https://i.imgur.com/pdfuIh9.jpeg
-        // stone_fx.jpg https://i.imgur.com/s8VVf0Z.jpeg
-        //const 
-    }
 
     const clearGameLogoHtml = () => {
         const targetElem = document.querySelector('body > div.logo');
@@ -1033,15 +1187,13 @@
 
         const footer = document.querySelector('body > .chatting');
         const footerW = footer.clientWidth;
-        //log(footerW)
-
+  
         const viewportW = document.documentElement.clientWidth
-        //log(viewportW)
-
+    
         let boxW = 1-(Number(footerW)/Number(viewportW));
         boxW = Math.floor((boxW*100))
         boxW = `${boxW-3}%`
-        log(boxW)
+       
         
         elem.style.width = boxW;
 
@@ -1136,19 +1288,353 @@
 
     const setChatStyles = () => {
         setCustomCss(chatCss);
-        
         // Remove random whitepsaces from between some chat tabs (bug in vanilla game?)
         const chatTabContainer = document.querySelector('.chatting > .chatenemy');
+
+        if (chatTabContainer === null) { return; }
+
         const childNodes = chatTabContainer.childNodes;
         for (const node of childNodes) {
-            log(node)
+            //log(node)
             if (node.nodeName === '#text') {
                 node.remove();
             }
         }
-
     }
 
+
+    // Right-click item in inventory --> opens small context menu with item name,
+    // and options to send whole stack to bank or ruins bank.
+    const invContextMenu = () => {
+        const invArea = document.querySelector('.burbul > .leftsidemdfk');
+        if (invArea === null) {
+            setTimeout( () => {
+                invContextMenu();
+            }, 1000);
+            return;
+        }
+        
+        log("Adding inv area contextmenu listener...");
+        invArea.addEventListener('contextmenu', e => {
+            e.preventDefault();
+
+            if (settings.invContextMenu.isOpen) {
+                const previousMenu = document.querySelector('.inv-context-menu');
+                if (previousMenu !== null) {
+                    previousMenu.remove();
+                }
+                settings.invContextMenu.isOpen = false;
+            }
+
+            const target = e.target;
+            let linkElem = null; // linkElem is the item tile in inventory
+
+            if (target.classList.contains('blockex')) {
+                linkElem = target.parentNode;
+            } else if (target.nodeName == 'a' || target.nodeName == 'A') {
+                linkElem = target;
+            }
+
+            if (linkElem === null) { return; }
+
+            // Check if item has amount span
+            let itemAmount = 1;
+            if (linkElem.querySelector('span.amouti') !== null) {
+                itemAmount = linkElem.querySelector('span.amouti').innerText;
+            };
+
+            const item = {
+                name: linkElem.getAttribute('title'),
+                id: linkElem.getAttribute('href').split('ko=')[1],
+                image: linkElem.querySelector('div').style.backgroundImage.slice(5, -2),
+                amount: itemAmount,
+            }
+
+            // Create context menu element
+            const menuElem = document.createElement('div');
+            menuElem.classList.add('inv-context-menu');
+
+            // Menu top area with item image, anme etc.
+            const top = document.createElement('div');
+            top.classList.add('top');
+
+            const itemImage = document.createElement('div');
+            itemImage.classList.add('item-image');
+            itemImage.style.backgroundImage = `url('${item.image}')`;
+         
+            const amountOwned = document.createElement('div');
+            amountOwned.classList.add('amount-owned');
+            amountOwned.innerText = `x ${item.amount}`;
+    
+            const itemName = document.createElement('div');
+            itemName.classList.add('item-name');
+            itemName.innerText = `${item.name}`;
+
+            top.append(itemImage);
+            top.append(itemName);
+            top.append(amountOwned);
+
+            // Menu items area
+            const menuItems = document.createElement('div');
+            menuItems.classList.add('menu-items');
+
+            // Create context menu rows
+            const bankItem = document.createElement('div');
+            const consumeItem = document.createElement('div');
+            bankItem.classList.add('menu-item');
+            consumeItem.classList.add('menu-item');
+
+            const createActionButton = text => {
+                const button = document.createElement('div');
+                button.classList.add('button');
+                button.innerText = text;
+                return button;
+            }
+
+            // Add to bank button
+            const buttonAddToBank = createActionButton('Add to Bank');
+            const buttonConsume = createActionButton('Consume');
+    
+            bankItem.append(buttonAddToBank);
+            consumeItem.append(buttonConsume);
+      
+            const createAmountInput = (defaultValue) => {
+                const input = document.createElement('input');
+                input.classList.add('amount-input');
+                input.setAttribute('type', 'number');
+                input.setAttribute('min', '1');
+                input.setAttribute('max', item.amount);
+                input.setAttribute('value', defaultValue);
+                return input;
+            }
+
+
+            // Amount inputs
+            bankItem.append('Amount:');
+            const bankAmount = createAmountInput(item.amount);
+            bankItem.append(bankAmount);
+
+            consumeItem.append('Amount:');
+            const consumeAmount = createAmountInput(1);
+            consumeItem.append(consumeAmount);
+
+            log("Adding context menu bank button click listener...");
+            buttonAddToBank.addEventListener('click', () => {
+                const amountToSend = bankAmount.value;
+                //log(`Adding ${amountToSend} of ${item.name} to Bank...`);
+                sendToBank(item, amountToSend, mouse,  menuElem, linkElem);
+            });
+       
+            log("Adding context menu consume button click listener...");
+            buttonConsume.addEventListener('click', () => {
+                const amountToConsume = consumeAmount.value;
+                //log(`Consuming ${amountToConsume} of ${item.name}...`);
+                consume(item, amountToSend, mouse,  menuElem, linkElem);
+            });
+
+            menuItems.append(bankItem);
+            menuItems.append(consumeItem);
+
+            menuElem.append(top);
+            menuElem.append(menuItems);
+
+
+            // Position menu at mouse position
+            const mouse = { x: e.pageX, y: e.pageY };
+            menuElem.style.left = `${mouse.x-60}px`;
+            menuElem.style.top = `${mouse.y-3}px`;   
+
+            document.body.append(menuElem);
+            settings.invContextMenu.isOpen = true;
+
+            // Remove menu when right-clicking on the menu
+            log("Adding context menu right-click listener...");
+            menuElem.addEventListener('contextmenu', e => {
+                e.preventDefault();
+                menuElem.remove();
+                settings.invContextMenu.isOpen = false;
+            }, { once: true });
+
+            // Remove menu when mouse leaves the menu
+            log("Adding context menu mouseleave listener...");
+            menuElem.addEventListener('mouseleave', e => {
+                e.preventDefault();
+                menuElem.remove();
+                settings.invContextMenu.isOpen = false;
+            }, { once: true });
+
+            // Remove  menu when clicking elsewhere,
+            // don't close menu if clicking inside the menu
+            log("Adding document click listener to close context menu...");
+            document.addEventListener('click', e => {
+                if (document.contains(menuElem) && !menuElem.contains(e.target)) {
+                    menuElem.remove();
+                    settings.invContextMenu.isOpen = false;
+                }
+            }, { once: true });
+
+
+
+            // POST url to deposit item to bank
+            // with item amount in form data amount: "224" 
+            // request cookies PHPSESSID	"567fbb9ef99a13ffa5889f95fbb4c362"
+            // toolbar cookie e9c8092265e0016efff70fa80f043938
+            // 	https://dragonrip.com/game/itemuse.php?go=2&ko=843
+
+            // same thing for Ruins bank:
+            // https://dragonrip.com/game/ruinsb.php?go=1&ko=229
+            
+        });
+    }
+
+
+
+    // Send item to bank function, used in inv context menu
+    const sendToBank = async (item, amountToSend, mouseCoords, menuElem, linkElem) => {
+        // Note: it seems making a GET request with no body (no payload)
+        // results in the game putting 1 item to the bank
+
+        const url = `https://dragonrip.com/game/itemuse.php?go=2&ko=${item.id}`;
+
+        await fetch(url, {
+            method: "POST",
+            body: `amount=${amountToSend}`,
+            headers: {
+              "Content-type": "application/x-www-form-urlencoded",
+              "Cookie": `PHPSESSID=${settings.sessionId}`,
+            }
+        })
+        .then((res) => {
+          return res.text();
+        })
+        .then((html) => {
+            const str = html;
+            if (str.indexOf("Not enough space in Bank!") > -1) {
+                log("No space in bank.");
+                floatText("NO BANK SPACE", "red", mouseCoords);
+            } else if (str.indexOf("Added to your bank.") > -1) {
+                floatText(`Added ${amountToSend} ${item.name} to Bank`, "lime", mouseCoords);
+
+                // Remove item from inventory if all items added
+                if (item.amount - amountToSend <= 0) {
+                    menuElem.remove();
+                    settings.invContextMenu.isOpen = false;
+                    linkElem.remove();
+                } else {
+                    // Update item amount in inventory
+                    const newAmount = item.amount - amountToSend;
+                    linkElem.querySelector('span.amouti').innerText = newAmount;
+                    menuElem.remove();
+                }
+            } else if (str.indexOf("You Don't Have THIS item!") > -1) {
+                floatText("You don't Have this item", "orange", mouseCoords);
+            } else if (str.indexOf("Incorrect amount!") > -1) {
+                floatText("Incorrect amount!", "orange", mouseCoords);
+            }
+        });
+    }
+
+    // Consume item (eat, drink, etc.)
+    const consume = async (item, amountToConsume, mouseCoords, menuElem, linkElem) => {
+        // https://dragonrip.com/game/eat.php?ko=399   // eat fish
+        // https://dragonrip.com/game/eat.php?ko=164   // eat meat
+        // https://dragonrip.com/game/drink.php?ko=479 // drink potion
+        // https://dragonrip.com/game/bmfood.php?go=1 // eat bm food ( eg. volcanic peppers, GET)
+
+        // to-do_ tähän jäin. Tehdään item type mappi, missä esim. kaikki kalat ja lihat, joiden tyyppi esim. "food". Potioneilla tyyppi potion.
+        // Tyypin mukaan context menussa näytetään eri rivejä, esim. kalalla ja lihalla "Eat", potionilla "Drink", bm-ruualla "use" tai jotain.
+        // Defaulttina kaikille näytetään "Add to bank"
+        // Kaloja ja lihoja ei kuitenkaan ole ihan niin paljoa, potioneitakaan ei.
+
+        const url = `https://dragonrip.com/game/itemuse.php?go=2&ko=${item.id}`;
+
+        await fetch(url, {
+            method: "POST",
+            body: `amount=${amountToSend}`,
+            headers: {
+              "Content-type": "application/x-www-form-urlencoded",
+              "Cookie": `PHPSESSID=${settings.sessionId}`,
+            }
+        })
+        .then((res) => {
+          return res.text();
+        })
+        .then((html) => {
+            const str = html;
+            if (str.indexOf("Not enough space in Bank!") > -1) {
+                log("No space in bank.");
+                floatText("NO BANK SPACE", "red", mouseCoords);
+            } else if (str.indexOf("Added to your bank.") > -1) {
+                floatText(`Added ${amountToSend} ${item.name} to Bank`, "lime", mouseCoords);
+
+                // Remove item from inventory if all items added
+                if (item.amount - amountToSend <= 0) {
+                    menuElem.remove();
+                    settings.invContextMenu.isOpen = false;
+                    linkElem.remove();
+                } else {
+                    // Update item amount in inventory
+                    const newAmount = item.amount - amountToSend;
+                    linkElem.querySelector('span.amouti').innerText = newAmount;
+                    menuElem.remove();
+                }
+            } else if (str.indexOf("You Don't Have THIS item!") > -1) {
+                floatText("You don't Have this item", "orange", mouseCoords);
+            } else if (str.indexOf("Incorrect amount!") > -1) {
+                floatText("Incorrect amount!", "orange", mouseCoords);
+            }
+        });
+    }
+
+
+    // Floating text at mouse (from context menu actions)
+    const floatText = (str, color, pos) => {
+        const elem = document.createElement('div');
+        elem.classList.add('custom-float-text');
+        elem.innerText = str;
+        elem.style.color = color;
+
+        document.body.append(elem);
+        const elemW = elem.offsetWidth;
+        // Position text at mouse position
+        elem.style.left = `${pos.x-elemW/2}px`;
+        elem.style.top = `${pos.y-30}px`;
+
+        elem.style.transform = 'translateY(-100px)';
+        elem.style.opacity = '0';     
+        setTimeout( () => {
+           
+        }, 10);
+
+        setTimeout( () => {
+            elem.remove();
+        }, 2010);
+    }
+
+    
+    const setStatBarObservers = () => {
+        const textElemHp = document.querySelector('.player > .bar > .healthbar:nth-child(1)  > .healthbar2 > .tekstasHealthbar');
+        const textElemStam = document.querySelector('.player > .bar > .healthbar:nth-child(3)  > .healthbar2 > .tekstasHealthbar');
+        const textElemXp = document.querySelector('.player > .bar > .healthbar:nth-child(5)  > .healthbar2 > .tekstasHealthbar');
+          //const targetNode = document.querySelector('.chat-message-list > div');
+
+        const config = { attributes: false, childList: false, subtree: false, characterData: true };
+
+        const callback = (mutationsList, observer) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'CharacterData') {
+                    log('stats bar text changed');
+                    changeMainBarTexts();
+                }
+            }
+        };
+
+        const observer = new MutationObserver(callback);
+        observer.observe(textElemHp, config);
+        observer.observe(textElemStam, config);
+        observer.observe(textElemXp, config);
+        log('stat bar observers set')
+    }
 
 
     const setCustomCss = str => {
@@ -1156,7 +1642,6 @@
         styleElem.textContent = str;
         document.body.appendChild(styleElem);
     }
-
 
 
     // Wait for game UI to load, then insert elements
@@ -1168,7 +1653,6 @@
 
                 if (settings.fancyBars) { 
                     setCustomCss(fancyBarsCss); 
-                    insertXpBarElems();
                     if (settings.animateXpBar) { setCustomCss(animatedXpBarCss); }
                 } 
 
@@ -1186,9 +1670,12 @@
                 // Change bar texts, even in combat when bars refresh
                 if (settings.customBarText) {
                     changeMainBarTexts();
-                    const changeBarTexts = setInterval( () => {
+                    //setStatBarObservers();
+                    
+
+                    setInterval( () => {
                         changeMainBarTexts();
-                    }, 25);
+                    }, 25); //25
                 }
 
                 // Add extra box to the right of UI
@@ -1196,33 +1683,51 @@
                     setCustomCss(extraBoxCss);
                     createExtraBox();
                 }
+
+                if (true) {
+                    setCustomCss(invContextMenuCss);
+                    invContextMenu();
+                }
             }
         }, 5);
     }
 
 
-    setCustomCss(mainCss);
-    setCustomCss(infoAreaCss); 
-    setCustomCss(serverTimeMainCss);
-    
-    if (settings.serverTime.fancyBox) { 
-        setCustomCss(serverTimeFancyBoxCss); 
-    } 
+    const setObserver = () => {
+        //const targetNode = document.querySelector('.chat-message-list > div');
+        const targetNode = document.querySelector('.burbul > .leftsidemdfk');
+        const config = { attributes: false, childList: true, subtree: false };
 
-    if (settings.removeGameLogo) { 
-        setCustomCss(removeGameLogoCss); 
-    } 
+        const callback = (mutationsList, observer) => {
+            for (const mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    //log('A child node has been added or removed (log replacer).');
+                    const nodes = mutation.addedNodes;
+              
+                    
+                }
+            }
+        };
 
-    if (settings.removeGameFooter) { 
-        setCustomCss(removeGameFooterCss); 
-    } 
+        const observer = new MutationObserver(callback);
+        observer.observe(targetNode, config);
+        log(`${logStamp}: set observer for chat .chat-message-list'`);
+    }
 
-    
+
+    const init = () => {
+        setCustomCss(mainCss);
+        setCustomCss(infoAreaCss); 
+        setCustomCss(serverTimeMainCss);
+        
+        if (settings.serverTime.fancyBox) { setCustomCss(serverTimeFancyBoxCss); } 
+        if (settings.removeGameLogo) { setCustomCss(removeGameLogoCss); } 
+        if (settings.removeGameFooter) { setCustomCss(removeGameFooterCss); } 
+
+        waitForUI();
+        log('Script loaded.');
+    }
 
 
-   
-
-    waitForUI();
-
-    //changeMainBarTexts();
+    init();
 })();
