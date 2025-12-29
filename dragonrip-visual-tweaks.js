@@ -1222,7 +1222,7 @@
                 label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> open', 
                 imageUrl: '/game/images/valhal/nidh.png' },
             ragnarok: { 
-                label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> open', 
+                label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> Ragnarok', 
                 imageUrl: '/game/images/valhal/nidh.png' },
             ace: { 
                 label: '<a href="/game/acer.php" class="red">[Ace]</a> appeared', 
