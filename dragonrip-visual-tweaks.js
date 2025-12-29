@@ -1222,8 +1222,8 @@
                 label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> open', 
                 imageUrl: '/game/images/valhal/nidh.png' },
             ace: { 
-                label: '<a href="/game/ace.php" class="red">[Ace]</a> appeared', 
-                imageUrl: '' },
+                label: '<a href="/game/acer.php" class="red">[Ace]</a> appeared', 
+                imageUrl: '/game/images/bossimages/ace.png' },
             blaze: { 
                 label: '<a href="/game/blaze.php" class="red">[Blaze]</a> appeared', 
                 imageUrl: '/game/images/bossimages/blaze.png' },
