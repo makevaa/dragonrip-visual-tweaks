@@ -1221,6 +1221,9 @@
             valhalla: { 
                 label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> open', 
                 imageUrl: '/game/images/valhal/nidh.png' },
+            ragnarok: { 
+                label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> open', 
+                imageUrl: '/game/images/valhal/nidh.png' },
             ace: { 
                 label: '<a href="/game/acer.php" class="red">[Ace]</a> appeared', 
                 imageUrl: '/game/images/bossimages/ace.png' },
@@ -1294,7 +1297,7 @@
             hell: "Gates of Hell are open!",
             valhallaSoon: "Portal to Valhalla will open in 10 minutes.",
             valhalla: "Event: Portal to Valhalla is open!",
-            valhalla: "Event: Great Battle of Ragnarok in Valhalla!",
+            ragnarok: "Event: Great Battle of Ragnarok in Valhalla!",
             ace: "Event: Ace appeared in the Arctic Ruins!",
             blaze: "Event: Blaze appeared in the Ashlands!",
             winter: "Snowman appeared in the Ice Plains.",
