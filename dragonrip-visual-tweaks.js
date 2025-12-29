@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.21
+// @version      1.0.22
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -18,7 +18,6 @@
         sessionId: '567fbb9ef99a13ffa5889f95fbb4c362', // PHPSESSID cookie value, needed for some fetch requests
         removeGameLogo: true, // Remove the large Dragonrip.com logo
         clearGameLogoHtml: true, // Remove all elements from game logo area, eg. <br> tags
-        addInfoBox: true, // Add info box to game logo box
         usernameToShow: 'paxu', // Username to show in infobox
         removeGameFooter: true, // Remove the vanilla footer from the end of page
 
@@ -26,7 +25,7 @@
         animateXpBar: false,
 
         customBarText: true, // Change HP, stam and xp bar labels to shorter ones
-        barLabels: { health: 'HP', stamina: 'SP', experience: 'XP' },
+        barLabels: { health: 'HP', stamina: 'ST', experience: 'XP' },
 
         serverTime: {
             label: "Server time:",
@@ -69,6 +68,9 @@
             enable: true,
             isOpen: false,
         },
+
+        eventAlerts: true,
+        keepCheckingEventAlerts: true,
     }
     
 
@@ -166,10 +168,10 @@
         }
 
         div.player {
-            height:68px;
-            display:flex;
+            height: 68px;
+            display: flex;
             justify-content: start;
-            align-items:start;
+            align-items: start;
             padding: 5px 5px 5px 0px;!important;
         }
 
@@ -177,31 +179,25 @@
             display:flex;
             justify-content: center;
             align-items: center;
-
             margin:0px!important;
             margin-left: 0px!important;
             padding-left: 0px!important;
             width: 15%!important;
-            min-width:60px;
+            min-width: 60px;
             aspect-ratio: 1/1;
             height: 100%!important;
-          
-
-     
-  
         }
 
         div.player > div.picture > a {
-            display:flex;
+            display: flex;
             justify-content: center;
             align-items: center;
             aspect-ratio: 1/1;
-            xwidth:100%;
-            height:100%;
+            xwidth: 100%;
+            height: 100%;
 
         }
        
-
         div.player > div.picture > a > div.kovsd {
             display:flex;
             flex-direction:column;
@@ -291,7 +287,6 @@
         }	
     `;
 
-    
 
     const fancyBarsCss = `
         
@@ -426,44 +421,43 @@
 
     const infoAreaCss = `
         body > div.logo {
-            display:flex;
-            flex-direction: column;
-            justify-content:space-between;
-            align-items:center;
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            align-items: center;
             padding: 2px 5px 2px 10px;
         }
 
         body > div.logo > .info {
-            xborder:1px solid lime;
-            width:100%;
-            height:50%;
-            text-align:left;
-            xpadding:5px;
-            font-size:0.8em;
-            font-family:consolas,monospace;
+            xborder: 1px solid lime;
+            border-right: 4px double rgba(68, 68, 68, 1);
+            width: 50%;
+            text-align: left;
+            xpadding: 5px;
+            font-size: 0.8em;
+            font-family: consolas,monospace;
             color: grey;
-            xtext-shadow: 
-                0px 0px 3px black,
-                0px 0px 3px black,
-                0px 0px 3px black,
-                0px 0px 3px black,
-                0px 0px 3px black,
-                0px 0px 3px black,
-                0px 0px 3px black
-            ;
         }	
 
         
-        body > div.logo > .info > .item{
-            display:flex;
-            xborder:1px solid grey;
+        body > div.logo > .info > .item {
+            xborder: 1px solid red;
+            display: flex;
+            align-items: center;
+            justify-content: start;
         }
 
         body > div.logo > .info > .item > .left {
-            xdisplay:flex;
-            width:35%;
-            text-align:right;
-            margin-right:10px;
+            xdisplay: flex;
+            width: 50%;
+            text-align: right;
+            margin-right: 5px;
+        }
+
+        body > div.logo > .info > .item.server-name > .name {
+            xcolor: #de6c09;
+            xcolor: #7a3c05;
+            xcolor: #6633ff;
         }
 
         body > div.logo > .info > .item.game-title > .title {
@@ -472,30 +466,100 @@
             xcolor: #6633ff;
         }
 
-        body > div.logo > .info > .item.game-title > .server {
-            xcolor:#7a3c05;
-            xmargin-left:10px;
-            color: #6633ff;
-            color:rgb(111, 111, 255);
-            xcolor: #7a3c05;
-            
-        }
-
         body > div.logo > .info > .item.user > .name {
             color: #6633ff;
-            color:rgb(111, 111, 255);
+            color: rgb(111, 111, 255);
+            color: #167676;
         } 
 
-
-
         body > div.logo > .info > .item.address {
-            xborder:1px solid grey;
-            text-wrap:no-wrap;
-            width:100%;
-            height:20px;
+            xborder: 1px solid grey;
+            text-wrap: no-wrap;
+            width: 100%;
+            height: 20px;
             xwhite-space: nowrap;
             overflow: hidden;
         }
+
+        body > div.logo > .events {
+            xborder: 1px solid cyan;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: start;
+            font-size: 0.8em;
+            font-family: consolas, monospace;
+            padding: 5px;
+        }
+
+        body > div.logo > .events > .no-events {
+            color: grey;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        body > div.logo > .events > .no-events:hover {
+            background-color: rgba(0, 255, 255, 0.2);
+        }
+
+        body > div.logo > .events > .no-events:active {
+            background-color: rgba(0, 255, 255, 0.1);
+        }
+
+        body > div.logo > .events > .no-events.hidden {
+            display: none;
+        }
+
+        body > div.logo > .events > .item {
+            xborder: 1px solid grey;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: start;
+            width: 100%;
+            height: 30%;
+            xpadding: 0px 5px 0px 5px;
+        }
+
+        body > div.logo > .events > .item.hidden {
+            display: none;
+    }
+
+        body > div.logo > .events > .item > .image {
+            height: 100%;
+            aspect-ratio: 1/1;
+            margin-right: 5px;
+        }
+
+        body > div.logo > .events > .item > .label {
+            text-align: left;
+            color: grey;
+        }
+
+        body > div.logo > .events > .item > .label > a:hover {
+            background-color: rgba(255, 0, 0, 0.2);
+        }
+
+        body > div.logo > .events > .item > .image  {
+            border-radius: 2px;
+            border: 1px solid #2e2e2eff;
+        }
+
+        body > div.logo > .events > .item > .label > a.red {
+            color: #ff4444;
+        }
+
+        body > div.logo > .events > .item > .label > a.cyan {
+            color: #00cae9;
+        }
+
+
     `;
 
     const serverTimeMainCss = `
@@ -503,25 +567,16 @@
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             box-sizing: border-box;
-            user-select:none;
+            user-select: none;
         }
 
         .dragonrip-server-time-cont {
-            display:flex;
-            flex-direction:row;
-            background-repeat:repeat;
-            background-size:contain;
-            xfont-family:consolas,monospace;
-            xcolor:grey;
-            xtext-shadow: 
-                0px 0px 3px black,
-                0px 0px 3px black,
-                0px 0px 3px black,
-                0px 0px 3px black,
-                0px 0px 3px black,
-                0px 0px 3px black,
-                0px 0px 3px black
-            ;
+            display: flex;
+            flex-direction: row;
+            background-repeat: repeat;
+            background-size: contain;
+            xfont-family: consolas,monospace;
+            xcolor: grey;
         }
 
         .dragonrip-server-time-cont > .label {
@@ -1044,6 +1099,40 @@
         elem.innerText = getTime();
     }
 
+    
+    const createGameTitle = () => {
+        const elem = document.createElement('div');
+        elem.classList.add('item');
+        elem.classList.add('game-title');
+
+        const gameTitle = document.createElement('div');
+        //gameTitle.classList.add('left');
+        gameTitle.classList.add('title');
+        gameTitle.innerText = 'DragonRip MMORPG';
+      
+        elem.append(gameTitle);
+        return elem;
+    }
+
+    const createServerName = () => {
+        const elem = document.createElement('div');
+        elem.classList.add('item');
+        elem.classList.add('server-name');
+
+        //const label = document.createElement('div');
+        //label.classList.add('label');
+        //label.classList.add('left');
+        //label.innerText = 'Server:';
+
+        const name = document.createElement('div');
+        name.classList.add('name');
+        name.innerHTML = `Main server`;
+
+        //elem.append(label);
+        elem.append(name);
+        return elem;
+    }
+
     const createUsernameLabel = () => {
         const elem = document.createElement('div');
         elem.classList.add('item');
@@ -1065,25 +1154,6 @@
         return elem;
     }
 
-     const createGameTitle = () => {
-        const elem = document.createElement('div');
-        elem.classList.add('item');
-        elem.classList.add('game-title');
-
-        const gameTitle = document.createElement('div');
-        gameTitle.classList.add('left');
-        gameTitle.classList.add('title');
-        gameTitle.innerText = 'www.dragonrip.com';
-      
-
-        const server = document.createElement('div');
-        server.classList.add('server');
-        //server.innerText = '[main server]';
-
-        elem.append(gameTitle);
-        elem.append(server);
-        return elem;
-     }
 
 
     const clearGameLogoHtml = () => {
@@ -1106,8 +1176,9 @@
         addressElem.innerText = address;
 
    
-        infoArea.append(createGameTitle());
-        infoArea.append(createClock());
+        infoArea.append( createGameTitle() );
+        infoArea.append( createServerName() );
+        infoArea.append( createClock() );
  
         if (settings.serverTime.keepRunning) {
             setInterval( () => {
@@ -1116,8 +1187,155 @@
         }
 
         infoArea.append(createUsernameLabel());
-        infoArea.append(addressElem);
+        //infoArea.append(addressElem);
         targetElem.append(infoArea);
+
+        const eventsArea = document.createElement('div');
+        eventsArea.classList.add('events');
+        targetElem.append(eventsArea);
+
+
+        if (settings.eventAlerts) {
+            insertEventAlerts();
+            checkEventAlerts();
+        } 
+       
+        if (settings.keepCheckingEventAlerts) {
+            setInterval( () => {
+                checkEventAlerts();
+            }, 10000);
+        }
+    }
+
+    const insertEventAlerts = () => {
+        const data = {
+            hellSoon: { 
+                label: 'Hell opening soon', 
+                imageUrl: '/game/images/hellgate/gate.png' },
+            valhallaSoon: { 
+                label: 'Valhalla soon', 
+                imageUrl: '/game/images/valhal/valport.png' },
+            hell: { 
+                label: '<a href="/game/hellgate.php" class="red">[Hell]</a> open', 
+                imageUrl: '' },
+            valhalla: { 
+                label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> open', 
+                imageUrl: '/game/images/valhal/nidh.png' },
+            ace: { 
+                label: '<a href="/game/ace.php" class="red">[Ace]</a> appeared', 
+                imageUrl: '' },
+            blaze: { 
+                label: '<a href="/game/blaze.php" class="red">[Blaze]</a> appeared', 
+                imageUrl: '/game/images/bossimages/blaze.png' },
+            winter: { 
+                label: '<a href="/game/snowman.php" class="red">[Snowman]</a> appeared', 
+                imageUrl: '/game/images/bossimages/snowman.png' },
+            spring: { 
+                label: '<a href="/game/spriggan.php" class="red">[Spriggan]</a> appeared', 
+                imageUrl: '/game/images/bossimages/snowman.png' },
+            summer: { 
+                label: '<a href="/game/quartzTitan.php" class="red">[Quartz Titan]</a> appeared', 
+                imageUrl: '/game/images/bossimages/snowman.png' 
+            },
+            halloween: { 
+                label: '<a href="/game/pumpkinKing.php" class="red">[Pumpking]</a> appeared', 
+                imageUrl: '/game/images/bossimages/snowman.png' },
+        }
+
+        const targetElem = document.querySelector('body > div.logo > .events');
+
+        const events = Object.getOwnPropertyNames(data);
+        
+        for (const eventName of events) {
+            const eventData = data[eventName];
+            const eventElem = createEventAlertItem(eventName, eventData.label, eventData.imageUrl);
+            targetElem.append(eventElem);
+        }
+
+        const noEventsElem = document.createElement('div');
+        noEventsElem.classList.add('hidden');
+        noEventsElem.classList.add('no-events');
+        noEventsElem.innerText = 'No active events';
+
+        noEventsElem.addEventListener('click', () => {
+            //log('Clicked "No active events" label.');
+            checkEventAlerts();
+        });
+
+        targetElem.append(noEventsElem);
+    }
+
+    const createEventAlertItem = (className, labelText, imageUrl) => {
+        const itemElem = document.createElement('div');
+        itemElem.classList.add('item');
+        itemElem.classList.add('hidden');
+        itemElem.classList.add(className);
+
+        const imageElem = document.createElement('img');
+        imageElem.classList.add('image');
+        imageElem.src = imageUrl;
+
+        const labelElem = document.createElement('div');
+        labelElem.classList.add('label');
+        labelElem.innerHTML = labelText;
+
+        itemElem.append(imageElem);
+        itemElem.append(labelElem);
+        return itemElem;
+    }
+
+    // Read messages from chat to check for event alerts
+    const checkEventAlerts = () => {
+        //log('Checking event alerts...');
+
+        // Event messages to look for in chat
+        const data = {
+            hellSoon: "Gates of Hell will open in 10 minutes.",
+            hell: "Gates of Hell are open! ",
+            valhallaSoon: "Portal to Valhalla will open in 10 minutes.",
+            valhalla: "Event: Portal to Valhalla is open!",
+            valhalla: "Event: Great Battle of Ragnarok in Valhalla!",
+            ace: "Event: Ace appeared in the Arctic Ruins!",
+            blaze: "Event: Blaze appeared in the Ashlands!",
+            winter: "Snowman appeared in the Ice Plains.",
+            spring: "",
+            summer: "",
+            halloween: ""
+        }
+
+        // Read all messages from chat
+        // If event is active, remove hidden class from alert event elem
+        const chatMessages = document.querySelectorAll('.chatting > .chatinto > .mesage');
+
+        let activeEvents = 0;
+
+        // Check each chat message for event keywords
+        for (const msgElem of chatMessages) {
+            const msgParts = msgElem.querySelectorAll('span');
+
+            for (const partElem of msgParts) {
+                const msgContent = partElem.innerText;
+
+                for (const eventName of Object.getOwnPropertyNames(data)) {
+                    if (data[eventName] === "") {
+                        continue;
+                    }
+                    if (msgContent.includes(data[eventName])) {
+                        const eventElem = document.querySelector(`body > div.logo > .events > .item.${eventName}`);
+                        eventElem.classList.remove('hidden');
+                        activeEvents++;
+                    }
+                }
+            }
+        }
+
+        // Show/hide "no events" message
+        const noEventsElem = document.querySelector('body > div.logo > .events > .no-events');
+        if (activeEvents === 0) {
+            noEventsElem.classList.remove('hidden');
+        } else {
+            noEventsElem.classList.add('hidden');
+        }
     }
 
     // Get current and max values from eg. "250/1500" string
@@ -1149,7 +1367,7 @@
     // Change labels of hp, stam and xp bar
     const changeMainBarTexts = () => {
         const labels = {
-            health: 'HP', stamina: 'SP', experience: 'XP'
+            health: 'HP', stamina: 'ST', experience: 'XP'
         }
 
         const textElemHp = document.querySelector('.player > .bar > .healthbar:nth-child(1)  > .healthbar2 > .tekstasHealthbar');
@@ -1658,10 +1876,10 @@
 
                 if (settings.clearGameLogoHtml) { clearGameLogoHtml(); }
                
-                if (settings.addInfoBox) {
-                    insertLogoAreaInfo();
-                    updateClock();
-                }
+                
+                insertLogoAreaInfo();
+                updateClock();
+                
 
                 if (settings.chatStyling) {
                     setChatStyles();
