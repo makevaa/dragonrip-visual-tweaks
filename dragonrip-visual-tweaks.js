@@ -1217,7 +1217,7 @@
                 imageUrl: '/game/images/valhal/valport.png' },
             hell: { 
                 label: '<a href="/game/hellgate.php" class="red">[Hell]</a> open', 
-                imageUrl: '' },
+                imageUrl: '/game/images/bossimages/crazdia.png' },
             valhalla: { 
                 label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> open', 
                 imageUrl: '/game/images/valhal/nidh.png' },
@@ -1291,7 +1291,7 @@
         // Event messages to look for in chat
         const data = {
             hellSoon: "Gates of Hell will open in 10 minutes.",
-            hell: "Gates of Hell are open! ",
+            hell: "Gates of Hell are open!",
             valhallaSoon: "Portal to Valhalla will open in 10 minutes.",
             valhalla: "Event: Portal to Valhalla is open!",
             valhalla: "Event: Great Battle of Ragnarok in Valhalla!",
