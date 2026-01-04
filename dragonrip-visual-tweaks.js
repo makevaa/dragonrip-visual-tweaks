@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.22
+// @version      1.0.23
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1219,13 +1219,20 @@
                 label: '<a href="/game/hellgate.php" class="red">[Hell]</a> open', 
                 imageUrl: '/game/images/bossimages/crazdia.png' },
             valhalla: { 
-                label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> open', 
+                label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> training', 
+                imageUrl: '/game/images/valhal/nidh.png' },
+            ragnarok: { 
+                label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> Ragnarok', 
                 imageUrl: '/game/images/valhal/nidh.png' },
             ragnarok: { 
                 label: '<a href="/game/valhal.php" class="cyan">[Valhalla]</a> Ragnarok', 
                 imageUrl: '/game/images/valhal/nidh.png' },
             ace: { 
+<<<<<<< HEAD
+                label: '<a href="/game/ace.php" class="red">[Ace]</a> appeared', 
+=======
                 label: '<a href="/game/acer.php" class="red">[Ace]</a> appeared', 
+>>>>>>> 63fd6d796e808d8fdc9614bb21b3ca99720f10cd
                 imageUrl: '/game/images/bossimages/ace.png' },
             blaze: { 
                 label: '<a href="/game/blaze.php" class="red">[Blaze]</a> appeared', 
@@ -1301,32 +1308,33 @@
             ace: "Event: Ace appeared in the Arctic Ruins!",
             blaze: "Event: Blaze appeared in the Ashlands!",
             winter: "Snowman appeared in the Ice Plains.",
-            spring: "",
-            summer: "",
-            halloween: ""
+            //spring: "",
+            //summer: "",
+            //halloween: ""
         }
 
-        // Read all messages from chat
-        // If event is active, remove hidden class from alert event elem
+        // Hide all event alerts first
+        const eventAlerts = document.querySelectorAll(`body > div.logo > .events > .item`);
+        for (const alert of eventAlerts) {
+            alert.classList.add('hidden');
+        }
+
+        // Read chat messages, show event alerts accordingly
+        let alertAmount = 0;
         const chatMessages = document.querySelectorAll('.chatting > .chatinto > .mesage');
 
-        let activeEvents = 0;
-
-        // Check each chat message for event keywords
-        for (const msgElem of chatMessages) {
+        msgLoop: for (const msgElem of chatMessages) {
             const msgParts = msgElem.querySelectorAll('span');
 
             for (const partElem of msgParts) {
-                const msgContent = partElem.innerText;
+                const partText = partElem.innerText;
 
                 for (const eventName of Object.getOwnPropertyNames(data)) {
-                    if (data[eventName] === "") {
-                        continue;
-                    }
-                    if (msgContent.includes(data[eventName])) {
+                    if (partText.includes(data[eventName])) {
                         const eventElem = document.querySelector(`body > div.logo > .events > .item.${eventName}`);
                         eventElem.classList.remove('hidden');
-                        activeEvents++;
+                        alertAmount++;
+                        continue msgLoop;
                     }
                 }
             }
@@ -1334,14 +1342,15 @@
 
         // Show/hide "no events" message
         const noEventsElem = document.querySelector('body > div.logo > .events > .no-events');
-        if (activeEvents === 0) {
+        if (alertAmount === 0) {
             noEventsElem.classList.remove('hidden');
         } else {
             noEventsElem.classList.add('hidden');
         }
     }
 
-    // Get current and max values from eg. "250/1500" string
+
+    // Get current and max values from eg. "250/1500" string, main stat bars
     const getBarValues = str => {
         str = str.trim();
         const values = str.split('/');
@@ -1932,7 +1941,7 @@
 
         const observer = new MutationObserver(callback);
         observer.observe(targetNode, config);
-        log(`${logStamp}: set observer for chat .chat-message-list'`);
+        log(`set observer for chat .chat-message-list'`);
     }
 
 
