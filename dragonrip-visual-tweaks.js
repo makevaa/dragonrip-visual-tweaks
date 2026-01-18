@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.23
+// @version      1.0.24
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -81,90 +81,157 @@
             box-sizing: border-box;
         }
 
-
-
         body, html {
             background:#262626 url('https://i.imgur.com/gnerbEH.jpeg')!important;
             background-image: url('https://i.imgur.com/gnerbEH.jpeg')!important;
-            background-size:auto!important;
-            background-repeat:repeat!important;
+            background-size: auto !important;
+            background-repeat: repeat !important;
         }
 
                 
         /* HP, Stamina, XP bars */
         .healthbar {
-            border-radius:0px!important;
-            border:none!important;
-            padding:0px!important;
+            border-radius: 0px !important;
+            border: none !important;
+            padding: 0px !important;
             --shadow-color: rgba(255, 255, 255, 0.5);
             xbox-shadow: 0px 0px 2px var(--shadow-color)!important;
             xfilter: drop-shadow(0px 0px 1px var(--shadow-color));
             xbackground-color: black;
-            display:flex;
-            align-items:center!important;
-            justify-content:start;
+            display: flex;
+            align-items: center !important;
+            justify-content: start;
             xbox-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2);
         }
         /* Filled interior of bar */
         .healthbar2 {
-            border-radius:0px!important;
-            border:none!important;
-            padding:0px!important;
-            height:100%!important;
+            border-radius: 0px! important;
+            border: none !important;
+            padding: 0px !important;
+            height: 100% !important;
         }
         /* Bar text label */
        .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar {
-
-            color:black!important;
-            border:none!important;
-            padding:0px!important;
-            display:flex;
-            align-items:center;
-            justify-content:start;
-            position:absolute;
-            height:100%;
+            color: black !important;
+            border: none !important;
+            padding: 0px !important;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            position: absolute;
+            height: 100%;
         }
 
        
         td > a:hover,
         td > a:hover div,
         .leftsidemdfk > a:hover div {
-            outline: 1px solid grey!important;
+            outline: 1px solid grey !important;
         }
 
-        /* inv. equipemnt etc tabs on right side of screen */
-        #pirki > tbody > tr > td {
-            xcursor:pointer;
+        /* Inventory, equipped items etc. tabs on right-side of screen */
+        .into > table:nth-child(1) > tbody > tr > td {
+            xborder: 1px solid lime;
+            cursor:pointer;
+            xoutline: none !important;
+            xborder: none !important;
+            box-shadow: none !important;
+
+            width: auto;
+            height: 40px !important;
+            padding: 0px !important;
+            xmargin: 0px !important;
+            xmargin-right: -5px !important;
+            background-color: rgba(0, 0, 0, 0);
+            
+
+            background-image: url('https://i.imgur.com/Rq1EfYg.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+
+            filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.9)) brightness(1);
+
+            touch-action: manipulation;
         }
-        #pirki > tbody > tr > td:hover {
-            xbackground-color: #0099ff!important;
+
+        .into > table:nth-child(1) > tbody > tr > td:hover {
+            xbackground-color: #0099ff !important;
+            filter: brightness(0.7);
         }
+
+        /* Icon image inside right-side menu tabs */
+        .into > table:nth-child(1) > tbody > tr > td > img {
+            filter: drop-shadow(2px 2px 0px black) drop-shadow(0px 0px 1px rgba(0, 0 , 0, 0.9));
+        }
+
+        /* Selected right-side menu tab */
+        .into > table:nth-child(1) > tbody > tr > td.inter {
+            xborder:1px solid red !important;
+            background-image: url('https://i.imgur.com/wQPBolf.png');
+	        filter: brightness(1.2);
+            xtransform: translateY(5px);
+        }
+
+        /* Icon image right-side menu tab */
+        .into > table:nth-child(1) > tbody > tr > td.inter > img  {
+            filter: 
+                sepia(1)
+                hue-rotate(-30deg)
+                saturate(4)
+                brightness(1.5)
+                drop-shadow(2px 2px 0px black)
+                drop-shadow(0px 0px 1px rgba(0, 0, 0, 1.0))
+                drop-shadow(0px 0px 5px rgba(255, 102, 0, 1.0))
+            ;
+        }
+
+        
 
         /* Change empty vial graphic to more visible icon */
-        div[style="background-image:url(/game/images/itemaa/weavialwat.png);"] {
-            background-image:url(https://i.imgur.com/mgV2Iyb.png)!important;
-            background-repeat:no-repeat;
-            background-position:center;
-            background-size:contain;
+        div[style="background-image: url(/game/images/itemaa/weavialwat.png);"] {
+            background-image: url(https://i.imgur.com/mgV2Iyb.png) !important;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
         }
+
+        /* Change sapphire images */
+        /*
+        div[style="background-image:url(/game/images/itemaa/xpsupshar.png);"] {
+            background-image: url(https://i.imgur.com/874LjcD.png) !important;
+            background-repeat: no-repeat;
+            background-position: center;
+            xbackground-size: contain;
+            border: 2px solid rgba(30, 30, 30, 1);
+            border-radius: 3px;
+        }
+        img[src="/game/images/itemaa/xpsupshar.png"] {
+            content: url(https://i.imgur.com/874LjcD.png) !important;
+            border: 2px solid rgba(30, 30, 30, 1);
+        }
+        */
+
+       
+      
 
         /* Custom main bar percent value, value and symbol */
         .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar > .bar-percent {
-            xcolor: grey!important;
-            display:inline-flex;
-            align-items:center;
-            justify-content:start;
-            margin-left:5px;
-            xborder-radius:100%;
-            xoutline:2px solid grey;
-            height:100%;
-            xaspect-ratio:1/1;
-            xbackground-color:rgba(0, 0, 0, 0.5);
+            xcolor: grey !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: start;
+            margin-left: 5px;
+            xborder-radius: 100%;
+            xoutline: 2px solid grey;
+            height: 100%;
+            xaspect-ratio: 1/1;
+            xbackground-color: rgba(0, 0, 0, 0.5);
         }
         /* Custom main bar percent symbol only*/
         .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar > .bar-percent > .symbol {
-            display:inline-block;
-            margin-left:2px;
+            display: inline-block;
+            margin-left: 2px;
         }
 
         div.player {
@@ -172,20 +239,20 @@
             display: flex;
             justify-content: start;
             align-items: start;
-            padding: 5px 5px 5px 0px;!important;
+            padding: 5px 5px 5px 0px; !important;
         }
 
         div.player > div.picture {
-            display:flex;
+            display: flex;
             justify-content: center;
             align-items: center;
-            margin:0px!important;
-            margin-left: 0px!important;
-            padding-left: 0px!important;
-            width: 15%!important;
+            margin: 0px !important;
+            margin-left: 0px !important;
+            padding-left: 0px !important;
+            width: 15% !important;
             min-width: 60px;
             aspect-ratio: 1/1;
-            height: 100%!important;
+            height: 100% !important;
         }
 
         div.player > div.picture > a {
@@ -199,21 +266,21 @@
         }
        
         div.player > div.picture > a > div.kovsd {
-            display:flex;
-            flex-direction:column;
+            display: flex;
+            flex-direction: column;
             justify-content: end;
-            background-size: cover!important;
+            background-size: cover !important;
             background-repeat: no-repeat;
             outline: 4px double rgba(255, 255, 255, 0.35)!important;
-            xborder-radius:100% 100% 0% 0%!important;
-            xborder-radius:0% 0% 100% 100%!important;
+            xborder-radius: 100% 100% 0% 0%!important;
+            xborder-radius: 0% 0% 100% 100%!important;
             border-radius: 100%;
             aspect-ratio: 1/1;
-            width: 90%!important;
-            height: 90%!important;
-            max-height: 90%!important;
-            min-height: 90%!important;
-            overflow:hidden!important;
+            width: 90% !important;
+            height: 90% !important;
+            max-height: 90% !important;
+            min-height: 90% !important;
+            overflow:hidden !important;
             box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8), 0px 0px 5px 5px rgba(0, 0, 0, 0.5), 5px 5px 5px 0px rgba(0, 0, 0, 0.5);
         }
 
@@ -227,21 +294,21 @@
         }
 
         div.player > div.picture > a > div.kovsd > span.amoutina {
-            display:flex;
-            align-items:center;
+            display: flex;
+            align-items: center;
             justify-content: center;
 
-            width:100%!important;
-            height:30%;
-            margin-top: 0px!important;
+            width: 100% !important;
+            height: 30%;
+            margin-top: 0px !important;
             xborder-top: 4px double grey;
 
             font-family: consolas,monospace;
-            xborder-radius: 0px 4px!important;
+            xborder-radius: 0px 4px !important;
             font-size: 0.8em;
            
-            color:rgb(111, 111, 255)!important;
-            color: #f5e9d8!important;
+            color: rgb(111, 111, 255) !important;
+            color: #f5e9d8 !important;
             text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
             background-color: rgba(0, 0, 0, 0.8);
         }
@@ -255,35 +322,36 @@
         }
 
         div.player > div.bar {
-            padding-top:0px!important;
-            xpadding:0px!important;
+            padding-top: 0px !important;
+            xpadding: 0px !important;
         }
 
         div.logo {
-            height:68px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         div.logo > br {
-            height:0px!important;
+            height: 0px !important;
         }
 
         div.logo > img {
-            height:80%;
+            height: 80%;
         }
+
     `;
 
     const removeGameLogoCss = `
         body > div.logo > img {
-            display:none;
+            display: none;
         }	
     `;
     
     const removeGameFooterCss = `
         body > .footer {
-            display:none;
+            display: none;
         }	
     `;
 
@@ -292,9 +360,9 @@
         
         /* Bar container */
         .player > .bar {
-            xborder:1px solid lime;
+            xborder: 1px solid lime;
             xoutline: 2px solid lime !important;
-            width:85%;
+            width: 85%;
         }
 
 
@@ -302,23 +370,23 @@
         .player > .bar > .healthbar {
             --border-color: rgba(40, 41, 44, 1);
             background-color: #1a1a1a;
-            background-color:rgba(0,0,0,0.2);
-            padding:0px!important;
-            background-color:black;
-            position:relative;
-            border:2px solid grey;
+            background-color: rgba(0,0,0,0.2);
+            padding: 0px !important;
+            background-color: black;
+            position: relative;
+            border: 2px solid grey;
 
             outline: 5px ridge var(--border-color)!important;
 
             box-shadow: inset 0px 0px 5px 5px rgba(255, 0, 0, 0.9)
-            xborder:none!important;
-            width:100%!important;
+            xborder: none !important;
+            width: 100% !important;
             
         }
 
         .player > .bar > .healthbar:nth-child(1), 
         .player > .bar > .healthbar:nth-child(3)  {
-            width:100%;
+            width: 100%;
         }
 
         .player > .bar > .healthbar:after{
@@ -333,8 +401,8 @@
 
         /* Filled, colored bar */
         .player > .bar > .healthbar > .healthbar2 {
-            position:absolute;
-            xwidth:100%!important;
+            position: absolute;
+            xwidth: 100% !important;
             background-position: 0% 0%;
             background-repeat: repeat;
             
@@ -342,38 +410,38 @@
 
         /* Health bar, colored inner bar */
         .player > .bar > .healthbar:nth-child(1) > .healthbar2 {
-            border-right:2px solid rgba(173, 55, 55, 0.9)!important;
+            border-right: 2px solid rgba(173, 55, 55, 0.9) !important;
         }
             
         /* Stamina bar, colored inner bar */
         .player > .bar > .healthbar:nth-child(3) > .healthbar2 {
-            border-right:2px solid rgba(78, 113, 255, 0.9)!important;
+            border-right: 2px solid rgba(78, 113, 255, 0.9) !important;
         }
 
         /* XP bar, colored inner bar */
         .player > .bar > .healthbar:nth-child(5) > .healthbar2 {
             xanimation: xpBarSlide 80s linear infinite;
             background-image: url('https://i.imgur.com/VeK3PfN.jpeg');
-            border-right:2px solid rgba(152, 78, 255, 0.9)!important;
+            border-right: 2px solid rgba(152, 78, 255, 0.9) !important;
             position:absolute;
         }
 
         /* Bar text */
         .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar {
             position:absolute;
-            color: #ffffff!important;
+            color: #ffffff !important;
           
-            padding-top:1px!important;
-            font-family:consolas,monospace;
-            font-size:1.1em;
+            padding-top: 1px !important;
+            font-family: consolas,monospace;
+            font-size: 1.1em;
             text-shadow: 
                 -1px 0px 0px black,
                 1px 0px 0px black,
                 0px -1px 0px black,
                 0px 1px 0px black
             ;
-            z-index:1;
-            xborder:1px solid lime!important;
+            z-index: 1;
+            xborder: 1px solid lime !important;
             width: 100% !important;
             min-width: 500px !important;
         } 
@@ -381,11 +449,11 @@
         .player > .bar > .healthbar > .healthbar2:after{
             content: '';
             position: absolute;
-            width:100%;
-            height:100%;
+            width: 100%;
+            height: 100%;
             background-color: rgb(0, 55, 103);
-            opacity:0.9;
-            filter:saturate(5);
+            opacity: 0.9;
+            filter: saturate(5);
 
                   
         }
@@ -413,7 +481,7 @@
                 background-position: 0% 0%;
             }
             100% {
-                background-position: 0% -300px; /*  */
+                background-position: 0% -300px;
                 xbackground-position: -500px 0%; 
             }
         }
@@ -559,6 +627,10 @@
             color: #00cae9;
         }
 
+        body > div.logo > .events > .item > .label > .frenzy {
+            color: #5019ce;
+        }
+
 
     `;
 
@@ -575,12 +647,12 @@
             flex-direction: row;
             background-repeat: repeat;
             background-size: contain;
-            xfont-family: consolas,monospace;
+            xfont-family: consolas, monospace;
             xcolor: grey;
         }
 
         .dragonrip-server-time-cont > .label {
-            xmargin-right:10px;
+            xmargin-right: 10px;
         }
 
         .dragonrip-server-time-cont > .time {
@@ -590,16 +662,16 @@
         }
 
         body > .logo {
-            position:relative;
+            position: relative;
         }
     `;
 
     const serverTimeFancyBoxCss = `    
         .dragonrip-server-time-cont {
-            border:2px solid rgba(255,255,255,0.15);
-            box-shadow:0px 0px 5px 5px rgba(0, 0, 0, 0.8);
+            border: 2px solid rgba(255,255,255,0.15);
+            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.8);
             background-image: url('https://i.imgur.com/vjJ8ugC.jpeg');
-            background-size:cover;
+            background-size: cover;
         }
     `;
 
@@ -607,7 +679,7 @@
         .extra-box {
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 2px;
-            box-shadow:5px 5px 5px 0px rgba(0, 0, 0, 0.8);
+            box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.8);
             background: url('/img/mc/center.jpg');
             background-position: center center;
             background-repeat: repeat;
@@ -617,12 +689,12 @@
             xbackground-repeat: no-repeat;
             xbackground-size: cover;
 
-            min-height:100vh;
+            min-height: 100vh;
             xoverflow-y: scroll;
             scrollbar-width: thin;
-            position:absolute;
-            top:0;
-            right:0;
+            position: absolute;
+            top: 0;
+            right: 0;
             margin: 5px 20px 0px 20px;
             padding: 10px 5px 10px 5px;
 
@@ -654,7 +726,7 @@
 
             xbackground-color: rgba(21, 21, 21, 1);
             xbackground-image: url('https://i.imgur.com/vjJ8ugC.jpeg');
-            background-size:contain;
+            background-size: contain;
         }
 
         .extra-box > .box > .top {
@@ -839,7 +911,7 @@
             box-sizing: border-box;
             xborder: 1px solid lime !important;
             cursor: pointer;
-            font-family:  consolas, monospace !important;
+            font-family: consolas, monospace !important;
             xcolor: white !important;
             xfont-size: 1.1em !important;
             xfont-weight: 800;
@@ -1055,6 +1127,11 @@
         console.log(`[Dragonrip Visual Tweaks]: ${str}`);
     }
 
+    
+    const exists = elem => {
+        return (elem !== undefined && elem !== null) ? true : false;
+    }
+
     const getTime = () => {
         let options = {
             timeZone: 'UTC',
@@ -1245,7 +1322,21 @@
             },
             halloween: { 
                 label: '<a href="/game/pumpkinKing.php" class="red">[Pumpking]</a> appeared', 
-                imageUrl: '/game/images/bossimages/snowman.png' },
+                imageUrl: '/game/images/bossimages/snowman.png' 
+            },
+            explorationDone: {
+                label: 'Pet exploration done', 
+                imageUrl: '/game/images/bigicons/explo.png' 
+            },
+            trainingDone: {
+                label: 'Pet training done', 
+                imageUrl: '/game/images/bigicons/petb.png' 
+            },
+            frenzy: {
+                label: 'Frenzy', 
+                imageUrl: '/game/images/summo/dark.png' 
+            },
+            
         }
 
         const targetElem = document.querySelector('body > div.logo > .events');
@@ -1261,7 +1352,7 @@
         const noEventsElem = document.createElement('div');
         noEventsElem.classList.add('hidden');
         noEventsElem.classList.add('no-events');
-        noEventsElem.innerText = 'No active events';
+        noEventsElem.innerText = 'No alerts';
 
         noEventsElem.addEventListener('click', () => {
             //log('Clicked "No active events" label.');
@@ -1306,7 +1397,10 @@
             winter: "Snowman appeared in the Ice Plains.",
             //spring: "",
             //summer: "",
-            //halloween: ""
+            //halloween: "",
+            //frenzy: " of Frenzy.",
+            frenzy: "Diabolos took a soul of Titan to revive one of his generals...", //debug testing
+        
         }
 
         // Hide all event alerts first
@@ -1327,15 +1421,49 @@
 
                 for (const eventName of Object.getOwnPropertyNames(data)) {
                     if (partText.includes(data[eventName])) {
-                        const eventElem = document.querySelector(`body > div.logo > .events > .item.${eventName}`);
-                        eventElem.classList.remove('hidden');
-                        alertAmount++;
-                        continue msgLoop;
+
+                        if (eventName === 'frenzy') {
+                            // Check if frenzy is over or active based on timestamp and message content
+                            const frenzyData = getFrenzyData(msgParts);
+                            if (!frenzyData.hasEnded) {
+                                const frenzyAlert = document.querySelector(`body > div.logo > .events > .item.frenzy`);
+                                frenzyAlert.classList.remove('hidden');
+                                const frenzyLabel = frenzyAlert.querySelector('.label');
+                                frenzyLabel.innerHTML = `<span class='frenzy'>Frenzy</span> ${frenzyData.timeLeftLong}`; //timeLeft / timeLeftLong
+
+                                alertAmount++;
+                                continue msgLoop;
+                            }
+                        } else {
+                            const eventElem = document.querySelector(`body > div.logo > .events > .item.${eventName}`);
+                            eventElem.classList.remove('hidden');
+                            alertAmount++;
+                            continue msgLoop;
+                        }
+                        
                     }
                 }
             }
         }
 
+     
+
+
+        // Check for pet Exploration done and pet Training done messages from game elements
+        const petStatus = checkPetStatus();
+
+        if (petStatus.explorationDone) {
+            const alertItem = document.querySelector(`body > div.logo > .events > .item.explorationDone`);
+            alertItem.classList.remove('hidden');
+            alertAmount++;
+        }
+
+        if (petStatus.trainingDone) {
+            const alertItem = document.querySelector(`body > div.logo > .events > .item.trainingDone`);
+            alertItem.classList.remove('hidden');
+            alertAmount++;
+        }
+       
         // Show/hide "no events" message
         const noEventsElem = document.querySelector('body > div.logo > .events > .no-events');
         if (alertAmount === 0) {
@@ -1343,6 +1471,180 @@
         } else {
             noEventsElem.classList.add('hidden');
         }
+    }
+
+
+    // Get data from Frenzy announcement message (time started, duration, ended, etc.)
+    const getFrenzyData = msgParts => {
+        //01:37:06] Global: Portal to Valhalla has closed. World tree Yggdrasil manages to trap Nidhogg with his divine roots releasing Celestial Aura in The Realm of Dragonrip for 15 minutes.
+        // [01:40:08] Global: Gates of Hell closed. A Diabolic Aura has engulfed The Realm of Dragonrip for 15 minutes.
+        // [01:31:42] Global: Phartacuss killed Blaze and released 30 minutes of Frenzy.
+        const timeOptions = {
+            timeZone: 'UTC', hour: 'numeric',  minute: 'numeric', second: 'numeric', hour12: false,
+        }
+        
+        let currentTimeDate  = new Date (Date.now()); 
+        //console.log(currentTime)
+        let currentTime = new Intl.DateTimeFormat([], timeOptions).format(currentTimeDate);
+        currentTime = currentTimeDate;
+        console.log(currentTime.valueOf())
+        
+        // Get date object from the timestamp string
+        let timestamp = msgParts[0].innerText.trim();
+        timestamp = timestamp.replace('[', '');
+        timestamp = timestamp.replace(']', '');
+        const timestampArr = timestamp.split(':');
+
+        //new Date(year, monthIndex, day, hours, minutes, seconds)
+        //console.log([currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), timestampArr[0], timestampArr[1], timestampArr[2]])
+
+        let frenzyStart;
+        frenzyStart = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), timestampArr[0], timestampArr[1], timestampArr[2])
+        //frenzyStart = timestampArr[0]*60*60*1000 + 
+        
+  
+        // Check if frenzy started yesterday, eg. at 23:50:00 and now it's 00:10:00
+        if (currentTime.valueOf() < frenzyStart.valueOf()) {
+            // Decrement 24 hours from frenzyStart date
+            log('Decrementing 24 hours from frenzy time.')
+            frenzyStart = new Date(frenzyStart.valueOf() - 24*60*60*1000);
+        }
+        
+
+
+        let durationStr = msgParts[2].innerText;
+        durationStr = msgParts[2].innerText + " and released 1 hour 60 minutes of Frenzy."; // for testing
+        // Remove everything from the string before "released"
+        durationStr = durationStr.substring(durationStr.indexOf('released'), durationStr.length-1);
+        console.log(durationStr)
+
+        let frenzyDurationH = 0;
+        let frenzyDurationM = 0;
+
+        // Get frenzy duration hours from the string
+        if (durationStr.indexOf('hour') > 0) {
+            const startIndex = durationStr.indexOf('hour')-4;
+            const endIndex = durationStr.indexOf('hour');
+            let hours = durationStr.substring(startIndex, endIndex).trim();
+            hours = hours.replace(/\D/g, ""); // remove non-numeric characters
+            frenzyDurationH = hours;
+        }
+
+        // Get frenzy duration minutes from the string
+        if (durationStr.indexOf('minutes') > 0) {
+            const startIndex = durationStr.indexOf('minutes')-4;
+            const endIndex = durationStr.indexOf('minutes');
+            let minutes = durationStr.substring(startIndex, endIndex).trim();
+            minutes = minutes.replace(/\D/g, ""); // remove non-numeric characters
+            frenzyDurationM = minutes;
+        }
+
+      
+
+        log(`frenzyDurationH: ${frenzyDurationH}, frenzyDurationM: ${frenzyDurationM}`)
+
+        const frenzyDurationMs = (frenzyDurationH*60*60*1000) + (frenzyDurationM*60*1000);
+        console.log(frenzyDurationMs)
+
+        //console.log(`new Date(frenzyDurationMs).toISOString: ${new Date(frenzyDurationMs).toISOString()}`);
+        console.log(`frenzyStart.toString: ${frenzyStart.toString()}`);
+        //to-do: Frenzy start näyttää 2h liian pienen kellon ajan jostain syystä.
+        //console.log(frenzyStart);
+
+        const frenzyEnd = frenzyStart.valueOf() + frenzyDurationMs;
+        console.log(`frenzyEnd: ${frenzyEnd}`)
+        console.log(`new Date(frenzyEnd).toString: ${new Date(frenzyEnd).toString()}`);
+
+        console.log(`currentTime.valueOf(): ${currentTime.valueOf()}`);
+        console.log(`currentTime.toString: ${currentTime.toString()}`);
+        //console.log(`currentTime.toDateString: ${currentTime.toDateString()}`);
+        //console.log(`currentTime.toISOString: ${currentTime.toISOString()}`);
+
+        console.log(`typeof frenzyEnd: ${typeof frenzyEnd}, typeof currentTime: ${typeof currentTime.valueOf()}`);
+
+        //console.log()
+
+        if (frenzyEnd - currentTime >= 0) {
+            log('frenzyTimeLeftMs is positive.')
+        } else {
+            log('frenzyTimeLeftMs is negative, frenzy has ended.')
+        }
+
+        const frenzyTimeLeftMs =  frenzyEnd - currentTime.valueOf();
+        console.log(frenzyTimeLeftMs)
+
+        //console.log(currentTime.toISOString())
+
+
+        const data = {
+            hasEnded: true,
+            timeLeft: '00:00:00',
+            timeLeftLong: '0h 0min 0s',
+            hoursLeft: 0,
+            minutesLeft: 0,
+            secondsLeft: 0,
+
+        }
+
+        if (frenzyTimeLeftMs > 0) {
+            const frenzyTimeLeftDate = new Date(frenzyTimeLeftMs);
+        
+            let timeLeftStr = new Intl.DateTimeFormat([], timeOptions).format(frenzyTimeLeftDate);
+            timeLeftStr = `${timeLeftStr.replaceAll('.', ':')}`;
+
+            data.hasEnded = false;
+            data.timeLeft = timeLeftStr;
+
+            const h = frenzyTimeLeftDate.getHours();
+            const m = frenzyTimeLeftDate.getMinutes();
+            const s = frenzyTimeLeftDate.getSeconds();
+            data.hoursLeft = h;
+            data.minutesLeft = m;
+            data.secondsLeft = s;
+
+            let timeLeftStrLong = '';
+            if (h > 0) {
+                timeLeftStrLong = `${h}h ${m}min ${s}s`;
+            } else {
+                timeLeftStrLong = `${m}min ${s}s`;
+            }
+
+            data.timeLeftLong = timeLeftStrLong;
+        }
+
+  
+        console.log(data)
+        return data;
+    }
+   
+
+
+    // Check vanilla game elements for pet exploration or training message
+    const checkPetStatus = () => {
+        let explorationDone = false;
+        let trainingDone = false;
+
+        // Look for "Finished exploration" text
+        const finishExploElem = document.querySelector('.burbul > table:nth-child(4) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(2) > i:nth-child(1)');                        
+        if ( exists(finishExploElem) ) {
+            if (finishExploElem.innerText === "Your Pet finished Exploring") {
+                explorationDone = true;
+            }
+        }
+
+        // Look for "Training finished" text
+        const finishTrainingElem = document.querySelector('.burbul > table:nth-child(5) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > span:nth-child(2) > i:nth-child(1)');
+        if ( exists(finishTrainingElem) ) {
+            if (finishTrainingElem.innerText === "Your Pet finished Training.") {
+                trainingDone = true;
+            }
+        }
+
+        const data = {
+            explorationDone: explorationDone,
+            trainingDone: trainingDone
+        }
+        return data;
     }
 
 
@@ -1837,7 +2139,38 @@
         }, 2010);
     }
 
-    
+    // Remove various <br> elements from vanilla game elements
+    const removeBrElements = targetAreaStr => {
+        // Right side is the inventory, equipped items etc. area
+        if (targetAreaStr === 'rightSide') {
+            // Remove br-elements from right-side menus
+            const target = document.querySelector('body > .into > .burbul');
+            if ( exists(target) ) {
+                for (const elem of target.children) {
+                    if (elem.localName === 'br') {
+                        elem.remove();
+                    }
+                }
+            }
+        }
+        // Left side is the main play area
+        if (targetAreaStr === 'leftSide') {
+            // Remove br-elements from left-side play area
+            const target = document.querySelector('body > .veik');
+            if ( exists(target) ) {
+                console.log(target);
+                for (const elem of target.children) {
+                    console.log(elem)
+                    if (elem.localName === 'br') {
+                        elem.remove();
+                    }
+                }
+            }
+        }
+
+    }
+
+
     const setStatBarObservers = () => {
         const textElemHp = document.querySelector('.player > .bar > .healthbar:nth-child(1)  > .healthbar2 > .tekstasHealthbar');
         const textElemStam = document.querySelector('.player > .bar > .healthbar:nth-child(3)  > .healthbar2 > .tekstasHealthbar');
@@ -1869,6 +2202,45 @@
         document.body.appendChild(styleElem);
     }
 
+    
+    const setObservers = () => {
+        // Observe when right-side menu tabs are navigated
+        const rightSide = document.querySelector('body > .into > .burbul');
+        if ( exists(rightSide) ) {
+            const callback = (mutationsList, observer) => {
+                for (const mutation of mutationsList) {
+                    if (mutation.type === 'childList') {
+                        removeBrElements('rightSide');
+                    }
+                }
+            }
+            const config = { attributes: false, childList: true, subtree: false };
+            new MutationObserver(callback).observe(rightSide, config);
+        }
+
+        /*
+        // Observe left-side play area changes
+        const leftSide = document.querySelector('body > .into > .burbul');
+        if ( exists(leftSide) ) {
+            log('(setObservers func) setting leftSide observer.');
+            const callback = (mutationsList, observer) => {
+                for (const mutation of mutationsList) {
+                    log(mutationsList)
+                    if (mutation.type === 'childList') {
+                        log('(setObservers func) leftSide childList changed.');
+                        removeBrElements('leftSide');
+                    }
+                }
+            }
+            const config = { attributes: false, childList: true, subtree: false };
+            new MutationObserver(callback).observe(leftSide, config);
+        }
+        */
+
+        
+   
+    }
+
 
     // Wait for game UI to load, then insert elements
     const waitForUI = () => {
@@ -1877,16 +2249,22 @@
 
                 clearInterval(checkElem); 
 
+                removeBrElements('rightSide');
+                //removeBrElements('leftSide');
+
                 if (settings.fancyBars) { 
                     setCustomCss(fancyBarsCss); 
                     if (settings.animateXpBar) { setCustomCss(animatedXpBarCss); }
                 } 
 
                 if (settings.clearGameLogoHtml) { clearGameLogoHtml(); }
-               
+                
+         
                 
                 insertLogoAreaInfo();
                 updateClock();
+
+        
                 
 
                 if (settings.chatStyling) {
@@ -1914,31 +2292,13 @@
                     setCustomCss(invContextMenuCss);
                     invContextMenu();
                 }
+
+                setObservers();
             }
         }, 5);
     }
 
 
-    const setObserver = () => {
-        //const targetNode = document.querySelector('.chat-message-list > div');
-        const targetNode = document.querySelector('.burbul > .leftsidemdfk');
-        const config = { attributes: false, childList: true, subtree: false };
-
-        const callback = (mutationsList, observer) => {
-            for (const mutation of mutationsList) {
-                if (mutation.type === 'childList') {
-                    //log('A child node has been added or removed (log replacer).');
-                    const nodes = mutation.addedNodes;
-              
-                    
-                }
-            }
-        };
-
-        const observer = new MutationObserver(callback);
-        observer.observe(targetNode, config);
-        log(`set observer for chat .chat-message-list'`);
-    }
 
 
     const init = () => {
