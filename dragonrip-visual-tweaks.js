@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.24
+// @version      1.0.25
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -2195,6 +2195,15 @@
         log('stat bar observers set')
     }
 
+    const insertCustomFavicon = () => {
+         // <link rel="icon" type="image/png" href="/favicon.png">
+        const elem = document.createElement('link');
+        elem.setAttribute('rel', 'icon');
+        elem.setAttribute('type', 'image/jpg');
+        elem.setAttribute('href', 'https://i.imgur.com/SEpEK0O.jpg');
+        document.head.appendChild(elem);
+    }
+
 
     const setCustomCss = str => {
         const styleElem = document.createElement("style");
@@ -2263,7 +2272,7 @@
                 
                 insertLogoAreaInfo();
                 updateClock();
-
+                
         
                 
 
@@ -2293,6 +2302,7 @@
                     invContextMenu();
                 }
 
+
                 setObservers();
             }
         }, 5);
@@ -2302,6 +2312,7 @@
 
 
     const init = () => {
+        insertCustomFavicon();
         setCustomCss(mainCss);
         setCustomCss(infoAreaCss); 
         setCustomCss(serverTimeMainCss);
