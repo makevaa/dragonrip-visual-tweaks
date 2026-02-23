@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.25
+// @version      1.0.26
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -474,14 +474,15 @@
 
     const animatedXpBarCss = `
         .player > .bar > .healthbar:nth-child(5) > .healthbar2 {
-            animation: xpBarSlide 80s linear infinite;
+            animation: xpBarSlide 100s linear infinite;
+        }
 
-            @keyframes xpBarSlide { 
+        @keyframes xpBarSlide { 
             0% {
                 background-position: 0% 0%;
             }
             100% {
-                background-position: 0% -300px;
+                background-position: 0% 100%;
                 xbackground-position: -500px 0%; 
             }
         }
