@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.26
+// @version      1.0.27
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1315,12 +1315,13 @@
                 label: '<a href="/game/snowman.php" class="red">[Snowman]</a> appeared', 
                 imageUrl: '/game/images/bossimages/snowman.png' },
             spring: { 
-                label: '<a href="/game/spriggan.php" class="red">[Spriggan]</a> appeared', 
-                imageUrl: '/game/images/bossimages/snowman.png' },
+                label: '<a href="/game/tret.php" class="red">[Treant Elder]</a> event', 
+                imageUrl: '/game/images/bossimages/tret.png' },
             summer: { 
                 label: '<a href="/game/quartzTitan.php" class="red">[Quartz Titan]</a> appeared', 
                 imageUrl: '/game/images/bossimages/snowman.png' 
             },
+          
             halloween: { 
                 label: '<a href="/game/pumpkinKing.php" class="red">[Pumpking]</a> appeared', 
                 imageUrl: '/game/images/bossimages/snowman.png' 
@@ -1385,6 +1386,7 @@
     // Read messages from chat to check for event alerts
     const checkEventAlerts = () => {
         //log('Checking event alerts...');
+        //Event: Treant Elder appeared in the Reaper's Garden. [Reaper's Garden]
 
         // Event messages to look for in chat
         const data = {
@@ -1396,7 +1398,8 @@
             ace: "Event: Ace appeared in the Arctic Ruins!",
             blaze: "Event: Blaze appeared in the Ashlands!",
             winter: "Snowman appeared in the Ice Plains.",
-            //spring: "",
+            spring: "Event: Treant Elder appeared in the Reaper's Garden.",
+            
             //summer: "",
             //halloween: "",
             //frenzy: " of Frenzy.",
