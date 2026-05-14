@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.27
+// @version      1.0.28
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -82,8 +82,8 @@
         }
 
         body, html {
-            background:#262626 url('https://i.imgur.com/gnerbEH.jpeg')!important;
-            background-image: url('https://i.imgur.com/gnerbEH.jpeg')!important;
+            xbackground:#262626 url('https://i.imgur.com/gnerbEH.jpeg')!important;
+            xbackground-image: url('https://i.imgur.com/gnerbEH.jpeg')!important;
             background-size: auto !important;
             background-repeat: repeat !important;
         }
@@ -178,7 +178,7 @@
             filter: 
                 sepia(1)
                 hue-rotate(-30deg)
-                saturate(4)
+                saturate(3)
                 brightness(1.5)
                 drop-shadow(2px 2px 0px black)
                 drop-shadow(0px 0px 1px rgba(0, 0, 0, 1.0))
@@ -988,6 +988,8 @@
             box-sizing: border-box; 
             position: absolute;
             z-index: 1000;
+            min-width: 225px;
+            xmin-height: 100px;
             background-color: rgba(21, 21, 21, 0.95);
             border: 1px solid grey;
             box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.8);
@@ -996,9 +998,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: start;
-            sfont-family: consolas, monospace;
             user-select: none;
             padding: 5px 0px 5px 0px;
+
+         
         }
 
         .inv-context-menu * {
@@ -1088,12 +1091,32 @@
             background-color: rgba(0, 0, 0, 0.8);
             border: 1px solid grey;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+        }
+
+        .inv-context-menu > .menu-items > .menu-item > .button > .icon-cont {
+            xborder: 1px solid lime;
+            width: 20px;
+            height: 20px;
+        }
+
+        .inv-context-menu > .menu-items > .menu-item > .button > .icon-cont > img.icon {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0px 0px 2px lime) drop-shadow(0px 0px 3px rgba(0, 0 , 0, 0.0));
+        }
+
+        .inv-context-menu > .menu-items > .menu-item > .button > .label {
+            xborder: 1px solid lime;
+            flex: 1;
         }
 
 
 
         .inv-context-menu > .menu-items > .menu-item > .button:hover {
-            background-color: rgba(100, 100, 100, 0.2);
+            background-color: rgb(37, 37, 37);
         }
 
         .inv-context-menu > .menu-items > .menu-item > .button:active {
@@ -1126,6 +1149,10 @@
 
     const log = str => {
         console.log(`[Dragonrip Visual Tweaks]: ${str}`);
+    }
+
+    const logObj = obj => {
+        console.log(obj);
     }
 
     
@@ -1714,9 +1741,7 @@
         const elem = document.createElement('div');
         elem.classList.add('extra-box');
 
-
         // Calculate box width ciewport width from footer and viewport width
-
         const footer = document.querySelector('body > .chatting');
         const footerW = footer.clientWidth;
   
@@ -1725,19 +1750,12 @@
         let boxW = 1-(Number(footerW)/Number(viewportW));
         boxW = Math.floor((boxW*100))
         boxW = `${boxW-3}%`
-       
-        
         elem.style.width = boxW;
 
-
         // Create extra box contents
-
         const boxNames = Object.getOwnPropertyNames(settings.extraBoxContents);
 
         for (const boxName of boxNames) {
-
-            //const title = boxName;
-
             const boxElem = document.createElement('div');
             boxElem.classList.add('box');
 
@@ -1764,7 +1782,7 @@
 
             });
 
-            top.append(hideButton);
+            //top.append(hideButton);
 
             boxElem.append(top);
 
@@ -1834,20 +1852,64 @@
         }
     }
 
+    // Get info on possible item actions (can bank, can ruins bank, drink, eat, consume, use etc.)
+    const getItemActions = async (itemId) => {
+        const actions = {
+            bank: false,
+            ruins: false,
+            eat: false,
+            drink: false, // Normal potions
+            drinkSpec: false, // eg. Stamina potion, can only drink 1 at a time
+        }
+        const url = `https://dragonrip.com/game/itemuse.php?ko=${itemId}`;
+        await fetch(url, {
+            method: "GET",
+            headers: {
+              "Content-type": "application/x-www-form-urlencoded",
+              "Cookie": `PHPSESSID=${settings.sessionId}`,
+            }
+        })
+        .then((res) => {
+          return res.text();
+        })
+        .then((html) => {
+            const str = html;
+            log(str)
+            if (str.indexOf("Add it to your bank") > -1) {
+                actions.bank = true;
+            }
+            if (str.indexOf("Add it to your Ruins bank") > -1) {
+                actions.ruins = true;
+            } 
+            if (str.indexOf('<input type="submit" value="Eat">') > -1) {
+                actions.eat = true;
+            }
+            if (str.indexOf('type="submit" value="Drink">') > -1) {
+                actions.drink = true;
+            }
+            if (str.indexOf('Drink</a>') > -1 || str.indexOf('Drink</span>') > -1) {
+                actions.drinkSpec = true;
+            }
+        });
+
+        //logObj(actions);
+        return actions;
+    }
 
     // Right-click item in inventory --> opens small context menu with item name,
     // and options to send whole stack to bank or ruins bank.
-    const invContextMenu = () => {
-        const invArea = document.querySelector('.burbul > .leftsidemdfk');
+    const invContextMenu =  async () => {
+        const invArea = document.querySelector('.burbul');
         if (invArea === null) {
             setTimeout( () => {
                 invContextMenu();
             }, 1000);
             return;
         }
-        
-        log("Adding inv area contextmenu listener...");
-        invArea.addEventListener('contextmenu', e => {
+
+      
+        //log("Adding inv area contextmenu listener...");
+        invArea.addEventListener('contextmenu', async e => {
             e.preventDefault();
 
             if (settings.invContextMenu.isOpen) {
@@ -1882,6 +1944,11 @@
                 amount: itemAmount,
             }
 
+
+  
+            //item.actions = actions;
+            //logObj(actions);
+
             // Create context menu element
             const menuElem = document.createElement('div');
             menuElem.classList.add('inv-context-menu');
@@ -1905,32 +1972,101 @@
             top.append(itemImage);
             top.append(itemName);
             top.append(amountOwned);
+            menuElem.append(top);
 
             // Menu items area
             const menuItems = document.createElement('div');
             menuItems.classList.add('menu-items');
 
+            menuElem.append(menuItems);
+
+
+            // Position menu at mouse position
+            const mouse = { x: e.pageX, y: e.pageY };
+            menuElem.style.left = `${mouse.x-60}px`;
+            menuElem.style.top = `${mouse.y-3}px`;   
+
+            document.body.append(menuElem);
+            settings.invContextMenu.isOpen = true;
+
+            // Remove menu when right-clicking on the menu
+            //log("Adding context menu right-click listener...");
+            menuElem.addEventListener('contextmenu', e => {
+                e.preventDefault();
+                menuElem.remove();
+                settings.invContextMenu.isOpen = false;
+            }, { once: true });
+
+            // Remove menu when mouse leaves the menu
+            //log("Adding context menu mouseleave listener...");
+            menuElem.addEventListener('mouseleave', e => {
+                e.preventDefault();
+                menuElem.remove();
+                settings.invContextMenu.isOpen = false;
+            }, { once: true });
+
+            // Remove  menu when clicking elsewhere,
+            // don't close menu if clicking inside the menu
+            //log("Adding document click listener to close context menu...");
+            document.addEventListener('click', e => {
+                if (document.contains(menuElem) && !menuElem.contains(e.target)) {
+                    menuElem.remove();
+                    settings.invContextMenu.isOpen = false;
+                }
+            }, { once: true });
+
+  
+           
+       
+
             // Create context menu rows
             const bankItem = document.createElement('div');
-            const consumeItem = document.createElement('div');
-            bankItem.classList.add('menu-item');
-            consumeItem.classList.add('menu-item');
+            const ruinsBankItem = document.createElement('div');
+            const eatItem = document.createElement('div');
+            const drinkItem = document.createElement('div');
+            const drinkSpecItem = document.createElement('div');
 
-            const createActionButton = text => {
+            bankItem.classList.add('menu-item');
+            ruinsBankItem.classList.add('menu-item');
+            eatItem.classList.add('menu-item');
+            drinkItem.classList.add('menu-item');
+            drinkSpecItem.classList.add('menu-item');
+
+            const createActionButton = (textLabel, gameIconUrl) => {
                 const button = document.createElement('div');
                 button.classList.add('button');
-                button.innerText = text;
+
+                const iconCont = document.createElement('div');
+                iconCont.classList.add('icon-cont');
+                const gameIcon = document.createElement('img');
+                gameIcon.classList.add('icon');
+                gameIcon.src = gameIconUrl;
+                iconCont.append(gameIcon);
+
+                const label = document.createElement('div');
+                label.classList.add('label');
+                label.innerText = textLabel;
+
+                button.append(iconCont);
+                button.append(label);
+
                 return button;
             }
 
-            // Add to bank button
-            const buttonAddToBank = createActionButton('Add to Bank');
-            const buttonConsume = createActionButton('Consume');
+            // Add to action button
+            const buttonAddToBank = createActionButton('Bank', '/game/images/icons/bank.png');
+            const buttonAddToRuinsBank = createActionButton('Ruins', '/game/images/icons/ruins.png');
+            const buttonEat = createActionButton('Eat', item.image);
+            const buttonDrink = createActionButton('Drink', item.image);
+            const buttonDrinkSpec = createActionButton('Drink 1', item.image);
     
             bankItem.append(buttonAddToBank);
-            consumeItem.append(buttonConsume);
+            ruinsBankItem.append(buttonAddToRuinsBank);
+            eatItem.append(buttonEat);
+            drinkItem.append(buttonDrink);
+            drinkSpecItem.append(buttonDrinkSpec);
       
-            const createAmountInput = (defaultValue) => {
+            const createAmountInput = defaultValue => {
                 const input = document.createElement('input');
                 input.classList.add('amount-input');
                 input.setAttribute('type', 'number');
@@ -1946,76 +2082,77 @@
             const bankAmount = createAmountInput(item.amount);
             bankItem.append(bankAmount);
 
-            consumeItem.append('Amount:');
-            const consumeAmount = createAmountInput(1);
-            consumeItem.append(consumeAmount);
+            ruinsBankItem.append('Amount:');
+            const ruinsBankAmount = createAmountInput(item.amount);
+            ruinsBankItem.append(ruinsBankAmount);
 
-            log("Adding context menu bank button click listener...");
+            eatItem.append('Amount:');
+            const eatAmount = createAmountInput(1);
+            eatItem.append(eatAmount);
+
+            drinkItem.append('Amount:');
+            const drinkAmount = createAmountInput(1);
+            drinkItem.append(drinkAmount);
+            
+     
+
+            //log("Adding context menu Bank button click listener...");
             buttonAddToBank.addEventListener('click', () => {
                 const amountToSend = bankAmount.value;
                 //log(`Adding ${amountToSend} of ${item.name} to Bank...`);
                 sendToBank(item, amountToSend, mouse,  menuElem, linkElem);
             });
-       
-            log("Adding context menu consume button click listener...");
-            buttonConsume.addEventListener('click', () => {
-                const amountToConsume = consumeAmount.value;
-                //log(`Consuming ${amountToConsume} of ${item.name}...`);
-                consume(item, amountToSend, mouse,  menuElem, linkElem);
+
+            //log("Adding context menu Ruins bank button click listener...");
+            buttonAddToRuinsBank.addEventListener('click', () => {
+                const amountToSend = ruinsBankAmount.value;
+                //log(`Adding ${amountToSend} of ${item.name} to Bank...`);
+                sendToRuinsBank(item, amountToSend, mouse,  menuElem, linkElem);
+            });
+            
+            
+            //log("Adding context menu Eat button click listener...");
+            buttonEat.addEventListener('click', () => {
+                const amountToEat = eatAmount.value;
+                eat(item, amountToEat, mouse,  menuElem, linkElem);
             });
 
-            menuItems.append(bankItem);
-            menuItems.append(consumeItem);
+            //log("Adding context menu Drink button click listener...");
+            buttonDrink.addEventListener('click', () => {
+                const amountToDrink = drinkAmount.value;
+                drink(item, amountToDrink, mouse,  menuElem, linkElem);
+            });
 
-            menuElem.append(top);
-            menuElem.append(menuItems);
-
-
-            // Position menu at mouse position
-            const mouse = { x: e.pageX, y: e.pageY };
-            menuElem.style.left = `${mouse.x-60}px`;
-            menuElem.style.top = `${mouse.y-3}px`;   
-
-            document.body.append(menuElem);
-            settings.invContextMenu.isOpen = true;
-
-            // Remove menu when right-clicking on the menu
-            log("Adding context menu right-click listener...");
-            menuElem.addEventListener('contextmenu', e => {
-                e.preventDefault();
-                menuElem.remove();
-                settings.invContextMenu.isOpen = false;
-            }, { once: true });
-
-            // Remove menu when mouse leaves the menu
-            log("Adding context menu mouseleave listener...");
-            menuElem.addEventListener('mouseleave', e => {
-                e.preventDefault();
-                menuElem.remove();
-                settings.invContextMenu.isOpen = false;
-            }, { once: true });
-
-            // Remove  menu when clicking elsewhere,
-            // don't close menu if clicking inside the menu
-            log("Adding document click listener to close context menu...");
-            document.addEventListener('click', e => {
-                if (document.contains(menuElem) && !menuElem.contains(e.target)) {
-                    menuElem.remove();
-                    settings.invContextMenu.isOpen = false;
-                }
-            }, { once: true });
-
-
-
-            // POST url to deposit item to bank
-            // with item amount in form data amount: "224" 
-            // request cookies PHPSESSID	"567fbb9ef99a13ffa5889f95fbb4c362"
-            // toolbar cookie e9c8092265e0016efff70fa80f043938
-            // 	https://dragonrip.com/game/itemuse.php?go=2&ko=843
-
-            // same thing for Ruins bank:
-            // https://dragonrip.com/game/ruinsb.php?go=1&ko=229
+            //log("Adding context menu DrinkSpec button click listener...");
+            buttonDrinkSpec.addEventListener('click', () => {
+                const amountToDrink = 1;
+                drinkSpec(item, amountToDrink, mouse,  menuElem, linkElem);
+            });
             
+
+            // All items can be banked, so always show Bank action
+            menuItems.append(bankItem);
+
+            // Get item action data, show action rows accordingly
+            let itemActions = null;
+            (async () => {
+                itemActions = await getItemActions(item.id);
+                logObj(itemActions);
+                item.actions = itemActions;
+
+                if (item.actions.ruins) 
+                    menuItems.append(ruinsBankItem);
+                
+                if (item.actions.eat) 
+                    menuItems.append(eatItem);
+
+                if (item.actions.drink) 
+                    menuItems.append(drinkItem);
+                
+                if (item.actions.drinkSpec) 
+                    menuItems.append(drinkSpecItem);
+                
+            })();
         });
     }
 
@@ -2066,20 +2203,12 @@
         });
     }
 
-    // Consume item (eat, drink, etc.)
-    const consume = async (item, amountToConsume, mouseCoords, menuElem, linkElem) => {
-        // https://dragonrip.com/game/eat.php?ko=399   // eat fish
-        // https://dragonrip.com/game/eat.php?ko=164   // eat meat
-        // https://dragonrip.com/game/drink.php?ko=479 // drink potion
-        // https://dragonrip.com/game/bmfood.php?go=1 // eat bm food ( eg. volcanic peppers, GET)
+    // Send item to Ruins Bank function, used in inv context menu
+    const sendToRuinsBank = async (item, amountToSend, mouseCoords, menuElem, linkElem) => {
+        // Note: it seems making a GET request with no body (no payload)
+        // results in the game putting 1 item to the bank
 
-        // to-do_ tähän jäin. Tehdään item type mappi, missä esim. kaikki kalat ja lihat, joiden tyyppi esim. "food". Potioneilla tyyppi potion.
-        // Tyypin mukaan context menussa näytetään eri rivejä, esim. kalalla ja lihalla "Eat", potionilla "Drink", bm-ruualla "use" tai jotain.
-        // Defaulttina kaikille näytetään "Add to bank"
-        // Kaloja ja lihoja ei kuitenkaan ole ihan niin paljoa, potioneitakaan ei.
-
-        const url = `https://dragonrip.com/game/itemuse.php?go=2&ko=${item.id}`;
-
+        const url = `https://dragonrip.com/game/ruinsb.php?go=1&ko=${item.id}`;
         await fetch(url, {
             method: "POST",
             body: `amount=${amountToSend}`,
@@ -2093,11 +2222,11 @@
         })
         .then((html) => {
             const str = html;
-            if (str.indexOf("Not enough space in Bank!") > -1) {
-                log("No space in bank.");
-                floatText("NO BANK SPACE", "red", mouseCoords);
-            } else if (str.indexOf("Added to your bank.") > -1) {
-                floatText(`Added ${amountToSend} ${item.name} to Bank`, "lime", mouseCoords);
+            if (str.indexOf("Not enough space in the Ruins Bank!") > -1) {
+                //log("No space in Ruins.");
+                floatText("NO RUINS SPACE", "red", mouseCoords);
+            } else if (str.indexOf("Added to your Ruins bank.") > -1) {
+                floatText(`Added ${amountToSend} ${item.name} to Ruins`, "lime", mouseCoords);
 
                 // Remove item from inventory if all items added
                 if (item.amount - amountToSend <= 0) {
@@ -2110,6 +2239,53 @@
                     linkElem.querySelector('span.amouti').innerText = newAmount;
                     menuElem.remove();
                 }
+            } else if (str.indexOf("You can't add this item to your Ruins Bank!") > -1) {    
+                floatText("NOT RUINS BANKABLE", "orange", mouseCoords);
+            } else if (str.indexOf("You Don't Have THIS item!") > -1) {
+                floatText("You don't Have this item", "orange", mouseCoords);
+            } else if (str.indexOf("Incorrect amount!") > -1) {
+                floatText("Incorrect amount!", "orange", mouseCoords);
+            }
+
+           
+        });
+    }
+
+    // Eat item (fish, meat)
+    const eat = async (item, amountToEat, mouseCoords, menuElem, linkElem) => {
+        // https://dragonrip.com/game/bmfood.php?go=1 // eat bm food ( eg. volcanic peppers, GET)
+
+ 
+
+        const url = `https://dragonrip.com/game/eat.php?ko=${item.id}`;
+
+        await fetch(url, {
+            method: "POST",
+            body: `amount=${amountToEat}`,
+            headers: {
+              "Content-type": "application/x-www-form-urlencoded",
+              "Cookie": `PHPSESSID=${settings.sessionId}`,
+            }
+        })
+        .then((res) => {
+          return res.text();
+        })
+        .then((html) => {
+            const str = html;
+            if (str.indexOf("You ate") > -1) {
+                floatText(`Ate ${amountToEat} ${item.name}`, "lime", mouseCoords);
+
+                // Remove item from inventory if all items added
+                if (item.amount - amountToEat <= 0) {
+                    menuElem.remove();
+                    settings.invContextMenu.isOpen = false;
+                    linkElem.remove();
+                } else {
+                    // Update item amount in inventory
+                    const newAmount = item.amount - amountToEat;
+                    linkElem.querySelector('span.amouti').innerText = newAmount;
+                    menuElem.remove();
+                }
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
             } else if (str.indexOf("Incorrect amount!") > -1) {
@@ -2118,6 +2294,82 @@
         });
     }
 
+     // Drink item (normal potions)
+    const drink = async (item, amountToDrink, mouseCoords, menuElem, linkElem) => {
+        const url = `https://dragonrip.com/game/drink.php?ko=${item.id}`;
+
+        await fetch(url, {
+            method: "POST",
+            body: `amount=${amountToDrink}`,
+            headers: {
+              "Content-type": "application/x-www-form-urlencoded",
+              "Cookie": `PHPSESSID=${settings.sessionId}`,
+            }
+        })
+        .then((res) => {
+          return res.text();
+        })
+        .then((html) => {
+            const str = html;
+            if (str.indexOf("You drank") > -1) {
+                floatText(`Drank ${amountToDrink} ${item.name}`, "lime", mouseCoords);
+
+                // Remove item from inventory if all items added
+                if (item.amount - amountToDrink <= 0) {
+                    menuElem.remove();
+                    settings.invContextMenu.isOpen = false;
+                    linkElem.remove();
+                } else {
+                    // Update item amount in inventory
+                    const newAmount = item.amount - amountToDrink;
+                    linkElem.querySelector('span.amouti').innerText = newAmount;
+                    menuElem.remove();
+                }
+            } else if (str.indexOf("You Don't Have THIS item!") > -1) {
+                floatText("You don't Have this item", "orange", mouseCoords);
+            } else if (str.indexOf("Incorrect amount!") > -1) {
+                floatText("Incorrect amount!", "orange", mouseCoords);
+            }
+        });
+    }
+    
+     // Drink special item (Stam potion, Dragon Essence etc.)
+    const drinkSpec = async (item, amountToDrink, mouseCoords, menuElem, linkElem) => {
+        const url = `https://dragonrip.com/game/drink.php?ko=${item.id}`;
+
+        await fetch(url, {
+            method: "GET",
+            headers: {
+              "Content-type": "application/x-www-form-urlencoded",
+              "Cookie": `PHPSESSID=${settings.sessionId}`,
+            }
+        })
+        .then((res) => {
+          return res.text();
+        })
+        .then((html) => {
+            const str = html;
+            if (str.indexOf("You drank") > -1) {
+                floatText(`Drank ${amountToDrink} ${item.name}`, "lime", mouseCoords);
+
+                // Remove item from inventory if all items added
+                if (item.amount - amountToDrink <= 0) {
+                    menuElem.remove();
+                    settings.invContextMenu.isOpen = false;
+                    linkElem.remove();
+                } else {
+                    // Update item amount in inventory
+                    const newAmount = item.amount - amountToDrink;
+                    linkElem.querySelector('span.amouti').innerText = newAmount;
+                    menuElem.remove();
+                }
+            } else if (str.indexOf("You Don't Have THIS item!") > -1) {
+                floatText("You don't Have this item", "orange", mouseCoords);
+            } else if (str.indexOf("Incorrect amount!") > -1) {
+                floatText("Incorrect amount!", "orange", mouseCoords);
+            }
+        });
+    }
 
     // Floating text at mouse (from context menu actions)
     const floatText = (str, color, pos) => {
@@ -2162,9 +2414,9 @@
             // Remove br-elements from left-side play area
             const target = document.querySelector('body > .veik');
             if ( exists(target) ) {
-                console.log(target);
+                //console.log(target);
                 for (const elem of target.children) {
-                    console.log(elem)
+                    //console.log(elem)
                     if (elem.localName === 'br') {
                         elem.remove();
                     }
@@ -2249,9 +2501,18 @@
             new MutationObserver(callback).observe(leftSide, config);
         }
         */
+    }
 
-        
-   
+    // Check if context menu listeners were removed by
+    // the game loading a "new page" on 6sec game actions
+    const invContextMenuChecker = () => {
+
+        /*
+        const interval = setInterval( () => {
+            const invArea = document.querySelector('.burbul > .leftsidemdfk');
+            log(document.querySelector('.burbul > .leftsidemdfk'));
+        }, 1000);
+        */
     }
 
 
@@ -2304,6 +2565,7 @@
                 if (true) {
                     setCustomCss(invContextMenuCss);
                     invContextMenu();
+                    invContextMenuChecker();
                 }
 
 
@@ -2311,8 +2573,6 @@
             }
         }, 5);
     }
-
-
 
 
     const init = () => {
@@ -2328,7 +2588,6 @@
         waitForUI();
         log('Script loaded.');
     }
-
 
     init();
 })();
