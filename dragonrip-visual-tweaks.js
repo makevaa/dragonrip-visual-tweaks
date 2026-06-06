@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.28
+// @version      1.0.31
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -40,7 +40,7 @@
         extraBoxContents: {
             "Clan": {
                 "Members":     {icon:'/game/images/bossimages/zolton.png', url:'/game/clan.php?go=5'},
-                "Log":         {icon:'/game/images/itema/scroll2.png', url:'/game/clanlog.php'},
+                "Log":         {icon:'/game/images/itema/scroll7.png', url:'/game/clanlog.php'},
                 "Vault":       {icon:'/game/images/blacksm/bank.png', url:'/game/cvault.php'},
                 "Resources":   {icon:'/game/images/blacksm/bar.png', url:'/game/clan.php?go=9'},
                 "Buildings":   {icon:'/game/images/clanbuu/dark/3.png', url:'/game/clanbuu.php'},
@@ -726,7 +726,6 @@
             xpadding: 5px 5px 5px 5px;
 
             xbackground-color: rgba(21, 21, 21, 1);
-            xbackground-image: url('https://i.imgur.com/vjJ8ugC.jpeg');
             background-size: contain;
         }
 
@@ -844,9 +843,17 @@
             pointer-events: none;
         }
 
-        .extra-box > .box > .list > .item:hover {
-            filter: brightness(1.4);
+        .extra-box > .box > .list > .item:hover  {
+            filter: brightness(1.3);
         } 
+
+        .extra-box > .box > .list > .item:hover > .image-cont > .image {
+            filter: saturate(1);
+        }
+
+      
+
+ 
 
         .extra-box > .box > .item:active {
             filter: brightness(1.0);
@@ -881,7 +888,7 @@
             xheight: 100%;
             box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8);
       
-            xfilter: sepia(1) hue-rotate(105deg);
+            xfilter: contrast(2) sepia(1) saturate(2);
             filter: saturate(0.75);
 
         }
@@ -1345,8 +1352,8 @@
                 label: '<a href="/game/tret.php" class="red">[Treant Elder]</a> event', 
                 imageUrl: '/game/images/bossimages/tret.png' },
             summer: { 
-                label: '<a href="/game/quartzTitan.php" class="red">[Quartz Titan]</a> appeared', 
-                imageUrl: '/game/images/bossimages/snowman.png' 
+                label: '<a href="/game/qztitan.php" class="red">[Quartz Titan]</a> event', 
+                imageUrl: '/game/images/imci/sum.png' 
             },
           
             halloween: { 
@@ -1426,11 +1433,11 @@
             blaze: "Event: Blaze appeared in the Ashlands!",
             winter: "Snowman appeared in the Ice Plains.",
             spring: "Event: Treant Elder appeared in the Reaper's Garden.",
+            summer: "Event: Quartz Titan appeared in the Azure Coastline.",
             
-            //summer: "",
             //halloween: "",
             //frenzy: " of Frenzy.",
-            frenzy: "Diabolos took a soul of Titan to revive one of his generals...", //debug testing
+            //frenzy: "Diabolos took a soul of Titan to revive one of his generals...", //debug testing
         
         }
 
@@ -1518,7 +1525,7 @@
         //console.log(currentTime)
         let currentTime = new Intl.DateTimeFormat([], timeOptions).format(currentTimeDate);
         currentTime = currentTimeDate;
-        console.log(currentTime.valueOf())
+        //console.log(currentTime.valueOf())
         
         // Get date object from the timestamp string
         let timestamp = msgParts[0].innerText.trim();
@@ -1547,7 +1554,7 @@
         durationStr = msgParts[2].innerText + " and released 1 hour 60 minutes of Frenzy."; // for testing
         // Remove everything from the string before "released"
         durationStr = durationStr.substring(durationStr.indexOf('released'), durationStr.length-1);
-        console.log(durationStr)
+        //console.log(durationStr)
 
         let frenzyDurationH = 0;
         let frenzyDurationM = 0;
@@ -1575,23 +1582,23 @@
         log(`frenzyDurationH: ${frenzyDurationH}, frenzyDurationM: ${frenzyDurationM}`)
 
         const frenzyDurationMs = (frenzyDurationH*60*60*1000) + (frenzyDurationM*60*1000);
-        console.log(frenzyDurationMs)
+        //console.log(frenzyDurationMs)
 
         //console.log(`new Date(frenzyDurationMs).toISOString: ${new Date(frenzyDurationMs).toISOString()}`);
-        console.log(`frenzyStart.toString: ${frenzyStart.toString()}`);
+        //console.log(`frenzyStart.toString: ${frenzyStart.toString()}`);
         //to-do: Frenzy start näyttää 2h liian pienen kellon ajan jostain syystä.
         //console.log(frenzyStart);
 
         const frenzyEnd = frenzyStart.valueOf() + frenzyDurationMs;
-        console.log(`frenzyEnd: ${frenzyEnd}`)
-        console.log(`new Date(frenzyEnd).toString: ${new Date(frenzyEnd).toString()}`);
+        //console.log(`frenzyEnd: ${frenzyEnd}`)
+        //console.log(`new Date(frenzyEnd).toString: ${new Date(frenzyEnd).toString()}`);
 
-        console.log(`currentTime.valueOf(): ${currentTime.valueOf()}`);
-        console.log(`currentTime.toString: ${currentTime.toString()}`);
+        //console.log(`currentTime.valueOf(): ${currentTime.valueOf()}`);
+        //console.log(`currentTime.toString: ${currentTime.toString()}`);
         //console.log(`currentTime.toDateString: ${currentTime.toDateString()}`);
         //console.log(`currentTime.toISOString: ${currentTime.toISOString()}`);
 
-        console.log(`typeof frenzyEnd: ${typeof frenzyEnd}, typeof currentTime: ${typeof currentTime.valueOf()}`);
+        //console.log(`typeof frenzyEnd: ${typeof frenzyEnd}, typeof currentTime: ${typeof currentTime.valueOf()}`);
 
         //console.log()
 
@@ -1602,7 +1609,7 @@
         }
 
         const frenzyTimeLeftMs =  frenzyEnd - currentTime.valueOf();
-        console.log(frenzyTimeLeftMs)
+        //console.log(frenzyTimeLeftMs)
 
         //console.log(currentTime.toISOString())
 
@@ -1644,7 +1651,7 @@
         }
 
   
-        console.log(data)
+        //console.log(data)
         return data;
     }
    
@@ -1858,10 +1865,13 @@
             bank: false,
             ruins: false,
             eat: false,
+            eatOne: false,
+            eatRaw: false,
             drink: false, // Normal potions
             drinkSpec: false, // eg. Stamina potion, can only drink 1 at a time
         }
         const url = `https://dragonrip.com/game/itemuse.php?ko=${itemId}`;
+        // Make GET request for item use page
         await fetch(url, {
             method: "GET",
             headers: {
@@ -1873,8 +1883,8 @@
           return res.text();
         })
         .then((html) => {
+            // Search parsed HTML elements to determine what item actions are available
             const str = html;
-            log(str)
             if (str.indexOf("Add it to your bank") > -1) {
                 actions.bank = true;
             }
@@ -1883,6 +1893,12 @@
             } 
             if (str.indexOf('<input type="submit" value="Eat">') > -1) {
                 actions.eat = true;
+            }
+            if (str.indexOf('Eat</a>') > -1) {
+                actions.eatOne = true;
+            }
+            if (str.indexOf('value="Eat Raw"') > -1) {
+                actions.eatRaw = true;
             }
             if (str.indexOf('type="submit" value="Drink">') > -1) {
                 actions.drink = true;
@@ -1930,6 +1946,11 @@
             }
 
             if (linkElem === null) { return; }
+
+            // Save url to have a reliable selector to linkElem,
+            // even after the inv tile DOM updates after a game action
+            const linkElemUrl = linkElem.getAttribute('href');
+            console.log(linkElemUrl);
 
             // Check if item has amount span
             let itemAmount = 1;
@@ -2020,17 +2041,21 @@
        
 
             // Create context menu rows
-            const bankItem = document.createElement('div');
-            const ruinsBankItem = document.createElement('div');
-            const eatItem = document.createElement('div');
-            const drinkItem = document.createElement('div');
-            const drinkSpecItem = document.createElement('div');
+            const bankRow = document.createElement('div');
+            const ruinsBankRow = document.createElement('div');
+            const eatRow = document.createElement('div');
+            const eatOneRow = document.createElement('div');
+            const eatRawRow = document.createElement('div');
+            const drinkRow = document.createElement('div');
+            const drinkSpecRow = document.createElement('div');
 
-            bankItem.classList.add('menu-item');
-            ruinsBankItem.classList.add('menu-item');
-            eatItem.classList.add('menu-item');
-            drinkItem.classList.add('menu-item');
-            drinkSpecItem.classList.add('menu-item');
+            bankRow.classList.add('menu-item');
+            ruinsBankRow.classList.add('menu-item');
+            eatRow.classList.add('menu-item');
+            eatOneRow.classList.add('menu-item');
+            eatRawRow.classList.add('menu-item');
+            drinkRow.classList.add('menu-item');
+            drinkSpecRow.classList.add('menu-item');
 
             const createActionButton = (textLabel, gameIconUrl) => {
                 const button = document.createElement('div');
@@ -2057,14 +2082,18 @@
             const buttonAddToBank = createActionButton('Bank', '/game/images/icons/bank.png');
             const buttonAddToRuinsBank = createActionButton('Ruins', '/game/images/icons/ruins.png');
             const buttonEat = createActionButton('Eat', item.image);
+            const buttonEatOne = createActionButton('Eat 1', item.image);
+            const buttonEatRaw = createActionButton('Eat raw', item.image);
             const buttonDrink = createActionButton('Drink', item.image);
             const buttonDrinkSpec = createActionButton('Drink 1', item.image);
     
-            bankItem.append(buttonAddToBank);
-            ruinsBankItem.append(buttonAddToRuinsBank);
-            eatItem.append(buttonEat);
-            drinkItem.append(buttonDrink);
-            drinkSpecItem.append(buttonDrinkSpec);
+            bankRow.append(buttonAddToBank);
+            ruinsBankRow.append(buttonAddToRuinsBank);
+            eatRow.append(buttonEat);
+            eatOneRow.append(buttonEatOne);
+            eatRawRow.append(buttonEatRaw);
+            drinkRow.append(buttonDrink);
+            drinkSpecRow.append(buttonDrinkSpec);
       
             const createAmountInput = defaultValue => {
                 const input = document.createElement('input');
@@ -2076,62 +2105,59 @@
                 return input;
             }
 
-
-            // Amount inputs
-            bankItem.append('Amount:');
+            // Amount inputs for context menu rows
+            bankRow.append('Amount:');
             const bankAmount = createAmountInput(item.amount);
-            bankItem.append(bankAmount);
+            bankRow.append(bankAmount);
 
-            ruinsBankItem.append('Amount:');
+            ruinsBankRow.append('Amount:');
             const ruinsBankAmount = createAmountInput(item.amount);
-            ruinsBankItem.append(ruinsBankAmount);
+            ruinsBankRow.append(ruinsBankAmount);
 
-            eatItem.append('Amount:');
+            eatRow.append('Amount:');
             const eatAmount = createAmountInput(1);
-            eatItem.append(eatAmount);
+            eatRow.append(eatAmount);
 
-            drinkItem.append('Amount:');
+            eatRawRow.append('Amount:');
+            const eatRawAmount = createAmountInput(1);
+            eatRawRow.append(eatRawAmount);
+
+            drinkRow.append('Amount:');
             const drinkAmount = createAmountInput(1);
-            drinkItem.append(drinkAmount);
-            
-     
+            drinkRow.append(drinkAmount);
 
-            //log("Adding context menu Bank button click listener...");
-            buttonAddToBank.addEventListener('click', () => {
-                const amountToSend = bankAmount.value;
-                //log(`Adding ${amountToSend} of ${item.name} to Bank...`);
-                sendToBank(item, amountToSend, mouse,  menuElem, linkElem);
+            // Click listeners for context menu row action buttons
+            buttonAddToBank.addEventListener('click', e => {
+                sendToBank(item, bankAmount.value, mouse,  menuElem, linkElemUrl);
             });
 
-            //log("Adding context menu Ruins bank button click listener...");
             buttonAddToRuinsBank.addEventListener('click', () => {
-                const amountToSend = ruinsBankAmount.value;
-                //log(`Adding ${amountToSend} of ${item.name} to Bank...`);
-                sendToRuinsBank(item, amountToSend, mouse,  menuElem, linkElem);
+                sendToRuinsBank(item, ruinsBankAmount.value, mouse, menuElem, linkElemUrl);
             });
             
-            
-            //log("Adding context menu Eat button click listener...");
             buttonEat.addEventListener('click', () => {
-                const amountToEat = eatAmount.value;
-                eat(item, amountToEat, mouse,  menuElem, linkElem);
+                eat(item, eatAmount.value, mouse,  menuElem, linkElemUrl);
             });
 
-            //log("Adding context menu Drink button click listener...");
+            buttonEatOne.addEventListener('click', () => {
+                eat(item, 1, mouse,  menuElem, linkElemUrl);
+            });
+
+            buttonEatRaw.addEventListener('click', () => {
+                eatRaw(item, eatRawAmount.value, mouse,  menuElem, linkElemUrl);
+            });
+
             buttonDrink.addEventListener('click', () => {
-                const amountToDrink = drinkAmount.value;
-                drink(item, amountToDrink, mouse,  menuElem, linkElem);
+                drink(item, drinkAmount.value, mouse,  menuElem, linkElemUrl);
             });
 
-            //log("Adding context menu DrinkSpec button click listener...");
             buttonDrinkSpec.addEventListener('click', () => {
-                const amountToDrink = 1;
-                drinkSpec(item, amountToDrink, mouse,  menuElem, linkElem);
+                drinkSpec(item, 1, mouse, menuElem, linkElemUrl);
             });
             
 
             // All items can be banked, so always show Bank action
-            menuItems.append(bankItem);
+            menuItems.append(bankRow);
 
             // Get item action data, show action rows accordingly
             let itemActions = null;
@@ -2141,16 +2167,22 @@
                 item.actions = itemActions;
 
                 if (item.actions.ruins) 
-                    menuItems.append(ruinsBankItem);
+                    menuItems.append(ruinsBankRow);
                 
                 if (item.actions.eat) 
-                    menuItems.append(eatItem);
+                    menuItems.append(eatRow);
+
+                if (item.actions.eatRaw) 
+                    menuItems.append(eatRawRow);
+
+                if (item.actions.eatOne) 
+                    menuItems.append(eatOneRow);
 
                 if (item.actions.drink) 
-                    menuItems.append(drinkItem);
+                    menuItems.append(drinkRow);
                 
                 if (item.actions.drinkSpec) 
-                    menuItems.append(drinkSpecItem);
+                    menuItems.append(drinkSpecRow);
                 
             })();
         });
@@ -2159,11 +2191,13 @@
 
 
     // Send item to bank function, used in inv context menu
-    const sendToBank = async (item, amountToSend, mouseCoords, menuElem, linkElem) => {
+    const sendToBank = async (item, amountToSend, mouseCoords, menuElem, linkElemUrl) => {
         // Note: it seems making a GET request with no body (no payload)
         // results in the game putting 1 item to the bank
 
         const url = `https://dragonrip.com/game/itemuse.php?go=2&ko=${item.id}`;
+        const linkElemSelector = `.burbul > .leftsidemdfk > a[href="${linkElemUrl}"]`;
+        const linkElem = document.querySelector(linkElemSelector);
 
         await fetch(url, {
             method: "POST",
@@ -2179,7 +2213,7 @@
         .then((html) => {
             const str = html;
             if (str.indexOf("Not enough space in Bank!") > -1) {
-                log("No space in bank.");
+                //log("No space in bank.");
                 floatText("NO BANK SPACE", "red", mouseCoords);
             } else if (str.indexOf("Added to your bank.") > -1) {
                 floatText(`Added ${amountToSend} ${item.name} to Bank`, "lime", mouseCoords);
@@ -2193,7 +2227,7 @@
                     // Update item amount in inventory
                     const newAmount = item.amount - amountToSend;
                     linkElem.querySelector('span.amouti').innerText = newAmount;
-                    menuElem.remove();
+                    menuElem.remove(); 
                 }
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
@@ -2204,11 +2238,10 @@
     }
 
     // Send item to Ruins Bank function, used in inv context menu
-    const sendToRuinsBank = async (item, amountToSend, mouseCoords, menuElem, linkElem) => {
-        // Note: it seems making a GET request with no body (no payload)
-        // results in the game putting 1 item to the bank
-
+    const sendToRuinsBank = async (item, amountToSend, mouseCoords, menuElem, linkElemUrl) => {
         const url = `https://dragonrip.com/game/ruinsb.php?go=1&ko=${item.id}`;
+        const linkElemSelector = `.burbul > .leftsidemdfk > a[href="${linkElemUrl}"]`;
+        const linkElem = document.querySelector(linkElemSelector);
         await fetch(url, {
             method: "POST",
             body: `amount=${amountToSend}`,
@@ -2252,12 +2285,10 @@
     }
 
     // Eat item (fish, meat)
-    const eat = async (item, amountToEat, mouseCoords, menuElem, linkElem) => {
-        // https://dragonrip.com/game/bmfood.php?go=1 // eat bm food ( eg. volcanic peppers, GET)
-
- 
-
+    const eat = async (item, amountToEat, mouseCoords, menuElem, linkElemUrl) => {
         const url = `https://dragonrip.com/game/eat.php?ko=${item.id}`;
+        const linkElemSelector = `.burbul > .leftsidemdfk > a[href="${linkElemUrl}"]`;
+        const linkElem = document.querySelector(linkElemSelector);
 
         await fetch(url, {
             method: "POST",
@@ -2294,9 +2325,51 @@
         });
     }
 
+    // Eat raw eg. Ghost (+10 Mana fish)
+    const eatRaw = async (item, amountToEat, mouseCoords, menuElem, linkElemUrl) => {
+        const url = `https://dragonrip.com/game/ghostf.php`;
+        const linkElemSelector = `.burbul > .leftsidemdfk > a[href="${linkElemUrl}"]`;
+        const linkElem = document.querySelector(linkElemSelector);
+        await fetch(url, {
+            method: "POST",
+            body: `amount=${amountToEat}`,
+            headers: {
+              "Content-type": "application/x-www-form-urlencoded",
+              "Cookie": `PHPSESSID=${settings.sessionId}`,
+            }
+        })
+        .then((res) => {
+          return res.text();
+        })
+        .then((html) => {
+            const str = html;
+            if (str.indexOf("You ate") > -1) {
+                floatText(`Ate ${amountToEat} ${item.name}`, "lime", mouseCoords);
+
+                // Remove item from inventory if all items added
+                if (item.amount - amountToEat <= 0) {
+                    menuElem.remove();
+                    settings.invContextMenu.isOpen = false;
+                    linkElem.remove();
+                } else {
+                    // Update item amount in inventory
+                    const newAmount = item.amount - amountToEat;
+                    linkElem.querySelector('span.amouti').innerText = newAmount;
+                    menuElem.remove();
+                }
+            } else if (str.indexOf("You Don't Have THIS item!") > -1) {
+                floatText("You don't Have this item", "orange", mouseCoords);
+            } else if (str.indexOf("Incorrect amount!") > -1) {
+                floatText("Incorrect amount!", "orange", mouseCoords);
+            }
+        });
+    }
+
      // Drink item (normal potions)
-    const drink = async (item, amountToDrink, mouseCoords, menuElem, linkElem) => {
+    const drink = async (item, amountToDrink, mouseCoords, menuElem, linkElemUrl) => {
         const url = `https://dragonrip.com/game/drink.php?ko=${item.id}`;
+        const linkElemSelector = `.burbul > .leftsidemdfk > a[href="${linkElemUrl}"]`;
+        const linkElem = document.querySelector(linkElemSelector);
 
         await fetch(url, {
             method: "POST",
@@ -2334,8 +2407,10 @@
     }
     
      // Drink special item (Stam potion, Dragon Essence etc.)
-    const drinkSpec = async (item, amountToDrink, mouseCoords, menuElem, linkElem) => {
+    const drinkSpec = async (item, amountToDrink, mouseCoords, menuElem, linkElemUrl) => {
         const url = `https://dragonrip.com/game/drink.php?ko=${item.id}`;
+        const linkElemSelector = `.burbul > .leftsidemdfk > a[href="${linkElemUrl}"]`;
+        const linkElem = document.querySelector(linkElemSelector);
 
         await fetch(url, {
             method: "GET",
@@ -2438,7 +2513,7 @@
         const callback = (mutationsList, observer) => {
             for (const mutation of mutationsList) {
                 if (mutation.type === 'CharacterData') {
-                    log('stats bar text changed');
+                    //log('stats bar text changed');
                     changeMainBarTexts();
                 }
             }
