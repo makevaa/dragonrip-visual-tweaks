@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.32
+// @version      1.0.33
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -28,9 +28,9 @@
         barLabels: { health: 'HP', stamina: 'ST', experience: 'XP' },
 
         serverTime: {
-            label: "Server time:",
+            label: "Server time",
             keepRunning: true,  // Keep updating clock time (updates every second)
-            seconds: false, // Include seconds in the time
+            seconds: true, // Include seconds in the time
             hours24: true,  // Toggle between 12h/24h time format
             fancyBox: false, // Additional styling for the time box element
         },
@@ -55,9 +55,9 @@
                 "My listings": {icon:'/game/images/icons/market.png', url:'/game/mymark.php'},
                 "My requests": {icon:'/game/images/icons/market.png', url:'/game/myrequ.php'},
             },
-            "Misc": {
-                "Players": {icon:'/game/images/icons/res.png', url:'https://chazu.arkku.net/dragonrip/player-index/'},
-                "CW Grid": {icon:'/game/images/itema/sossoso.png', url:'https://files.catbox.moe/wt9lk5.png'},
+            "External links": {
+                "Player Index": {icon:'/game/images/icons/res.png', url:'https://chazu.arkku.net/dragonrip/player-index/'},
+                "CW Grid img": {icon:'/game/images/wars/lavas.png', url:'https://files.catbox.moe/wt9lk5.png'},
             }
 
         },
@@ -236,7 +236,9 @@
             display: flex;
             justify-content: start;
             align-items: start;
-            padding: 5px 5px 5px 0px; !important;
+            padding: 5px 5px 5px 5px; !important;
+            xpadding: 0px; !important;
+         
         }
 
         div.player > div.picture {
@@ -246,10 +248,16 @@
             margin: 0px !important;
             margin-left: 0px !important;
             padding-left: 0px !important;
-            width: 15% !important;
-            min-width: 60px;
-            aspect-ratio: 1/1;
+            xmargin-right: 10px !important;
+            xwidth: 15% !important;
+            width: auto !important;
+            height: 100%;
+            min-width: 60px !important;
+            aspect-ratio: 1/1 !important;
             height: 100% !important;
+            xpadding: 5px;
+            xborder: 4px solid #212121;
+            xborder-radius: 50px;
         }
 
         div.player > div.picture > a {
@@ -257,7 +265,7 @@
             justify-content: center;
             align-items: center;
             aspect-ratio: 1/1;
-            xwidth: 100%;
+            width: 100%;
             height: 100%;
 
         }
@@ -277,17 +285,22 @@
             height: 90% !important;
             max-height: 90% !important;
             min-height: 90% !important;
-            overflow:hidden !important;
+            overflow: hidden !important;
             box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8), 0px 0px 5px 5px rgba(0, 0, 0, 0.5), 5px 5px 5px 0px rgba(0, 0, 0, 0.5);
         }
 
-        div.player > div.picture > a > div.kovsd:hover {
+        div.player > div.picture > a:hover {
             filter: brightness(1.1);
-   
+             xoutline-color: #009258;
+            xbackground-color: green;
+        }
+
+        div.player > div.picture > a:hover > div.kovsd {
+             outline: 4px double rgb(35, 123, 75)!important;
         }
 
         div.player > div.picture > a > div.kovsd:active {
-            filter: brightness(0.9);
+            filter: brightness(0.7);
         }
 
         div.player > div.picture > a > div.kovsd > span.amoutina {
@@ -328,6 +341,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            user-select: none;
         }
 
         div.logo > br {
@@ -358,7 +372,8 @@
         /* Bar container */
         .player > .bar {
             xborder: 1px solid lime;
-            width: 85%;
+            width: 100%;
+            margin-left: 10px;
         }
 
 
@@ -509,9 +524,23 @@
             justify-content: start;
         }
 
+        body > div.logo > .info > .item > .icon {
+            xborder: 1px solid grey;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 10px;
+            height: 10px;
+            aspect-ratio: 1/1;
+            margin-right: 5px;
+            padding: 5px;
+            color: #009258;
+            font-size: 1.2em;
+        }        
+
         body > div.logo > .info > .item > .left {
             xdisplay: flex;
-            width: 50%;
+            width: 45%;
             xtext-align: right;
             margin-right: 5px;
         }
@@ -520,18 +549,20 @@
             xcolor: #de6c09;
             xcolor: #7a3c05;
             xcolor: #6633ff;
+            xcolor: #009258;
         }
 
-        body > div.logo > .info > .item.game-title > .title {
+        body > div.logo > .info > .item.game-title > .label {
             xcolor: #de6c09;
             xcolor: #7a3c05;
             xcolor: #6633ff;
+      
         }
 
         body > div.logo > .info > .item.user > .name {
-            color: #6633ff;
-            color: rgb(111, 111, 255);
-            color: #167676;
+            xcolor: #6633ff;
+            xcolor: rgb(111, 111, 255);
+            xcolor: #167676;
         } 
 
         body > div.logo > .info > .item.address {
@@ -673,7 +704,7 @@
     const extraBoxCss = `    
         .extra-box {
             border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 2px;
+            xborder-radius: 2px;
             box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.8);
             background: url('/img/mc/center.jpg');
             background-position: center center;
@@ -685,14 +716,17 @@
             xbackground-size: cover;
 
             min-height: 100vh;
+            xheight: 100vh;
             xoverflow-y: scroll;
             scrollbar-width: thin;
             position: absolute;
             top: 0;
             right: 0;
             xmargin: 5px 20px 0px 20px;
-            padding: 10px 5px 10px 5px;
-            border-left: 4px solid rgb(48, 48, 48);
+            padding: 5px 5px 10px 5px;
+            border: 5px ridge rgb(59, 17, 17);
+            border-top: none;
+            border-right: none;
 
             display: flex;
             flex-direction: column;
@@ -729,7 +763,8 @@
             justify-content: space-between;
             height: 25px;
             margin-bottom: 5px;
-            padding-left: 10%;
+            user-select: none;
+            xpadding-left: 10%;
             xborder-bottom: 4px double rgba(68, 68, 68, 1);
 
            
@@ -840,9 +875,6 @@
             filter: saturate(1);
         }
 
-      
-
- 
 
         .extra-box > .box > .item:active {
             filter: brightness(1.0);
@@ -1178,7 +1210,11 @@
         const elem = document.createElement('div');
         elem.classList.add('item');
         elem.classList.add('dragonrip-server-time-cont');
-   
+
+        const icon = document.createElement('div');
+        icon.classList.add('icon');
+        icon.innerText = '◈';
+
         // Create text label
         const label = document.createElement('div');
         label.classList.add('left');
@@ -1188,7 +1224,8 @@
         // Create time
         const time = document.createElement('div');
         time.classList.add('time');
-     
+        
+         elem.append(icon);
         elem.append(label);
         elem.append(time);
 
@@ -1206,12 +1243,17 @@
         elem.classList.add('item');
         elem.classList.add('game-title');
 
-        const gameTitle = document.createElement('div');
+        const icon = document.createElement('div');
+        icon.classList.add('icon');
+        icon.innerText = '⚔';
+
+        const label = document.createElement('div');
         //gameTitle.classList.add('left');
-        gameTitle.classList.add('title');
-        gameTitle.innerText = 'DragonRip MMORPG';
-      
-        elem.append(gameTitle);
+        label.classList.add('label');
+        label.innerText = 'DragonRip MMORPG';
+        
+        //elem.append(icon);
+        elem.append(label);
         return elem;
     }
 
@@ -1220,16 +1262,22 @@
         elem.classList.add('item');
         elem.classList.add('server-name');
 
-        //const label = document.createElement('div');
-        //label.classList.add('label');
-        //label.classList.add('left');
-        //label.innerText = 'Server:';
+        const icon = document.createElement('div');
+        icon.classList.add('icon');
+        icon.innerText = '◈';
 
+        const label = document.createElement('div');
+        label.classList.add('label');
+        label.classList.add('left');
+        label.innerText = 'Server';
+
+        
         const name = document.createElement('div');
         name.classList.add('name');
-        name.innerHTML = `Main server`;
+        name.innerHTML = `Global`;
 
-        //elem.append(label);
+        elem.append(icon);
+        elem.append(label);
         elem.append(name);
         return elem;
     }
@@ -1239,19 +1287,22 @@
         elem.classList.add('item');
         elem.classList.add('user');
 
+        const icon = document.createElement('div');
+        icon.classList.add('icon');
+        icon.innerText = '◈';
+
         const label = document.createElement('div');
         label.classList.add('label');
         label.classList.add('left');
-        label.innerText = 'User:';
+        label.innerText = 'User';
 
-        const user = document.createElement('div');
-        user.classList.add('name');
-        //user.innerText = settings.usernameToShow;
-        user.innerText = `${settings.usernameToShow}`;
+        const name = document.createElement('div');
+        name.classList.add('name');
+        name.innerText = `${settings.usernameToShow}`;
 
-
+        elem.append(icon);
         elem.append(label);
-        elem.append(user);
+        elem.append(name);
         return elem;
     }
 
@@ -1292,7 +1343,7 @@
             }, 1000);
         }
 
-        infoArea.append(createUsernameLabel());
+        infoArea.append( createUsernameLabel() );
         //infoArea.append(addressElem);
         targetElem.append(infoArea);
 
@@ -1742,16 +1793,16 @@
         const elem = document.createElement('div');
         elem.classList.add('extra-box');
 
-        // Calculate box width ciewport width from footer and viewport width
-        const footer = document.querySelector('body > .chatting');
-        const footerW = footer.clientWidth;
+        // Calculate and set box width width from page elems and viewport width
+        (() => {
+            const playAreaW = document.querySelector('body > .veik').clientWidth;
+            const invAreaW = document.querySelector('body > .into').clientWidth;
+            const viewportW = document.documentElement.clientWidth;
+            const boxW = `${viewportW - playAreaW - invAreaW}px`;
+            elem.style.width = boxW;
+        })();
+
   
-        const viewportW = document.documentElement.clientWidth
-    
-        let boxW = 1-(Number(footerW)/Number(viewportW));
-        boxW = Math.floor((boxW*100))
-        boxW = `${boxW-1}%`
-        elem.style.width = boxW;
 
         // Create extra box contents
         const boxNames = Object.getOwnPropertyNames(settings.extraBoxContents);
@@ -1791,7 +1842,7 @@
 
             const list = document.createElement('div');
             list.classList.add('list');
-            list.classList.add(boxName);
+            //list.classList.add(boxName);
 
             if (linkItems.length === 0) {
                 continue;
@@ -1803,7 +1854,7 @@
                 linkElem.classList.add('item');
                 linkElem.setAttribute('href', settings.extraBoxContents[boxName][linkName].url);
 
-                if (boxName === "Misc") {
+                if (boxName === "External links") {
                     linkElem.setAttribute('target', '_blank');
                 }
 
