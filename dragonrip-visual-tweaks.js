@@ -30,7 +30,7 @@
         serverTime: {
             label: "Server time",
             keepRunning: true,  // Keep updating clock time (updates every second)
-            seconds: true, // Include seconds in the time
+            seconds: false, // Include seconds in the time
             hours24: true,  // Toggle between 12h/24h time format
             fancyBox: false, // Additional styling for the time box element
         },
@@ -55,8 +55,8 @@
                 "My listings": {icon:'/game/images/icons/market.png', url:'/game/mymark.php'},
                 "My requests": {icon:'/game/images/icons/market.png', url:'/game/myrequ.php'},
             },
-            "External links": {
-                "Player Index": {icon:'/game/images/icons/res.png', url:'https://chazu.arkku.net/dragonrip/player-index/'},
+            "External Links": {
+                "Player Index": {icon:'/game/images/mobster/drea.png', url:'https://chazu.arkku.net/dragonrip/player-index/'},
                 "CW Grid img": {icon:'/game/images/wars/lavas.png', url:'https://files.catbox.moe/wt9lk5.png'},
             }
 
@@ -716,7 +716,7 @@
             xbackground-size: cover;
 
             min-height: 100vh;
-            xheight: 100vh;
+            height: 150vh;
             xoverflow-y: scroll;
             scrollbar-width: thin;
             position: absolute;
@@ -724,9 +724,10 @@
             right: 0;
             xmargin: 5px 20px 0px 20px;
             padding: 5px 5px 10px 5px;
-            border: 5px ridge rgb(59, 17, 17);
-            border-top: none;
-            border-right: none;
+            xborder: 5px ridge rgb(59, 38, 17);
+            xborder-top: none;
+            xborder-right: none;
+            xborder-bottom: none;
 
             display: flex;
             flex-direction: column;
@@ -1802,6 +1803,8 @@
             elem.style.width = boxW;
         })();
 
+
+
   
 
         // Create extra box contents
@@ -1854,7 +1857,7 @@
                 linkElem.classList.add('item');
                 linkElem.setAttribute('href', settings.extraBoxContents[boxName][linkName].url);
 
-                if (boxName === "External links") {
+                if (boxName === "External Links") {
                     linkElem.setAttribute('target', '_blank');
                 }
 
