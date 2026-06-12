@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.31
+// @version      1.0.32
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -57,6 +57,7 @@
             },
             "Misc": {
                 "Players": {icon:'/game/images/icons/res.png', url:'https://chazu.arkku.net/dragonrip/player-index/'},
+                "CW Grid": {icon:'/game/images/itema/sossoso.png', url:'https://files.catbox.moe/wt9lk5.png'},
             }
 
         },
@@ -95,13 +96,9 @@
             border: none !important;
             padding: 0px !important;
             --shadow-color: rgba(255, 255, 255, 0.5);
-            xbox-shadow: 0px 0px 2px var(--shadow-color)!important;
-            xfilter: drop-shadow(0px 0px 1px var(--shadow-color));
-            xbackground-color: black;
             display: flex;
             align-items: center !important;
             justify-content: start;
-            xbox-shadow: inset 0px 0px 5px rgba(255, 255, 255, 0.2);
         }
         /* Filled interior of bar */
         .healthbar2 {
@@ -361,7 +358,6 @@
         /* Bar container */
         .player > .bar {
             xborder: 1px solid lime;
-            xoutline: 2px solid lime !important;
             width: 85%;
         }
 
@@ -375,7 +371,6 @@
             background-color: black;
             position: relative;
             border: 2px solid grey;
-
             outline: 5px ridge var(--border-color)!important;
 
             box-shadow: inset 0px 0px 5px 5px rgba(255, 0, 0, 0.9)
@@ -454,8 +449,6 @@
             background-color: rgb(0, 55, 103);
             opacity: 0.9;
             filter: saturate(5);
-
-                  
         }
 
         .player > .bar > .healthbar:nth-child(1) > .healthbar2:after{
@@ -519,7 +512,7 @@
         body > div.logo > .info > .item > .left {
             xdisplay: flex;
             width: 50%;
-            text-align: right;
+            xtext-align: right;
             margin-right: 5px;
         }
 
@@ -571,6 +564,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            user-select: none;
         }
 
         body > div.logo > .events > .no-events:hover {
@@ -696,8 +690,9 @@
             position: absolute;
             top: 0;
             right: 0;
-            margin: 5px 20px 0px 20px;
+            xmargin: 5px 20px 0px 20px;
             padding: 10px 5px 10px 5px;
+            border-left: 4px solid rgb(48, 48, 48);
 
             display: flex;
             flex-direction: column;
@@ -706,7 +701,7 @@
 
             /* border simple https://i.imgur.com/c7Oeu0F.png'  */
             /* border ornamental https://i.imgur.com/j7xNFLn.png  */
-            border-image-source: url('https://i.imgur.com/c7Oeu0F.png');
+            xborder-image-source: url('https://i.imgur.com/c7Oeu0F.png');
             border-image-slice: 150;
             border-image-width: 40px;
             border-image-outset: 0;
@@ -722,10 +717,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: start;
-            xmargin-bottom: 0px;
-            xpadding: 5px 5px 5px 5px;
-
-            xbackground-color: rgba(21, 21, 21, 1);
             background-size: contain;
         }
 
@@ -788,11 +779,9 @@
    
         }
 
-       
-
         .extra-box > .box > .separator-line {
             xborder: 1px solid lime;
-            width: 100%;
+            xwidth: 80%;
             height: 4px;
             background-color: rgba(44, 44, 44, 1);
             margin-top: 10px;
@@ -1277,6 +1266,11 @@
     const insertLogoAreaInfo = () => {
         const targetElem = document.querySelector('body > div.logo');
 
+        const playerAreaW = document.querySelector('body > div.player').clientWidth;
+        //console.log(playerAreaW)
+        targetElem.style.width = `calc(100% - ${playerAreaW}px)`
+      
+
         const infoArea = document.createElement('div');
         infoArea.classList.add('info');
 
@@ -1756,7 +1750,7 @@
     
         let boxW = 1-(Number(footerW)/Number(viewportW));
         boxW = Math.floor((boxW*100))
-        boxW = `${boxW-3}%`
+        boxW = `${boxW-1}%`
         elem.style.width = boxW;
 
         // Create extra box contents
@@ -1808,6 +1802,10 @@
                 const linkElem = document.createElement('a');
                 linkElem.classList.add('item');
                 linkElem.setAttribute('href', settings.extraBoxContents[boxName][linkName].url);
+
+                if (boxName === "Misc") {
+                    linkElem.setAttribute('target', '_blank');
+                }
 
                 const imageCont =  document.createElement('div');
                 imageCont.classList.add('image-cont');
