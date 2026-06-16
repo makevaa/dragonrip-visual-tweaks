@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.33
+// @version      1.0.36
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -80,6 +80,7 @@
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             box-sizing: border-box;
+            
         }
 
         body, html {
@@ -87,6 +88,7 @@
             xbackground-image: url('https://i.imgur.com/gnerbEH.jpeg')!important;
             background-size: auto !important;
             background-repeat: repeat !important;
+            color-scheme: dark !important;
         }
 
                 
@@ -522,6 +524,8 @@
             display: flex;
             align-items: center;
             justify-content: start;
+            xwidth: 80%;
+           
         }
 
         body > div.logo > .info > .item > .icon {
@@ -536,33 +540,35 @@
             padding: 5px;
             color: #009258;
             font-size: 1.2em;
+            
         }        
 
         body > div.logo > .info > .item > .left {
             xdisplay: flex;
-            width: 45%;
-            xtext-align: right;
+            width: 44%;
+            text-align: right;
             margin-right: 5px;
         }
 
+
+
         body > div.logo > .info > .item.server-name > .name {
-            xcolor: #de6c09;
-            xcolor: #7a3c05;
-            xcolor: #6633ff;
             xcolor: #009258;
         }
 
-        body > div.logo > .info > .item.game-title > .label {
-            xcolor: #de6c09;
-            xcolor: #7a3c05;
-            xcolor: #6633ff;
-      
+        body > div.logo > .info > .item.game-name > .name {
+            xborder: 1px solid grey;
+            xmargin: auto;
+            xcolor: #009258;
+            xcolor: #ce2b37;
+            xcolor: #D70A53;
         }
 
         body > div.logo > .info > .item.user > .name {
             xcolor: #6633ff;
             xcolor: rgb(111, 111, 255);
             xcolor: #167676;
+            xcolor: #009258;
         } 
 
         body > div.logo > .info > .item.address {
@@ -716,7 +722,7 @@
             xbackground-size: cover;
 
             min-height: 100vh;
-            height: 150vh;
+            xheight: 150vh;
             xoverflow-y: scroll;
             scrollbar-width: thin;
             position: absolute;
@@ -933,6 +939,15 @@
 
 
     const chatCss = `    
+
+        /* Chat box */
+        body > .chatting {
+            width: 98vw !important;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
 
         /* Chat tab buttons */
         .chatting > .chatenemy > input[type="button"] {
@@ -1174,6 +1189,127 @@
            
     `;
 
+    const herbalismCss = `
+        /* "Pick All" button */
+        body > .veik > div#bitl.juod {
+            border: 2px solid lime;
+            border-radius: 5px;
+            width: 30% !important;
+            background-color: #031e00;
+        }
+        body > .veik > div#bitl.juod > span {
+            color: lime !important;
+        }
+
+        body > .veik > div#bitl.juod:hover {
+             background-color: #000000;
+        } 
+
+        table.seed-table {
+            width: 100%;
+        }
+
+        table.seed-table > tbody {
+            width: 100%;
+        }
+
+        table.seed-table > tbody  > .row {
+            width: 100%;
+        }
+
+        table.seed-table > tbody > .row > .seed-item {
+            border: 2px solid #414141;
+            padding: 10px 20px 10px 20px !important;
+            background-color: rgba(0, 0, 0, 0.4);
+            width: 20% !important;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        table.seed-table > tbody > .row > .seed-item > br {
+            display: none;
+        }
+
+        table.seed-table > tbody > .row > .seed-item > form {
+            display: none;
+        } 
+
+        table.seed-table > tbody > .row > .seed-item > .title {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        /* The red [X] drop link */ 
+        table.seed-table > tbody > .row > .seed-item > a {
+            display: none;
+            border: 2px solid red;
+            background-color: #360000;
+            border-radius: 5px;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            margin: 0px 0px 5px 5px;
+            width: 20px;
+            height: 20px;
+        }
+        table.seed-table > tbody > .row > .seed-item:hover > a {
+            display: flex;
+        }
+        table.seed-table > tbody > .row > .seed-item > a:hover > * {
+            color: yellow !important;
+            border-color: yellow;
+            background-color: #360000;
+        } 
+
+
+
+        table.seed-table > tbody > .row > .seed-item > .amount {
+            xborder: 1px solid grey;
+            font-size: 0.8em !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* "Plant All" button */
+        table.seed-table > tbody > .row > .seed-item > div.juod {
+            border: 2px solid lime;
+            border-radius: 5px;
+            width: 50% !important;
+            height: 30px !important;
+            background-color: #021700;
+            margin-top: 5px;
+        }
+        table.seed-table > tbody > .row > .seed-item > div.juod > a {
+            border-radius: 5px;
+            height: 100%;
+            width: 100%;
+        }
+        table.seed-table > tbody > .row > .seed-item > div.juod > a > span {
+            border-radius: 5px;
+            height: 100%;
+            width: 100%;
+            color: lime !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        table.seed-table > tbody > .row > .seed-item > div.juod:hover, table.seed-table > tbody > .row > .seed-item > div.juod:hover *
+        {
+            background-color: #000000;
+        }
+        table.seed-table > tbody > .row > .seed-item > div.juod:active, table.seed-table > tbody > .row > .seed-item > div.juod:active *
+        {
+            background-color: #282828;
+        }
+
+
+
+
+    `;
+
 
 
     const log = str => {
@@ -1226,8 +1362,8 @@
         const time = document.createElement('div');
         time.classList.add('time');
         
-         elem.append(icon);
         elem.append(label);
+        elem.append(icon);
         elem.append(time);
 
         return elem;
@@ -1239,22 +1375,27 @@
     }
 
     
-    const createGameTitle = () => {
+    const createGameName = () => {
         const elem = document.createElement('div');
         elem.classList.add('item');
-        elem.classList.add('game-title');
+        elem.classList.add('game-name');
 
         const icon = document.createElement('div');
         icon.classList.add('icon');
-        icon.innerText = '⚔';
+        icon.innerText = '◈';
 
         const label = document.createElement('div');
-        //gameTitle.classList.add('left');
+        label.classList.add('left');
         label.classList.add('label');
-        label.innerText = 'DragonRip MMORPG';
+        label.innerText = 'System';
+
+        const name = document.createElement('div');
+        name.classList.add('name');
+        name.innerHTML = `DragonRip`;
         
-        //elem.append(icon);
         elem.append(label);
+        elem.append(icon);
+        elem.append(name);
         return elem;
     }
 
@@ -1277,8 +1418,9 @@
         name.classList.add('name');
         name.innerHTML = `Global`;
 
-        elem.append(icon);
+        
         elem.append(label);
+        elem.append(icon);
         elem.append(name);
         return elem;
     }
@@ -1301,8 +1443,9 @@
         name.classList.add('name');
         name.innerText = `${settings.usernameToShow}`;
 
-        elem.append(icon);
+
         elem.append(label);
+        elem.append(icon);
         elem.append(name);
         return elem;
     }
@@ -1334,7 +1477,7 @@
         addressElem.innerText = address;
 
    
-        infoArea.append( createGameTitle() );
+        infoArea.append( createGameName() );
         infoArea.append( createServerName() );
         infoArea.append( createClock() );
  
@@ -1794,13 +1937,18 @@
         const elem = document.createElement('div');
         elem.classList.add('extra-box');
 
-        // Calculate and set box width width from page elems and viewport width
+        // Calculate and set box size from page elems and viewport width
         (() => {
+            // Calc width
             const playAreaW = document.querySelector('body > .veik').clientWidth;
             const invAreaW = document.querySelector('body > .into').clientWidth;
             const viewportW = document.documentElement.clientWidth;
             const boxW = `${viewportW - playAreaW - invAreaW}px`;
             elem.style.width = boxW;
+
+            // Calc height
+            const pageH = Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight);
+            elem.style.height = pageH;
         })();
 
 
@@ -2587,6 +2735,47 @@
         document.head.appendChild(elem);
     }
 
+    const setHerbalismStyles = () => {
+        const tables = document.querySelectorAll('body > .veik > table#pirki');
+        const seedsTable = tables[3];
+        seedsTable.classList.add('seed-table');
+        const seedRows = seedsTable.querySelectorAll('tbody > tr');
+
+        //console.log(seeds);
+
+        for (let i=0; i<seedRows.length; i++) {
+            const row = seedRows[i];
+            row.classList.add('row');
+            const seedsInRow = row.querySelectorAll('td');
+            console.log(seedsInRow)
+            for (const seed of seedsInRow) {
+                // Check if title already exists, mutationObserver may fire multiple times
+                if (seed.querySelector('.title') === undefined || seed.querySelector('.title') === null ) {
+                    seed.classList.add('seed-item')
+                    let seedName = seed.querySelector('div.blockex').getAttribute('title');
+                    seedName = seedName.replace(' Seed', '');
+                    seedName = seedName.replace(' Spawn', '');
+
+                    const seedAmount = seed.querySelectorAll('span')[1];
+                    seedAmount.classList.add('amount');
+
+                    const dropButton = seed.querySelector('a > span > b');
+                    dropButton.innerText = '▼';
+
+
+                    const titleElem = document.createElement('div');
+                    titleElem.classList.add('title');
+                    titleElem.innerText = seedName;
+
+                    seed.prepend(titleElem);
+                }
+             
+            }
+        }
+
+
+    }
+
 
     const setCustomCss = str => {
         const styleElem = document.createElement("style");
@@ -2596,6 +2785,9 @@
 
     
     const setObservers = () => {
+        const currentUrl = document.location.href;
+        console.log(currentUrl)
+
         // Observe when right-side menu tabs are navigated
         const rightSide = document.querySelector('body > .into > .burbul');
         if ( exists(rightSide) ) {
@@ -2608,6 +2800,27 @@
             }
             const config = { attributes: false, childList: true, subtree: false };
             new MutationObserver(callback).observe(rightSide, config);
+        }
+
+        // Set herbalism page styles and edits, re-apply edits on harvest etc.
+        if (currentUrl.indexOf('https://dragonrip.com/game/herbalism.php') > -1) {
+            setCustomCss(herbalismCss);
+            setHerbalismStyles();
+
+            const playArea = document.querySelector('body > .veik');
+            if ( exists(playArea) ) {
+            const callback = (mutationsList, observer) => {
+                for (const mutation of mutationsList) {
+                    console.log(mutationsList)
+                    if (mutation.type === 'childList') {
+                        setHerbalismStyles();
+                    }
+                }
+            }
+            const config = { attributes: false, childList: true, subtree: false };
+            new MutationObserver(callback).observe(rightSide, config);
+        }
+            
         }
 
         /*
@@ -2703,18 +2916,27 @@
 
 
     const init = () => {
+
+
         insertCustomFavicon();
         setCustomCss(mainCss);
         setCustomCss(infoAreaCss); 
+        setCustomCss(serverTimeMainCss);
         setCustomCss(serverTimeMainCss);
         
         if (settings.serverTime.fancyBox) { setCustomCss(serverTimeFancyBoxCss); } 
         if (settings.removeGameLogo) { setCustomCss(removeGameLogoCss); } 
         if (settings.removeGameFooter) { setCustomCss(removeGameFooterCss); } 
 
+
+
+
+
+            
+            
+
         waitForUI();
         log('Script loaded.');
     }
-
     init();
 })();
