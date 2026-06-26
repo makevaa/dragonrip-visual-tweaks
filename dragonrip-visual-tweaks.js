@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.38
+// @version      1.0.39
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1596,7 +1596,7 @@
                 imageUrl: '/game/images/summo/dark.png' 
             },
             gemRain: {
-                label: '<a href="/game/gemrain.php" class="red">[Gem rain]</a>', 
+                label: '<a href="/game/gemrain.php" class="red">[Gem rain]</a> event', 
                 imageUrl: '/game/images/itema/damageshard.png' 
             }
             
@@ -1661,7 +1661,7 @@
             winter: "Snowman appeared in the Ice Plains.",
             spring: "Event: Treant Elder appeared in the Reaper's Garden.",
             summer: "Event: Quartz Titan appeared in the Azure Coastline.",
-            gemRain: "Global: Hurry Home, the Gem Rain has started!"
+            gemRain: "Hurry Home, the Gem Rain has started!"
             
             //halloween: "",
             //frenzy: " of Frenzy.",
