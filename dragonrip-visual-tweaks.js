@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.36
+// @version      1.0.37
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1192,18 +1192,40 @@
     const herbalismCss = `
         /* "Pick All" button */
         body > .veik > div#bitl.juod {
-            border: 2px solid lime;
+            border: 1px solid lime;
             border-radius: 5px;
             width: 30% !important;
+            height: 30px;
             background-color: #031e00;
+
         }
         body > .veik > div#bitl.juod > span {
+            xborder: 1px solid red;
             color: lime !important;
+            width: 100%,
+            height: 100%;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+
         }
 
         body > .veik > div#bitl.juod:hover {
-             background-color: #000000;
+            background-color: #000000;
         } 
+        body > .veik > div#bitl.juod:active {
+            background-color: #002d14;
+        } 
+
+        /* The time left labels (eg. "24 min. 41 s.") */
+        body > .veik > table > tbody > tr > td > div.farm > span.amoutix {
+            display: inline-block !important;
+            width: 100%;
+            xcolor: red !important;
+            border-radius: 5px 5px 0px 0px !important;
+            padding: 5px 0px 5px 0px;
+            margin: 0px!important;
+        }
 
         table.seed-table {
             width: 100%;
@@ -1241,27 +1263,39 @@
 
         /* The red [X] drop link */ 
         table.seed-table > tbody > .row > .seed-item > a {
-            display: none;
-            border: 2px solid red;
-            background-color: #360000;
-            border-radius: 5px;
+            border: 1px solid #740000;
+            background-color: #210000;
+            border-radius: 2px 2px 6px 2px;
+            display: flex;
             align-items: center;
             justify-content: center;
             position: absolute;
             bottom: 0;
-            left: 0;
-            margin: 0px 0px 5px 5px;
+            right: 0;
+            margin: 0px 2px 2px 0px;
             width: 20px;
             height: 20px;
+            opacity: 0.5;
         }
-        table.seed-table > tbody > .row > .seed-item:hover > a {
+        table.seed-table > tbody > .row > .seed-item > a > span {
+            width: 100% !important;
+            height: 100% !important;
             display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        table.seed-table > tbody > .row > .seed-item > a:hover > * {
-            color: yellow !important;
-            border-color: yellow;
-            background-color: #360000;
-        } 
+        table.seed-table > tbody > .row > .seed-item > a:hover {
+            opacity: 1;
+            outline: 1px solid yellow !important;
+        
+        }
+        table.seed-table > tbody > .row > .seed-item > a:hover > span {
+            color: red !important;
+        }
+        table.seed-table > tbody > .row > .seed-item > a:has(> a:hover) {
+            border: 1px solid red;
+        }
+
 
 
 
@@ -1275,23 +1309,23 @@
 
         /* "Plant All" button */
         table.seed-table > tbody > .row > .seed-item > div.juod {
-            border: 2px solid lime;
-            border-radius: 5px;
+            border: 1px solid #009900;
+            border-radius: 3px;
             width: 50% !important;
             height: 30px !important;
             background-color: #021700;
             margin-top: 5px;
         }
         table.seed-table > tbody > .row > .seed-item > div.juod > a {
-            border-radius: 5px;
+            border-radius: 3px;
             height: 100%;
             width: 100%;
         }
         table.seed-table > tbody > .row > .seed-item > div.juod > a > span {
-            border-radius: 5px;
+            border-radius: 3px;
             height: 100%;
             width: 100%;
-            color: lime !important;
+            color: #00c900 !important;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1302,7 +1336,7 @@
         }
         table.seed-table > tbody > .row > .seed-item > div.juod:active, table.seed-table > tbody > .row > .seed-item > div.juod:active *
         {
-            background-color: #282828;
+            background-color: #0c4300;
         }
 
 
@@ -1561,6 +1595,10 @@
                 label: 'Frenzy', 
                 imageUrl: '/game/images/summo/dark.png' 
             },
+            gemRain: {
+                label: 'Gem rain',
+                imageUrl: '/game/images/itema/damageshard.png' 
+            }
             
         }
 
@@ -1623,6 +1661,7 @@
             winter: "Snowman appeared in the Ice Plains.",
             spring: "Event: Treant Elder appeared in the Reaper's Garden.",
             summer: "Event: Quartz Titan appeared in the Azure Coastline.",
+            gemRain: "Global: Hurry Home, the Gem Rain has started!"
             
             //halloween: "",
             //frenzy: " of Frenzy.",
@@ -2760,7 +2799,7 @@
                     seedAmount.classList.add('amount');
 
                     const dropButton = seed.querySelector('a > span > b');
-                    dropButton.innerText = '▼';
+                    dropButton.innerText = '×';
 
 
                     const titleElem = document.createElement('div');
