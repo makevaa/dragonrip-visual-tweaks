@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.37
+// @version      1.0.38
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1596,7 +1596,7 @@
                 imageUrl: '/game/images/summo/dark.png' 
             },
             gemRain: {
-                label: 'Gem rain',
+                label: '<a href="/game/gemrain.php" class="red">[Gem rain]</a>', 
                 imageUrl: '/game/images/itema/damageshard.png' 
             }
             
