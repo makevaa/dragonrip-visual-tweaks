@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.42
+// @version      1.0.43
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -130,7 +130,6 @@
 
         /* Inventory, equipped items etc. tabs on right-side of screen */
         .into > table:nth-child(1) > tbody > tr > td {
-            xborder: 1px solid lime;
             cursor:pointer;
             box-shadow: none !important;
             width: auto;
@@ -801,7 +800,6 @@
             border-radius: 30px 10px 10px 30px;
         }
         .extra-box.small > .box > .list > .item {
-            border: 1px solid lime;
             width: auto;
             border-radius: 0px;
         }
