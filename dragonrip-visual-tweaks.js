@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.43
+// @version      1.0.45
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -744,6 +744,7 @@
         }
         .extra-box.small > .box > .top {
             width: 100%;
+            margin-bottom: 0px;
         }
 
         .extra-box > .box > .top > .title {
@@ -765,8 +766,9 @@
             border-bottom: 1px solid rgba(21, 21, 21, 1);
         }
         .extra-box.small > .box > .separator-line {
-            margin-top: 5px;
-            margin-bottom: 0px;
+            xmargin-top: 5px;
+            xmargin-bottom: 0px;
+            width: 100%;
         }
 
         .extra-box > .box > .list {
@@ -802,6 +804,7 @@
         .extra-box.small > .box > .list > .item {
             width: auto;
             border-radius: 0px;
+            border: none;
         }
 
         .extra-box > .box > .list > .item > * {
@@ -1910,7 +1913,7 @@
         })();
 
 
-         if (boxW < 100) {
+        if (boxW < 100) {
             elem.classList.add('small');
         }
   
@@ -1930,6 +1933,8 @@
             title.classList.add('title');
             title.innerText = boxName;
             top.append(title);
+            
+         
 
             // Create button to hide/view link list
             const hideButton = document.createElement('div');
@@ -1947,7 +1952,11 @@
 
             //top.append(hideButton);
 
-            boxElem.append(top);
+            
+            if (boxW >= 100) {
+                boxElem.append(top);
+            }
+            
 
             const linkItems = Object.getOwnPropertyNames(settings.extraBoxContents[boxName]);
 
