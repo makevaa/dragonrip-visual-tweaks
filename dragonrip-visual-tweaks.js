@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.39
+// @version      1.0.42
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -52,10 +52,10 @@
             "Market": {
                 "Resources": {icon:'/game/images/icons/res.png', url:'/game/market.php?go=2'},
                 "Combat gear": {icon:'/game/images/icons/armor.png', url:'/game/market.php?go=1'},
-                "My listings": {icon:'/game/images/icons/market.png', url:'/game/mymark.php'},
-                "My requests": {icon:'/game/images/icons/market.png', url:'/game/myrequ.php'},
+                "My listings": {icon:'/game/images/itema/scroll10.png', url:'/game/mymark.php'},
+                "My requests": {icon:'/game/images/itema/scroll9.png', url:'/game/myrequ.php'},
             },
-            "External Links": {
+            "Links": {
                 "Player Index": {icon:'/game/images/mobster/drea.png', url:'https://chazu.arkku.net/dragonrip/player-index/'},
                 "CW Grid img": {icon:'/game/images/wars/lavas.png', url:'https://files.catbox.moe/wt9lk5.png'},
             }
@@ -132,36 +132,31 @@
         .into > table:nth-child(1) > tbody > tr > td {
             xborder: 1px solid lime;
             cursor:pointer;
-            xoutline: none !important;
-            xborder: none !important;
             box-shadow: none !important;
-
             width: auto;
             height: 40px !important;
             padding: 0px !important;
-            xmargin: 0px !important;
-            xmargin-right: -5px !important;
             background-color: rgba(0, 0, 0, 0);
-            
-
             background-image: url('https://i.imgur.com/Rq1EfYg.png');
             background-position: center;
             background-repeat: no-repeat;
             background-size: contain;
-
             filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.9)) brightness(1);
-
             touch-action: manipulation;
         }
 
         .into > table:nth-child(1) > tbody > tr > td:hover {
-            xbackground-color: #0099ff !important;
             filter: brightness(0.7);
         }
 
         /* Icon image inside right-side menu tabs */
         .into > table:nth-child(1) > tbody > tr > td > img {
-            filter: drop-shadow(2px 2px 0px black) drop-shadow(0px 0px 1px rgba(0, 0 , 0, 0.9));
+            filter: 
+                drop-shadow(2px 2px 0px black) 
+                drop-shadow(0px 0px 1px rgba(0, 0 , 0, 0.9))
+            ;
+            xwidth: 30px !important;
+            xheight: 30px !important;
         }
 
         /* Selected right-side menu tab */
@@ -169,15 +164,14 @@
             xborder:1px solid red !important;
             background-image: url('https://i.imgur.com/wQPBolf.png');
 	        filter: brightness(1.2);
-            xtransform: translateY(5px);
         }
 
-        /* Icon image right-side menu tab */
+        /* Selected tab icon image, in the right-side menu tab */
         .into > table:nth-child(1) > tbody > tr > td.inter > img  {
             filter: 
                 sepia(1)
                 hue-rotate(-30deg)
-                saturate(3)
+                saturate(4)
                 brightness(1.5)
                 drop-shadow(2px 2px 0px black)
                 drop-shadow(0px 0px 1px rgba(0, 0, 0, 1.0))
@@ -710,49 +704,27 @@
     const extraBoxCss = `    
         .extra-box {
             border: 1px solid rgba(255,255,255,0.15);
-            xborder-radius: 2px;
             box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.8);
             background: url('/img/mc/center.jpg');
             background-position: center center;
             background-repeat: repeat;
-
-            xbackground-image: url('https://i.imgur.com/vjJ8ugC.jpeg');
-            xbackground-position: center;
-            xbackground-repeat: no-repeat;
-            xbackground-size: cover;
-
             min-height: 100vh;
-            xheight: 150vh;
-            xoverflow-y: scroll;
             scrollbar-width: thin;
             position: absolute;
             top: 0;
             right: 0;
-            xmargin: 5px 20px 0px 20px;
             padding: 5px 5px 10px 5px;
-            xborder: 5px ridge rgb(59, 38, 17);
-            xborder-top: none;
-            xborder-right: none;
-            xborder-bottom: none;
-
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: start;
-
-            /* border simple https://i.imgur.com/c7Oeu0F.png'  */
-            /* border ornamental https://i.imgur.com/j7xNFLn.png  */
-            xborder-image-source: url('https://i.imgur.com/c7Oeu0F.png');
-            border-image-slice: 150;
-            border-image-width: 40px;
-            border-image-outset: 0;
-            border-image-repeat: repeat;
             box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.6), inset 0px 0px 10px 10px rgba(0, 0, 0, 0.8);
-            xbox-shadow: inset 0px 0px 10px 10px rgba(0, 0, 0, 0.8);
+        }
+        .extra-box.small {
+            padding: 0px;
         }
 
         .extra-box > .box {
-            xborder: 1px solid grey;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -762,68 +734,29 @@
         }
 
         .extra-box > .box > .top {
-            xborder: 1px solid lime;
             color: grey;
             width: 90%;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: start;
             height: 25px;
             margin-bottom: 5px;
             user-select: none;
-            xpadding-left: 10%;
-            xborder-bottom: 4px double rgba(68, 68, 68, 1);
-
-           
-            xtext-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
-
-            xbackground: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.8) 70%, rgba(0,0,0,0) 90%);
+        }
+        .extra-box.small > .box > .top {
+            width: 100%;
         }
 
         .extra-box > .box > .top > .title {
-            xborder: 1px solid grey;
             font-size: 1.1em;
             font-family: Georgia, serif;
             color: #f5e9d8;
         }
-
-        .extra-box > .box > .top > .button {
-            xborder: 1px solid grey;
-            aspect-ratio: 1/1;
-            height: 100%;
-            margin-right: 10%;
-            pointer-events: auto;
-            user-select: none;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-image: url('https://i.imgur.com/wQPBolf.png');
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            text-align: center;
-            font-size: 1em;
-            font-family: Georgia, serif;
-            text-transform: uppercase;
-            color: #ffffff;
-            text-shadow: 0px 0px 10px orange, 0px 0px 5px rgb(160, 160, 160);
-            filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.9));
-        }
-
-        .extra-box > .box > .top > .button:hover {
-               filter: brightness(0.9);
-   
-        }
-
-        .extra-box > .box > .top > .button:active {
-               background-image: url('  https://i.imgur.com/Rq1EfYg.png');
-   
+        .extra-box.small > .box > .top > .title {
+            font-size: 0.7em
         }
 
         .extra-box > .box > .separator-line {
-            xborder: 1px solid lime;
-            xwidth: 80%;
             height: 4px;
             background-color: rgba(44, 44, 44, 1);
             margin-top: 10px;
@@ -832,15 +765,23 @@
             border-top: 1px solid rgba(88, 88, 88, 1);
             border-bottom: 1px solid rgba(21, 21, 21, 1);
         }
+        .extra-box.small > .box > .separator-line {
+            margin-top: 5px;
+            margin-bottom: 0px;
+        }
 
         .extra-box > .box > .list {
-            border: 1ps solid lime;
-            width: 90%;
+            width: 95%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: start;
             overflow: hidden;
+        }
+            
+        .extra-box.small > .box > .list {
+            width: 100%;
+            align-items: start;
         }
 
         .extra-box > .box > .list.hidden {
@@ -848,7 +789,6 @@
         }
 
         .extra-box > .box > .list > .item {
-            xborder: 1px solid rgba(255, 255, 255, 0.25);
             border: 4px double rgba(41, 41, 41, 1);
             border-left: none;
             display: flex;
@@ -857,17 +797,13 @@
             width: 100%;
             height: 35px;
             background-color: rgba(0, 0, 0, 0.5);
-            xmargin-bottom: 5px;
-            xmargin-top: -5px;
             box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8), 0px 0px 5px 5px rgba(0, 0, 0, 0.5);
-
             border-radius: 30px 10px 10px 30px;
-            xborder-radius: 50px;
-
-            xbackground: #000000;
-            xbackground: linear-gradient(90deg,rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 100%);
-
- 
+        }
+        .extra-box.small > .box > .list > .item {
+            border: 1px solid lime;
+            width: auto;
+            border-radius: 0px;
         }
 
         .extra-box > .box > .list > .item > * {
@@ -882,58 +818,41 @@
             filter: saturate(1);
         }
 
-
         .extra-box > .box > .item:active {
             filter: brightness(1.0);
         } 
 
-        
         .extra-box > .box > .list > .item > .image-cont {
-            xborder: 1px solid grey;
-            height: 120%;
+            width: 35px;
+            height: 35px;
             aspect-ratio: 1/1;
             display: flex;
             align-items: center;
             justify-content: center;
-   
             margin: 0px 5px 0px 0px;
             background-color: rgba(21, 21, 21, 1);
-
-            border: 4px double rgba(255, 255, 255, 0.35);
             border: 4px double rgba(41, 41, 41, 1);
-            xbox-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8);
-      
             border-radius: 100%;
-            overflow: hidden;
-
+        }
+        .extra-box.small > .box > .list > .item > .image-cont {
+            margin: 0px;
         }
 
         .extra-box > .box > .list > .item > .image-cont > .image {
-            xborder: 2px double grey;
-            xborder: 1px solid lime;
             width: 100%;
+            height: 100%;
             aspect-ratio: 1/1;
-            xheight: 100%;
             box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8);
-      
-            xfilter: contrast(2) sepia(1) saturate(2);
-            filter: saturate(0.75);
-
+            border-radius: 100%;
         }
 
         .extra-box > .box > .list > .item > .label {
-            xborder: 1px solid lime;
             text-align: left;
-
             font-family: consolas, monospace;
-
             font-size: 0.9em;
             font-family: Georgia, serif;
             color: rgba(152, 152, 152, 1);
             text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5);
-            xcolor: #f5e9d8;
-            
-            xtext-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
         }
     `;
 
@@ -1596,7 +1515,7 @@
                 imageUrl: '/game/images/summo/dark.png' 
             },
             gemRain: {
-                label: '<a href="/game/gemrain.php" class="red">[Gem rain]</a> event', 
+                label: '<a href="/game/gemrain.php" class="red">[Gem Rain]</a> event', 
                 imageUrl: '/game/images/itema/damageshard.png' 
             }
             
@@ -1975,6 +1894,7 @@
     const createExtraBox = () => {
         const elem = document.createElement('div');
         elem.classList.add('extra-box');
+        let boxW;
 
         // Calculate and set box size from page elems and viewport width
         (() => {
@@ -1982,8 +1902,9 @@
             const playAreaW = document.querySelector('body > .veik').clientWidth;
             const invAreaW = document.querySelector('body > .into').clientWidth;
             const viewportW = document.documentElement.clientWidth;
-            const boxW = `${viewportW - playAreaW - invAreaW}px`;
-            elem.style.width = boxW;
+            boxW = viewportW - playAreaW - invAreaW;
+            const boxWStr = `${boxW}px`;
+            elem.style.width = boxWStr;
 
             // Calc height
             const pageH = Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight);
@@ -1991,7 +1912,9 @@
         })();
 
 
-
+         if (boxW < 100) {
+            elem.classList.add('small');
+        }
   
 
         // Create extra box contents
@@ -2042,9 +1965,10 @@
 
                 const linkElem = document.createElement('a');
                 linkElem.classList.add('item');
+
                 linkElem.setAttribute('href', settings.extraBoxContents[boxName][linkName].url);
 
-                if (boxName === "External Links") {
+                if (boxName === "Links") {
                     linkElem.setAttribute('target', '_blank');
                 }
 
@@ -2061,7 +1985,11 @@
                 const label =  document.createElement('div');
                 label.classList.add('label');
                 label.innerText = linkName;
-                linkElem.append(label);
+               
+                if (boxW >= 100) {
+                    linkElem.append(label);
+                }
+
 
                 list.append(linkElem);
             }
@@ -2762,7 +2690,7 @@
         observer.observe(textElemHp, config);
         observer.observe(textElemStam, config);
         observer.observe(textElemXp, config);
-        log('stat bar observers set')
+        //log('stat bar observers set')
     }
 
     const insertCustomFavicon = () => {
@@ -2774,6 +2702,7 @@
         document.head.appendChild(elem);
     }
 
+    // Set vustom styles for Herbalism page
     const setHerbalismStyles = () => {
         const tables = document.querySelectorAll('body > .veik > table#pirki');
         const seedsTable = tables[3];
@@ -2811,10 +2740,23 @@
              
             }
         }
-
-
     }
 
+    // Set custom icons for the right-side menu tabs
+    const setTabIcons = () => {
+        const iconData = {
+            'Inventory': 'https://images2.imgbox.com/3a/26/sNRWmavu_o.png',
+            'Equipment': 'https://images2.imgbox.com/0b/5b/zajN3PtM_o.png',
+            'Levels': 'https://images2.imgbox.com/f5/c1/8JXROy05_o.png',
+            'Tasks': 'https://images2.imgbox.com/0d/1a/rk9zdpdv_o.png',
+            'Magic': 'https://images2.imgbox.com/4c/f4/ZnfcbRst_o.png',
+        }
+        const tabImages = document.querySelectorAll('.into > table:nth-child(1) > tbody > tr > td > img');
+        for (const tabImage of tabImages) {
+            const tabTitle  = tabImage.getAttribute('title');
+            tabImage.src = iconData[tabTitle];
+        }
+    }
 
     const setCustomCss = str => {
         const styleElem = document.createElement("style");
@@ -2946,6 +2888,8 @@
                     invContextMenu();
                     invContextMenuChecker();
                 }
+
+                //setTabIcons();
 
 
                 setObservers();
