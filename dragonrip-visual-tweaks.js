@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.45
+// @version      1.0.48
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -38,24 +38,24 @@
         // Create big extra box on the right side of game area
         createExtraBox: true,
         extraBoxContents: {
-            "Clan": {
+            "◈Clan◈": {
                 "Members":     {icon:'/game/images/bossimages/zolton.png', url:'/game/clan.php?go=5'},
                 "Log":         {icon:'/game/images/itema/scroll7.png', url:'/game/clanlog.php'},
                 "Vault":       {icon:'/game/images/blacksm/bank.png', url:'/game/cvault.php'},
                 "Resources":   {icon:'/game/images/blacksm/bar.png', url:'/game/clan.php?go=9'},
                 "Buildings":   {icon:'/game/images/clanbuu/dark/3.png', url:'/game/clanbuu.php'},
-                "Clan Bosses": {icon:'/game/images/bossimages/earth.png', url:'/game/clan.php?go=10'},
-                "Clan Games":  {icon:'/game/images/tool/axe/5.png', url:'/game/clang.php'},
-                "Clan Temple": {icon:'/game/images/ruins/relsh.png', url:'/game/clant.php'},
+                "Bosses": {icon:'/game/images/bossimages/earth.png', url:'/game/clan.php?go=10'},
+                "Games":  {icon:'/game/images/tool/axe/5.png', url:'/game/clang.php'},
+                "Temple": {icon:'/game/images/ruins/relsh.png', url:'/game/clant.php'},
                 "Clan Wars":   {icon:'/game/images/itema/sossoso.png', url:'/game/clanw.php'},
             },
-            "Market": {
+            "◈Market◈": {
                 "Resources": {icon:'/game/images/icons/res.png', url:'/game/market.php?go=2'},
                 "Combat gear": {icon:'/game/images/icons/armor.png', url:'/game/market.php?go=1'},
                 "My listings": {icon:'/game/images/itema/scroll10.png', url:'/game/mymark.php'},
                 "My requests": {icon:'/game/images/itema/scroll9.png', url:'/game/myrequ.php'},
             },
-            "Links": {
+            "◈Links◈": {
                 "Player Index": {icon:'/game/images/mobster/drea.png', url:'https://chazu.arkku.net/dragonrip/player-index/'},
                 "CW Grid img": {icon:'/game/images/wars/lavas.png', url:'https://files.catbox.moe/wt9lk5.png'},
             }
@@ -84,10 +84,14 @@
         }
 
         body, html {
-            xbackground:#262626 url('https://i.imgur.com/gnerbEH.jpeg')!important;
-            xbackground-image: url('https://i.imgur.com/gnerbEH.jpeg')!important;
+            background: #262626 url('https://i.imgur.com/gnerbEH.jpeg')!important;
+            background-image: url('https://i.imgur.com/gnerbEH.jpeg')!important;
             background-size: auto !important;
             background-repeat: repeat !important;
+            background-attachment: scroll;
+            margin: auto 0px auto 0px !important;
+            scrollbar-width: thin;
+            border: none !important;
             color-scheme: dark !important;
         }
 
@@ -227,6 +231,8 @@
         }
 
         div.player {
+            max-width: 580px; /* Game's vanilla is 580px */
+            width: 100%;
             height: 68px;
             display: flex;
             justify-content: start;
@@ -363,10 +369,9 @@
 
 
     const fancyBarsCss = `
-        
         /* Bar container */
         .player > .bar {
-            xborder: 1px solid lime;
+            xborder: 5px solid lime !important; 
             width: 100%;
             margin-left: 10px;
         }
@@ -723,6 +728,83 @@
             padding: 0px;
         }
 
+        .extra-box > .top-buttons {
+            xborder: 1px solid grey;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: auto;
+            xpadding: 5px;
+            margin-bottom: 5px;
+        }
+        .extra-box.small > .top-buttons {
+            flex-direction: column;
+            width: 100%;
+            height: auto;
+            padding: 0px;
+            margin-bottom: 0px;
+        }
+
+        .extra-box > .top-buttons > .button {
+            xborder: 1px solid lime;
+            width: 100%;
+            height: 100%;
+            min-height: 40px;
+            background-color: rgba(0, 0, 0, 0);
+            background-image: url('https://images2.imgbox.com/95/c3/0oOmxhkd_o.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 90% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            xpadding: 5px;
+        }
+        .extra-box.small > .top-buttons > .button > * {
+            pointer-events: none;
+        }    
+        .extra-box.small > .top-buttons > .button {
+            width: 100%;
+            xaspect-ratio: 1/1;
+            height: auto;
+            padding: 0px;
+            xbackground-size: 100% 100%;
+        }
+
+        .extra-box > .top-buttons > .button:hover {
+            filter: brightness(1.2);
+        }
+        .extra-box > .top-buttons > .button:active {
+            background-image: url('https://images2.imgbox.com/c8/2a/mMeqQQXN_o.png');
+        }
+
+        .extra-box > .top-buttons > .button > .label {
+            width: 100%;
+            height: 100%;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            text-align: center;
+            color: #ffeca6;
+            text-shadow: 0 0 1vw #fa1c16,0 0 3vw #fa1c16,0 0 5vw #fa1c16,0 0 5vw #fa1c16,0 0 .4vw #fed128;
+            font-family: Georgia,serif;
+                 display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .extra-box.small > .top-buttons > .button > .label {
+            font-size: 1.5em;
+        } 
+        .extra-box > .top-buttons > .button > .label.alt,
+        .extra-box.small > .top-buttons > .button > .main  {
+            display: none;   
+        }
+        .extra-box.small > .top-buttons > .button > .label.alt {
+            display: flex;   
+            padding-bottom: 5px;
+        }
+
         .extra-box > .box {
             width: 100%;
             display: flex;
@@ -730,16 +812,18 @@
             align-items: center;
             justify-content: start;
             background-size: contain;
+            xborder: 1px solid grey;
         }
 
         .extra-box > .box > .top {
+            border-top: 1px solid #4d4842;
             color: grey;
-            width: 90%;
+            width: 100%;
             display: flex;
             align-items: center;
-            justify-content: start;
+            justify-content: center;
             height: 25px;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             user-select: none;
         }
         .extra-box.small > .box > .top {
@@ -748,9 +832,13 @@
         }
 
         .extra-box > .box > .top > .title {
-            font-size: 1.1em;
+            font-size: 1em;
             font-family: Georgia, serif;
-            color: #f5e9d8;
+            xFont-family: Courier;
+            color: #4f4f4f;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.99);
         }
         .extra-box.small > .box > .top > .title {
             font-size: 0.7em
@@ -769,6 +857,7 @@
             xmargin-top: 5px;
             xmargin-bottom: 0px;
             width: 100%;
+            opacity: 0;
         }
 
         .extra-box > .box > .list {
@@ -782,7 +871,7 @@
             
         .extra-box.small > .box > .list {
             width: 100%;
-            align-items: start;
+            xalign-items: start;
         }
 
         .extra-box > .box > .list.hidden {
@@ -802,9 +891,17 @@
             border-radius: 30px 10px 10px 30px;
         }
         .extra-box.small > .box > .list > .item {
+            border: none;
             width: auto;
             border-radius: 0px;
             border: none;
+            margin-bottom: 2px;
+            box-shadow: none;
+            xbox-shadow: 
+                inset 0px 0px 3px 1px rgba(0, 0, 0, 1), 
+                0px 0px 5px 5px rgba(0, 0, 0, 1)
+            ;
+            
         }
 
         .extra-box > .box > .list > .item > * {
@@ -824,6 +921,7 @@
         } 
 
         .extra-box > .box > .list > .item > .image-cont {
+        position: relative;
             width: 35px;
             height: 35px;
             aspect-ratio: 1/1;
@@ -837,14 +935,42 @@
         }
         .extra-box.small > .box > .list > .item > .image-cont {
             margin: 0px;
+            border-radius: 5px;
+            border: 2px double #575757;
+        }
+
+        .extra-box > .box > .list > .item > .image-cont > .shadow-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 1/1;
+            box-shadow: inset 0px 0px 3px 2px rgba(0, 0, 0, 1);
+            border-radius: 100%;
+            xbackground-color: green;
+            z-index: 1;
+        }
+        .extra-box > .box > .list > .item:hover > .image-cont > .shadow-layer {
+            box-shadow: inset 0px 0px 2px 1px rgba(0, 0, 0, 0.5);
+        }
+        .extra-box.small > .box > .list > .item > .image-cont > .shadow-layer {
+            border-radius: 5px;
+            box-shadow: inset 0px 0px 3px 3px rgba(0, 0, 0, 1);
         }
 
         .extra-box > .box > .list > .item > .image-cont > .image {
             width: 100%;
             height: 100%;
             aspect-ratio: 1/1;
-            box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8);
+            xbox-shadow: 
+                inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8)
+            ;
             border-radius: 100%;
+        }
+        .extra-box.small > .box > .list > .item > .image-cont > .image {
+            border-radius: 5px;
+            filter: brightness(0.9);
+            width: 90%;
+            height: 90%;
         }
 
         .extra-box > .box > .list > .item > .label {
@@ -955,7 +1081,7 @@
             min-width: 225px;
             xmin-height: 100px;
             background-color: rgba(21, 21, 21, 0.95);
-            border: 1px solid grey;
+            xborder: 1px solid grey;
             box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.8);
             border-radius: 5px;
             display: flex;
@@ -963,9 +1089,16 @@
             align-items: center;
             justify-content: start;
             user-select: none;
-            padding: 5px 0px 5px 0px;
+            padding: 10px;
 
-         
+            background-color: #01061b;
+            border-style: solid;
+            border-image-source: url('https://images2.imgbox.com/51/5e/ExX9IDjy_o.png');
+            border-image-slice: 10;
+            border-image-width: 10px;
+            border-image-outset: 0;
+            border-image-repeat: stretch;
+                    
         }
 
         .inv-context-menu * {
@@ -982,6 +1115,7 @@
             align-items: center;
             justify-content: start;
             padding: 5px;
+            margin-bottom: 10px;
 
         }
 
@@ -1029,6 +1163,7 @@
         .inv-context-menu > .menu-items > .menu-item {
             width: 100%;
             padding: 0px 5px 5px 5px;
+            margin-bottom: 5px;
             xborder-bottom: 1px solid grey;
             font-size: 0.8em;
             color: white;
@@ -1039,21 +1174,34 @@
         }
 
         .inv-context-menu > .menu-items > .menu-item > .amount-input {
-            width: 60px !important;
+            width: 100px !important;
             height: 30px;
             padding: 5px;
             margin-left: 5px;
             background-color: rgba(0, 0, 0, 0.8);
             border-radius: 0px;
             border: 1px solid grey;
+            border: 2px double #3d3d3d;
+            font-family: consolas, monospace;
+
         }
+        .inv-context-menu > .menu-items > .menu-item > .amount-input:focus {
+            xbackground-color: rgb(0, 32, 32);
+            color: white;
+            border-color: #00b359;
+        }    
 
         .inv-context-menu > .menu-items > .menu-item > .button {
             width: 100px !important;
             padding: 5px;
             margin-right: 5px;
-            background-color: rgba(0, 0, 0, 0.8);
-            border: 1px solid grey;
+            background-color: rgba(0, 0, 0, 1);
+            background-color: #111315;
+            border: 2px outset rgb(64, 69, 72);
+            border-radius: 3px;
+            box-shadow: 
+                3px 3px 3px 0px rgba(0, 0, 0, 0.8)
+            ;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -1069,22 +1217,37 @@
         .inv-context-menu > .menu-items > .menu-item > .button > .icon-cont > img.icon {
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0px 0px 2px lime) drop-shadow(0px 0px 3px rgba(0, 0 , 0, 0.0));
+            filter: drop-shadow(0px 0px 2px cyan) drop-shadow(0px 0px 3px rgba(0, 0 , 0, 0.0));
         }
 
         .inv-context-menu > .menu-items > .menu-item > .button > .label {
             xborder: 1px solid lime;
+            font-size: 1em;
             flex: 1;
+            text-transform: uppercase;
+             font-family: consolas, monospace;
+            letter-spacing: 1px;
+            color: #e6e6e6ff;
+            --shadow-size: 5px;
+            text-shadow: 
+                0px 0px var(--shadow-size) black,
+                0px 0px var(--shadow-size) black,
+                0px 0px var(--shadow-size) black,
+                0px 0px var(--shadow-size) black
+            ;
         }
 
 
 
         .inv-context-menu > .menu-items > .menu-item > .button:hover {
-            background-color: rgb(37, 37, 37);
+            xbackground-color: rgb(37, 37, 37);
+            xbackground-color: #01030e;
+            filter: brightness(0.8);
         }
 
         .inv-context-menu > .menu-items > .menu-item > .button:active {
-            background-color: rgba(150, 150, 150, 0.4);
+            xbackground-color: rgba(150, 150, 150, 0.4);
+            filter: brightness(0.5);
         }
 
         .custom-float-text {
@@ -1535,7 +1698,7 @@
         const noEventsElem = document.createElement('div');
         noEventsElem.classList.add('hidden');
         noEventsElem.classList.add('no-events');
-        noEventsElem.innerText = 'No alerts';
+        noEventsElem.innerText = '<no events/alerts>';
 
         noEventsElem.addEventListener('click', () => {
             //log('Clicked "No active events" label.');
@@ -1899,15 +2062,27 @@
 
         // Calculate and set box size from page elems and viewport width
         (() => {
-            // Calc width
-            const playAreaW = document.querySelector('body > .veik').clientWidth;
-            const invAreaW = document.querySelector('body > .into').clientWidth;
+            // Calc width for the extra box
+            let gameAreaW;
+            const playArea = document.querySelector('body > .veik');
+
+            if (playArea !== null) {
+                // Game has normal left & right side areas
+                const playAreaW = playArea.clientWidth;
+                const invAreaW = document.querySelector('body > .into').clientWidth;
+                gameAreaW = playAreaW + invAreaW
+            } else {
+                // Game has a single wide element, eg. "You can't cook so fast!"
+                const widePlayAreaW = document.querySelector('body > .ground').clientWidth;
+                gameAreaW = widePlayAreaW;
+            }
+    
             const viewportW = document.documentElement.clientWidth;
-            boxW = viewportW - playAreaW - invAreaW;
+            boxW = viewportW - gameAreaW;
             const boxWStr = `${boxW}px`;
             elem.style.width = boxWStr;
 
-            // Calc height
+            // Calc height for the extra box
             const pageH = Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight);
             elem.style.height = pageH;
         })();
@@ -1916,7 +2091,35 @@
         if (boxW < 100) {
             elem.classList.add('small');
         }
-  
+
+        // Create top-buttons for extra box
+        const topButtons = document.createElement('div');
+        topButtons.classList.add('top-buttons');
+        
+        const createTopButton = (labelText, altLabelText, url) => {
+            const button = document.createElement('a');
+            button.classList.add('button');
+            button.href = url;
+
+            // Main button label
+            const labelMain = document.createElement('div');
+            labelMain.classList.add('label');
+            labelMain.classList.add('main');
+            labelMain.innerText = labelText;
+
+            // Alt-label for ".small" view
+            const labelAlt = document.createElement('div');
+            labelAlt.classList.add('label');
+            labelAlt.classList.add('alt');
+            labelAlt.innerText = altLabelText;
+            
+            button.append(labelMain);
+            button.append(labelAlt);
+            return button;
+        }
+
+        topButtons.append( createTopButton("Reload", "⟳", "") );
+        elem.append(topButtons);
 
         // Create extra box contents
         const boxNames = Object.getOwnPropertyNames(settings.extraBoxContents);
@@ -1972,8 +2175,13 @@
 
                 const linkElem = document.createElement('a');
                 linkElem.classList.add('item');
+                
+                let url = "";
+                if (settings.extraBoxContents[boxName][linkName].url !== undefined) {
+                    url = settings.extraBoxContents[boxName][linkName].url;
+                }
 
-                linkElem.setAttribute('href', settings.extraBoxContents[boxName][linkName].url);
+                linkElem.setAttribute('href', url);
 
                 if (boxName === "Links") {
                     linkElem.setAttribute('target', '_blank');
@@ -1982,10 +2190,14 @@
                 const imageCont =  document.createElement('div');
                 imageCont.classList.add('image-cont');
 
+                const shadowLayer = document.createElement('div');
+                shadowLayer.classList.add('shadow-layer');
+
                 const image = document.createElement('img');
                 image.classList.add('image');
 
                 image.src = settings.extraBoxContents[boxName][linkName].icon;
+                imageCont.append(shadowLayer);
                 imageCont.append(image);
                 linkElem.append(imageCont);
 
@@ -2178,8 +2390,24 @@
 
             // Position menu at mouse position
             const mouse = { x: e.pageX, y: e.pageY };
-            menuElem.style.left = `${mouse.x-60}px`;
-            menuElem.style.top = `${mouse.y-3}px`;   
+            let x = mouse.x-60;
+            let y = mouse.y-3
+       
+            const distToBottom = window.innerHeight - mouse.y;
+            const distToRight = window.innerWidth - mouse.x;
+
+            if (distToBottom < 100) {
+                y = mouse.y - 100;
+            }
+            if (distToRight < 225) {
+                x = mouse.x - 225;
+            }
+            menuElem.style.left = `${x}px`;
+            menuElem.style.top = `${y}px`;   
+
+
+            // If context menu would open too low, open it above mouse instead
+
 
             document.body.append(menuElem);
             settings.invContextMenu.isOpen = true;
@@ -2278,25 +2506,25 @@
                 input.setAttribute('value', defaultValue);
                 return input;
             }
-
+            const amountInputLabel = ' x '
             // Amount inputs for context menu rows
-            bankRow.append('Amount:');
+            bankRow.append(amountInputLabel);
             const bankAmount = createAmountInput(item.amount);
             bankRow.append(bankAmount);
 
-            ruinsBankRow.append('Amount:');
+            ruinsBankRow.append(amountInputLabel);
             const ruinsBankAmount = createAmountInput(item.amount);
             ruinsBankRow.append(ruinsBankAmount);
 
-            eatRow.append('Amount:');
+            eatRow.append(amountInputLabel);
             const eatAmount = createAmountInput(1);
             eatRow.append(eatAmount);
 
-            eatRawRow.append('Amount:');
+            eatRawRow.append(amountInputLabel);
             const eatRawAmount = createAmountInput(1);
             eatRawRow.append(eatRawAmount);
 
-            drinkRow.append('Amount:');
+            drinkRow.append(amountInputLabel);
             const drinkAmount = createAmountInput(1);
             drinkRow.append(drinkAmount);
 
@@ -2851,6 +3079,7 @@
 
                 clearInterval(checkElem); 
 
+              
                 removeBrElements('rightSide');
                 //removeBrElements('leftSide');
 
@@ -2866,7 +3095,11 @@
                 insertLogoAreaInfo();
                 updateClock();
                 
-        
+                  // Add extra box to the right of UI
+                if (settings.createExtraBox) {
+                    setCustomCss(extraBoxCss);
+                    createExtraBox();
+                }
                 
 
                 if (settings.chatStyling) {
@@ -2884,11 +3117,7 @@
                     }, 25); //25
                 }
 
-                // Add extra box to the right of UI
-                if (settings.createExtraBox) {
-                    setCustomCss(extraBoxCss);
-                    createExtraBox();
-                }
+
 
                 if (true) {
                     setCustomCss(invContextMenuCss);
