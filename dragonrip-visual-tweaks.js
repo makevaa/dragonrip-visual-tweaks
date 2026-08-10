@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.48
+// @version      1.0.52
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -65,9 +65,8 @@
         chatStyling: true, // Add custom styling to chat
 
         // Create custom context menu for inventory items
-        invContextMenu: {
-            enable: true,
-            isOpen: false,
+        ctxMenu: {
+            enable: true, isOpen: false,
         },
 
         eventAlerts: true,
@@ -752,7 +751,7 @@
             height: 100%;
             min-height: 40px;
             background-color: rgba(0, 0, 0, 0);
-            background-image: url('https://images2.imgbox.com/95/c3/0oOmxhkd_o.png');
+            background-image: url('https://u.cubeupload.com/TrikTrak/RedButton1.png');
             background-position: center;
             background-repeat: no-repeat;
             background-size: 90% 100%;
@@ -773,10 +772,12 @@
         }
 
         .extra-box > .top-buttons > .button:hover {
-            filter: brightness(1.2);
+            xfilter: brightness(1.2);
+            background-image: url('https://u.cubeupload.com/TrikTrak/RedButton2.png');
+            
         }
         .extra-box > .top-buttons > .button:active {
-            background-image: url('https://images2.imgbox.com/c8/2a/mMeqQQXN_o.png');
+            background-image: url('https://u.cubeupload.com/TrikTrak/RedButton3.png');
         }
 
         .extra-box > .top-buttons > .button > .label {
@@ -786,6 +787,7 @@
             text-transform: uppercase;
             text-align: center;
             color: #ffeca6;
+            color: #fff9e2;
             text-shadow: 0 0 1vw #fa1c16,0 0 3vw #fa1c16,0 0 5vw #fa1c16,0 0 5vw #fa1c16,0 0 .4vw #fed128;
             font-family: Georgia,serif;
                  display: flex;
@@ -829,6 +831,7 @@
         .extra-box.small > .box > .top {
             width: 100%;
             margin-bottom: 0px;
+                   display: none;
         }
 
         .extra-box > .box > .top > .title {
@@ -981,6 +984,10 @@
             color: rgba(152, 152, 152, 1);
             text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5);
         }
+
+        .extra-box.small > .box > .list > .item > .label {
+            display: none;
+        }
     `;
 
 
@@ -1093,7 +1100,7 @@
 
             background-color: #01061b;
             border-style: solid;
-            border-image-source: url('https://images2.imgbox.com/51/5e/ExX9IDjy_o.png');
+            border-image-source: url('https://u.cubeupload.com/TrikTrak/wowtooltip.png');
             border-image-slice: 10;
             border-image-width: 10px;
             border-image-outset: 0;
@@ -1191,7 +1198,7 @@
             border-color: #00b359;
         }    
 
-        .inv-context-menu > .menu-items > .menu-item > .button {
+        .inv-context-menu > .menu-items > .menu-item > .btn {
             width: 100px !important;
             padding: 5px;
             margin-right: 5px;
@@ -1208,19 +1215,19 @@
             justify-content: start;
         }
 
-        .inv-context-menu > .menu-items > .menu-item > .button > .icon-cont {
+        .inv-context-menu > .menu-items > .menu-item > .btn > .icon-cont {
             xborder: 1px solid lime;
             width: 20px;
             height: 20px;
         }
 
-        .inv-context-menu > .menu-items > .menu-item > .button > .icon-cont > img.icon {
+        .inv-context-menu > .menu-items > .menu-item > .btn > .icon-cont > img.icon {
             width: 100%;
             height: 100%;
             filter: drop-shadow(0px 0px 2px cyan) drop-shadow(0px 0px 3px rgba(0, 0 , 0, 0.0));
         }
 
-        .inv-context-menu > .menu-items > .menu-item > .button > .label {
+        .inv-context-menu > .menu-items > .menu-item > .btn > .label {
             xborder: 1px solid lime;
             font-size: 1em;
             flex: 1;
@@ -1239,13 +1246,13 @@
 
 
 
-        .inv-context-menu > .menu-items > .menu-item > .button:hover {
+        .inv-context-menu > .menu-items > .menu-item > .btn:hover {
             xbackground-color: rgb(37, 37, 37);
             xbackground-color: #01030e;
             filter: brightness(0.8);
         }
 
-        .inv-context-menu > .menu-items > .menu-item > .button:active {
+        .inv-context-menu > .menu-items > .menu-item > .btn:active {
             xbackground-color: rgba(150, 150, 150, 0.4);
             filter: brightness(0.5);
         }
@@ -1698,7 +1705,7 @@
         const noEventsElem = document.createElement('div');
         noEventsElem.classList.add('hidden');
         noEventsElem.classList.add('no-events');
-        noEventsElem.innerText = '<no events/alerts>';
+        noEventsElem.innerText = 'no events';
 
         noEventsElem.addEventListener('click', () => {
             //log('Clicked "No active events" label.');
@@ -2055,42 +2062,52 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    const createExtraBox = () => {
-        const elem = document.createElement('div');
-        elem.classList.add('extra-box');
+     // Calculate and set box size from page elems and viewport width
+    const setExtraBoxSize = (boxElem) => {
+        const elem = boxElem;
+
         let boxW;
 
-        // Calculate and set box size from page elems and viewport width
-        (() => {
-            // Calc width for the extra box
-            let gameAreaW;
-            const playArea = document.querySelector('body > .veik');
+        // Calc width for the extra box
+        let gameAreaW;
+        const playArea = document.querySelector('body > .veik');
 
-            if (playArea !== null) {
-                // Game has normal left & right side areas
-                const playAreaW = playArea.clientWidth;
-                const invAreaW = document.querySelector('body > .into').clientWidth;
-                gameAreaW = playAreaW + invAreaW
-            } else {
-                // Game has a single wide element, eg. "You can't cook so fast!"
-                const widePlayAreaW = document.querySelector('body > .ground').clientWidth;
-                gameAreaW = widePlayAreaW;
-            }
-    
-            const viewportW = document.documentElement.clientWidth;
-            boxW = viewportW - gameAreaW;
-            const boxWStr = `${boxW}px`;
-            elem.style.width = boxWStr;
+        if (playArea !== null) {
+            // Game has normal left & right side areas
+            const playAreaW = playArea.clientWidth;
+            const invAreaW = document.querySelector('body > .into').clientWidth;
+            gameAreaW = playAreaW + invAreaW
+        } else {
+            // Game has a single wide element, eg. "You can't cook so fast!"
+            const widePlayAreaW = document.querySelector('body > .ground').clientWidth;
+            gameAreaW = widePlayAreaW;
+        }
 
-            // Calc height for the extra box
-            const pageH = Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight);
-            elem.style.height = pageH;
-        })();
+        const viewportW = document.documentElement.clientWidth;
+        boxW = viewportW - gameAreaW;
+        const boxWStr = `${boxW}px`;
+        elem.style.width = boxWStr;
 
+        // Calc height for the extra box
+        const pageH = Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight);
+        elem.style.height = pageH;
+        
 
         if (boxW < 100) {
             elem.classList.add('small');
+        } else {
+            elem.classList.remove('small');
         }
+
+        return boxW;
+    }
+
+    const createExtraBox = () => {
+        const elem = document.createElement('div');
+        elem.classList.add('extra-box');
+        const boxW = setExtraBoxSize(elem);
+
+        
 
         // Create top-buttons for extra box
         const topButtons = document.createElement('div');
@@ -2156,9 +2173,9 @@
             //top.append(hideButton);
 
             
-            if (boxW >= 100) {
-                boxElem.append(top);
-            }
+            
+            boxElem.append(top);
+            
             
 
             const linkItems = Object.getOwnPropertyNames(settings.extraBoxContents[boxName]);
@@ -2205,9 +2222,9 @@
                 label.classList.add('label');
                 label.innerText = linkName;
                
-                if (boxW >= 100) {
-                    linkElem.append(label);
-                }
+                
+                linkElem.append(label);
+                
 
 
                 list.append(linkElem);
@@ -2227,6 +2244,7 @@
 
         const target = document.querySelector('body');
         target.append(elem);
+        return elem;
     }
 
     const setChatStyles = () => {
@@ -2298,244 +2316,237 @@
         return actions;
     }
 
-    // Right-click item in inventory --> opens small context menu with item name,
-    // and options to send whole stack to bank or ruins bank.
-    const invContextMenu =  async () => {
-        const invArea = document.querySelector('.burbul');
-        if (invArea === null) {
-            setTimeout( () => {
-                invContextMenu();
-            }, 1000);
-            return;
+    const openCtxMenu = async (menuType, e) => {
+        // menuType: "inv", "bank", "ruins"
+
+        // Action button for ctx menu items
+        const createActionButton = (textLabel, gameIconUrl) => {
+            const button = document.createElement('div');
+            button.classList.add('btn');
+
+            const iconCont = document.createElement('div');
+            iconCont.classList.add('icon-cont');
+            const gameIcon = document.createElement('img');
+            gameIcon.classList.add('icon');
+            gameIcon.src = gameIconUrl;
+            iconCont.append(gameIcon);
+
+            const label = document.createElement('div');
+            label.classList.add('label');
+            label.innerText = textLabel;
+
+            button.append(iconCont);
+            button.append(label);
+
+            return button;
         }
 
-      
-        //log("Adding inv area contextmenu listener...");
-        invArea.addEventListener('contextmenu', async e => {
+        // Amount input for ctx menus
+        const createAmountInput = (amount, maxAmount) => {
+            const input = document.createElement('input');
+            input.classList.add('amount-input');
+            input.setAttribute('type', 'number');
+            input.setAttribute('min', '1');
+            input.setAttribute('max', maxAmount);
+            input.setAttribute('value', amount);
+            return input;
+        }
+
+        const createCtxMenuRow = (btnLabel, btnImg, defaultAmount, maxAmount) => {
+            const row = document.createElement('div');
+            row.classList.add('menu-item');
+
+            const btn = createActionButton(btnLabel, btnImg);
+            row.append(btn);
+
+            const amountInputLabel = ' x ';
+            row.append(amountInputLabel);
+
+            const amountInput = createAmountInput(defaultAmount, maxAmount);
+
+            row.append(amountInput);
+
+            return row;
+        }
+
+        if (settings.ctxMenu.isOpen) {
+            const previousMenu = document.querySelector('.inv-context-menu');
+            if (previousMenu !== null) {
+                previousMenu.remove();
+            }
+            settings.ctxMenu.isOpen = false;
+        }
+
+        const target = e.target;
+        let linkElem = null; // linkElem is the item tile in inventory
+
+        if (target.classList.contains('blockex')) {
+            linkElem = target.parentNode;
+        } else if (target.nodeName == 'a' || target.nodeName == 'A') {
+            linkElem = target;
+        }
+
+        if (linkElem === null) { return; }
+
+        // Save url to have a reliable selector to linkElem,
+        // even after the inv tile DOM updates after a game action
+        const linkElemUrl = linkElem.getAttribute('href');
+        console.log(linkElemUrl);
+
+        // Check if item has amount span
+        let itemAmount = 1;
+        if (linkElem.querySelector('span.amouti') !== null) {
+            itemAmount = linkElem.querySelector('span.amouti').innerText;
+        };
+
+        const item = {
+            name: linkElem.getAttribute('title'),
+            id: linkElem.getAttribute('href').split('ko=')[1],
+            image: linkElem.querySelector('div').style.backgroundImage.slice(5, -2),
+            amount: itemAmount,
+        }
+
+
+        // Create context menu element
+        const menuElem = document.createElement('div');
+        menuElem.classList.add('inv-context-menu');
+
+        // Menu top area with item image, anme etc.
+        const top = document.createElement('div');
+        top.classList.add('top');
+
+        const itemImage = document.createElement('div');
+        itemImage.classList.add('item-image');
+        itemImage.style.backgroundImage = `url('${item.image}')`;
+        
+        const amountOwned = document.createElement('div');
+        amountOwned.classList.add('amount-owned');
+        amountOwned.innerText = `x ${item.amount}`;
+
+        const itemName = document.createElement('div');
+        itemName.classList.add('item-name');
+        itemName.innerText = `${item.name}`;
+
+        top.append(itemImage);
+        top.append(itemName);
+        top.append(amountOwned);
+        menuElem.append(top);
+
+        // Position menu at mouse position
+        const mouse = { x: e.pageX, y: e.pageY };
+        let x = mouse.x-60;
+        let y = mouse.y-3
+        
+        
+        // If context menu would open out of view, fix position
+        const distToBottom = window.innerHeight - mouse.y;
+        const distToRight = window.innerWidth - mouse.x;
+
+        if (distToBottom < 100) {
+            y = mouse.y - distToBottom - 10;
+        }
+        if (distToRight < 225) {
+            x = mouse.x - 225;
+        }
+        menuElem.style.left = `${x}px`;
+        menuElem.style.top = `${y}px`;   
+
+
+        // Menu items area
+        const menuItems = document.createElement('div');
+        menuItems.classList.add('menu-items');
+        menuElem.append(menuItems);
+        document.body.append(menuElem);
+        settings.ctxMenu.isOpen = true;
+
+        // Remove menu when right-clicking on the menu
+        //log("Adding context menu right-click listener...");
+        menuElem.addEventListener('contextmenu', e => {
             e.preventDefault();
+            menuElem.remove();
+            settings.ctxMenu.isOpen = false;
+        }, { once: true });
 
-            if (settings.invContextMenu.isOpen) {
-                const previousMenu = document.querySelector('.inv-context-menu');
-                if (previousMenu !== null) {
-                    previousMenu.remove();
-                }
-                settings.invContextMenu.isOpen = false;
-            }
+        // Remove menu when mouse leaves the menu
+        //log("Adding context menu mouseleave listener...");
+        /*
+        menuElem.addEventListener('mouseleave', e => {
+            e.preventDefault();
+            menuElem.remove();
+            settings.ctxMenu.isOpen = false;
+        }, { once: true });
+        */
 
-            const target = e.target;
-            let linkElem = null; // linkElem is the item tile in inventory
-
-            if (target.classList.contains('blockex')) {
-                linkElem = target.parentNode;
-            } else if (target.nodeName == 'a' || target.nodeName == 'A') {
-                linkElem = target;
-            }
-
-            if (linkElem === null) { return; }
-
-            // Save url to have a reliable selector to linkElem,
-            // even after the inv tile DOM updates after a game action
-            const linkElemUrl = linkElem.getAttribute('href');
-            console.log(linkElemUrl);
-
-            // Check if item has amount span
-            let itemAmount = 1;
-            if (linkElem.querySelector('span.amouti') !== null) {
-                itemAmount = linkElem.querySelector('span.amouti').innerText;
-            };
-
-            const item = {
-                name: linkElem.getAttribute('title'),
-                id: linkElem.getAttribute('href').split('ko=')[1],
-                image: linkElem.querySelector('div').style.backgroundImage.slice(5, -2),
-                amount: itemAmount,
-            }
-
-
-  
-            //item.actions = actions;
-            //logObj(actions);
-
-            // Create context menu element
-            const menuElem = document.createElement('div');
-            menuElem.classList.add('inv-context-menu');
-
-            // Menu top area with item image, anme etc.
-            const top = document.createElement('div');
-            top.classList.add('top');
-
-            const itemImage = document.createElement('div');
-            itemImage.classList.add('item-image');
-            itemImage.style.backgroundImage = `url('${item.image}')`;
-         
-            const amountOwned = document.createElement('div');
-            amountOwned.classList.add('amount-owned');
-            amountOwned.innerText = `x ${item.amount}`;
-    
-            const itemName = document.createElement('div');
-            itemName.classList.add('item-name');
-            itemName.innerText = `${item.name}`;
-
-            top.append(itemImage);
-            top.append(itemName);
-            top.append(amountOwned);
-            menuElem.append(top);
-
-            // Menu items area
-            const menuItems = document.createElement('div');
-            menuItems.classList.add('menu-items');
-
-            menuElem.append(menuItems);
-
-
-            // Position menu at mouse position
-            const mouse = { x: e.pageX, y: e.pageY };
-            let x = mouse.x-60;
-            let y = mouse.y-3
-       
-            const distToBottom = window.innerHeight - mouse.y;
-            const distToRight = window.innerWidth - mouse.x;
-
-            if (distToBottom < 100) {
-                y = mouse.y - 100;
-            }
-            if (distToRight < 225) {
-                x = mouse.x - 225;
-            }
-            menuElem.style.left = `${x}px`;
-            menuElem.style.top = `${y}px`;   
-
-
-            // If context menu would open too low, open it above mouse instead
-
-
-            document.body.append(menuElem);
-            settings.invContextMenu.isOpen = true;
-
-            // Remove menu when right-clicking on the menu
-            //log("Adding context menu right-click listener...");
-            menuElem.addEventListener('contextmenu', e => {
-                e.preventDefault();
+        // Remove  menu when clicking elsewhere,
+        // don't close menu if clicking inside the menu
+        //log("Adding document click listener to close context menu...");
+        document.addEventListener('click', e => {
+            if (document.contains(menuElem) && !menuElem.contains(e.target)) {
                 menuElem.remove();
-                settings.invContextMenu.isOpen = false;
-            }, { once: true });
+                settings.ctxMenu.isOpen = false;
+            }
+        }, { once: true });
 
-            // Remove menu when mouse leaves the menu
-            //log("Adding context menu mouseleave listener...");
-            menuElem.addEventListener('mouseleave', e => {
-                e.preventDefault();
-                menuElem.remove();
-                settings.invContextMenu.isOpen = false;
-            }, { once: true });
 
-            // Remove  menu when clicking elsewhere,
-            // don't close menu if clicking inside the menu
-            //log("Adding document click listener to close context menu...");
-            document.addEventListener('click', e => {
-                if (document.contains(menuElem) && !menuElem.contains(e.target)) {
-                    menuElem.remove();
-                    settings.invContextMenu.isOpen = false;
-                }
-            }, { once: true });
+        // Create context menu rows
 
-  
-           
-       
+        if (menuType === 'inv') {
+            const bankRow = createCtxMenuRow('Bank', '/game/images/icons/bank.png', item.amount, item.amount);
+            bankRow.querySelector('.btn').addEventListener('click', e => {
+                sendToBank(item, bankRow.querySelector('.amount-input').value, mouse,  menuElem, linkElemUrl);
+            });
 
-            // Create context menu rows
-            const bankRow = document.createElement('div');
-            const ruinsBankRow = document.createElement('div');
+            const ruinsBankRow = createCtxMenuRow('Ruins', '/game/images/icons/ruins.png', item.amount, item.amount);
+            ruinsBankRow.querySelector('.btn').addEventListener('click', () => {
+                sendToRuinsBank(item, ruinsBankRow.querySelector('.amount-input').value, mouse, menuElem, linkElemUrl);
+            });
+
+
             const eatRow = document.createElement('div');
             const eatOneRow = document.createElement('div');
             const eatRawRow = document.createElement('div');
             const drinkRow = document.createElement('div');
             const drinkSpecRow = document.createElement('div');
 
-            bankRow.classList.add('menu-item');
-            ruinsBankRow.classList.add('menu-item');
             eatRow.classList.add('menu-item');
             eatOneRow.classList.add('menu-item');
             eatRawRow.classList.add('menu-item');
             drinkRow.classList.add('menu-item');
             drinkSpecRow.classList.add('menu-item');
 
-            const createActionButton = (textLabel, gameIconUrl) => {
-                const button = document.createElement('div');
-                button.classList.add('button');
-
-                const iconCont = document.createElement('div');
-                iconCont.classList.add('icon-cont');
-                const gameIcon = document.createElement('img');
-                gameIcon.classList.add('icon');
-                gameIcon.src = gameIconUrl;
-                iconCont.append(gameIcon);
-
-                const label = document.createElement('div');
-                label.classList.add('label');
-                label.innerText = textLabel;
-
-                button.append(iconCont);
-                button.append(label);
-
-                return button;
-            }
-
             // Add to action button
-            const buttonAddToBank = createActionButton('Bank', '/game/images/icons/bank.png');
-            const buttonAddToRuinsBank = createActionButton('Ruins', '/game/images/icons/ruins.png');
             const buttonEat = createActionButton('Eat', item.image);
             const buttonEatOne = createActionButton('Eat 1', item.image);
             const buttonEatRaw = createActionButton('Eat raw', item.image);
             const buttonDrink = createActionButton('Drink', item.image);
             const buttonDrinkSpec = createActionButton('Drink 1', item.image);
-    
-            bankRow.append(buttonAddToBank);
-            ruinsBankRow.append(buttonAddToRuinsBank);
+
+
             eatRow.append(buttonEat);
             eatOneRow.append(buttonEatOne);
             eatRawRow.append(buttonEatRaw);
             drinkRow.append(buttonDrink);
             drinkSpecRow.append(buttonDrinkSpec);
-      
-            const createAmountInput = defaultValue => {
-                const input = document.createElement('input');
-                input.classList.add('amount-input');
-                input.setAttribute('type', 'number');
-                input.setAttribute('min', '1');
-                input.setAttribute('max', item.amount);
-                input.setAttribute('value', defaultValue);
-                return input;
-            }
+        
             const amountInputLabel = ' x '
             // Amount inputs for context menu rows
-            bankRow.append(amountInputLabel);
-            const bankAmount = createAmountInput(item.amount);
-            bankRow.append(bankAmount);
-
-            ruinsBankRow.append(amountInputLabel);
-            const ruinsBankAmount = createAmountInput(item.amount);
-            ruinsBankRow.append(ruinsBankAmount);
-
             eatRow.append(amountInputLabel);
-            const eatAmount = createAmountInput(1);
+            const eatAmount = createAmountInput(1, item.amount);
             eatRow.append(eatAmount);
 
             eatRawRow.append(amountInputLabel);
-            const eatRawAmount = createAmountInput(1);
+            const eatRawAmount = createAmountInput(1, item.amount);
             eatRawRow.append(eatRawAmount);
 
             drinkRow.append(amountInputLabel);
-            const drinkAmount = createAmountInput(1);
+            const drinkAmount = createAmountInput(1, item.amount);
             drinkRow.append(drinkAmount);
 
-            // Click listeners for context menu row action buttons
-            buttonAddToBank.addEventListener('click', e => {
-                sendToBank(item, bankAmount.value, mouse,  menuElem, linkElemUrl);
-            });
 
-            buttonAddToRuinsBank.addEventListener('click', () => {
-                sendToRuinsBank(item, ruinsBankAmount.value, mouse, menuElem, linkElemUrl);
-            });
+            // Click listeners for context menu row action buttons
+
+
+
             
             buttonEat.addEventListener('click', () => {
                 eat(item, eatAmount.value, mouse,  menuElem, linkElemUrl);
@@ -2556,6 +2567,7 @@
             buttonDrinkSpec.addEventListener('click', () => {
                 drinkSpec(item, 1, mouse, menuElem, linkElemUrl);
             });
+
             
 
             // All items can be banked, so always show Bank action
@@ -2587,10 +2599,73 @@
                     menuItems.append(drinkSpecRow);
                 
             })();
-        });
+        }
+
+        if (menuType === 'bank') {
+            const takeFromBankRow = createCtxMenuRow('Take', item.image, item.amount, item.amount);
+            takeFromBankRow.querySelector('.btn').addEventListener('click', () => {
+                takeFromBank(item, takeFromBankRow.querySelector('.amount-input').value, mouse, menuElem, linkElemUrl);
+            });
+            menuItems.append(takeFromBankRow);
+        }
+
+        if (menuType === 'ruins') {
+            
+        }
     }
 
+    // Right click context menu, for inv and bank (ruins too?)
+    const initCtxMenus =  async () => {
+        const invArea = document.querySelector('.burbul');
+ 
+        if (invArea === null) {
+            setTimeout( () => {
+                initCtxMenus();
+            }, 1000);
+            return;
+        }
 
+        let onBankPage = false;
+        let bankArea = null;
+        if (document.location.href === 'https://dragonrip.com/game/bank.php') {
+            onBankPage = true;
+            bankArea = document.querySelector('body > .veik > .leftsidemdfk');
+        }
+  
+        invArea.addEventListener('contextmenu', async e => {
+            e.preventDefault();
+            openCtxMenu('inv', e);
+        });
+
+        if (onBankPage) {
+            bankArea.addEventListener('contextmenu', async e => {
+                e.preventDefault();
+                openCtxMenu('bank', e);
+            });
+        }
+    }
+
+    const updateInvSpaceValue = numToAdd => {
+        const elem = document.querySelectorAll('body > .into > .burbul > table > tbody > tr > td > div[title="Available Space"]');
+        if (elem === undefined || elem === null) {
+            return false;
+        }
+
+        const text = elem[0].childNodes[1].textContent;
+        const values = text.split("/");
+
+        let currentValue = Number(values[0].trim());
+        console.log(typeof currentValue)
+        currentValue += Number(numToAdd)
+        console.log(typeof currentValue)
+        const maxValue = Number(values[1].trim());
+
+        console.log(typeof numToAdd)
+
+
+        const newText = ` ${currentValue} / ${maxValue}`;
+        elem[0].childNodes[1].textContent = newText;
+    }
 
     // Send item to bank function, used in inv context menu
     const sendToBank = async (item, amountToSend, mouseCoords, menuElem, linkElemUrl) => {
@@ -2623,7 +2698,7 @@
                 // Remove item from inventory if all items added
                 if (item.amount - amountToSend <= 0) {
                     menuElem.remove();
-                    settings.invContextMenu.isOpen = false;
+                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
                     // Update item amount in inventory
@@ -2631,6 +2706,7 @@
                     linkElem.querySelector('span.amouti').innerText = newAmount;
                     menuElem.remove(); 
                 }
+                updateInvSpaceValue(-amountToSend);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
             } else if (str.indexOf("Incorrect amount!") > -1) {
@@ -2666,7 +2742,7 @@
                 // Remove item from inventory if all items added
                 if (item.amount - amountToSend <= 0) {
                     menuElem.remove();
-                    settings.invContextMenu.isOpen = false;
+                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
                     // Update item amount in inventory
@@ -2674,6 +2750,7 @@
                     linkElem.querySelector('span.amouti').innerText = newAmount;
                     menuElem.remove();
                 }
+                updateInvSpaceValue(-amountToSend);
             } else if (str.indexOf("You can't add this item to your Ruins Bank!") > -1) {    
                 floatText("NOT RUINS BANKABLE", "orange", mouseCoords);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
@@ -2683,6 +2760,51 @@
             }
 
            
+        });
+    }
+
+    // Withdraw item from bank
+    const takeFromBank = async (item, amountToTake, mouseCoords, menuElem, linkElemUrl) => {
+        const url = `https://dragonrip.com/game/bank.php?go=2&ko=${item.id}`;
+        const linkElemSelector = `body > .veik > .leftsidemdfk > a[href="${linkElemUrl}"]`;
+        const linkElem = document.querySelector(linkElemSelector);
+
+        await fetch(url, {
+            method: "POST",
+            body: `amount=${amountToTake}`,
+            headers: {
+              "Content-type": "application/x-www-form-urlencoded",
+              "Cookie": `PHPSESSID=${settings.sessionId}`,
+            }
+        })
+        .then((res) => {
+          return res.text();
+        })
+        .then((html) => {
+            const str = html;
+            if (str.indexOf("Not enough space in Inventory!") > -1) {
+                //log("No space in bank.");
+                floatText("NO INV SPACE", "red", mouseCoords);
+            } else if (str.indexOf("Added to your Inventory.") > -1) {
+                floatText(`Took ${amountToTake} ${item.name}`, "lime", mouseCoords);
+
+                // Remove item from inventory if all items added
+                if (item.amount - amountToTake <= 0) {
+                    menuElem.remove();
+                    settings.ctxMenu.isOpen = false;
+                    linkElem.remove();
+                } else {
+                    // Update item amount in bank
+                    const newAmount = item.amount - amountToTake;
+                    linkElem.querySelector('span.amouti').innerText = newAmount;
+                    menuElem.remove(); 
+                }
+                updateInvSpaceValue(amountToTake);
+            } else if (str.indexOf("You Don't Have THIS item!") > -1) {
+                floatText("You don't Have this item", "orange", mouseCoords);
+            } else if (str.indexOf("Incorrect amount!") > -1) {
+                floatText("Incorrect amount!", "orange", mouseCoords);
+            }
         });
     }
 
@@ -2711,7 +2833,7 @@
                 // Remove item from inventory if all items added
                 if (item.amount - amountToEat <= 0) {
                     menuElem.remove();
-                    settings.invContextMenu.isOpen = false;
+                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
                     // Update item amount in inventory
@@ -2719,6 +2841,7 @@
                     linkElem.querySelector('span.amouti').innerText = newAmount;
                     menuElem.remove();
                 }
+                updateInvSpaceValue(-amountToEat);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
             } else if (str.indexOf("Incorrect amount!") > -1) {
@@ -2751,7 +2874,7 @@
                 // Remove item from inventory if all items added
                 if (item.amount - amountToEat <= 0) {
                     menuElem.remove();
-                    settings.invContextMenu.isOpen = false;
+                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
                     // Update item amount in inventory
@@ -2759,6 +2882,7 @@
                     linkElem.querySelector('span.amouti').innerText = newAmount;
                     menuElem.remove();
                 }
+                updateInvSpaceValue(-amountToEat);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
             } else if (str.indexOf("Incorrect amount!") > -1) {
@@ -2792,7 +2916,7 @@
                 // Remove item from inventory if all items added
                 if (item.amount - amountToDrink <= 0) {
                     menuElem.remove();
-                    settings.invContextMenu.isOpen = false;
+                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
                     // Update item amount in inventory
@@ -2800,6 +2924,7 @@
                     linkElem.querySelector('span.amouti').innerText = newAmount;
                     menuElem.remove();
                 }
+                updateInvSpaceValue(-amountToDrink);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
             } else if (str.indexOf("Incorrect amount!") > -1) {
@@ -2832,7 +2957,7 @@
                 // Remove item from inventory if all items added
                 if (item.amount - amountToDrink <= 0) {
                     menuElem.remove();
-                    settings.invContextMenu.isOpen = false;
+                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
                     // Update item amount in inventory
@@ -2840,6 +2965,7 @@
                     linkElem.querySelector('span.amouti').innerText = newAmount;
                     menuElem.remove();
                 }
+                updateInvSpaceValue(-amountToDrink);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
             } else if (str.indexOf("Incorrect amount!") > -1) {
@@ -3059,17 +3185,7 @@
         */
     }
 
-    // Check if context menu listeners were removed by
-    // the game loading a "new page" on 6sec game actions
-    const invContextMenuChecker = () => {
 
-        /*
-        const interval = setInterval( () => {
-            const invArea = document.querySelector('.burbul > .leftsidemdfk');
-            log(document.querySelector('.burbul > .leftsidemdfk'));
-        }, 1000);
-        */
-    }
 
 
     // Wait for game UI to load, then insert elements
@@ -3088,17 +3204,20 @@
                     if (settings.animateXpBar) { setCustomCss(animatedXpBarCss); }
                 } 
 
-                if (settings.clearGameLogoHtml) { clearGameLogoHtml(); }
+                if (settings.clearGameLogoHtml) { 
+                    clearGameLogoHtml(); 
+                }
                 
-         
-                
-                insertLogoAreaInfo();
-                updateClock();
-                
+  
                   // Add extra box to the right of UI
                 if (settings.createExtraBox) {
                     setCustomCss(extraBoxCss);
-                    createExtraBox();
+                    const box = createExtraBox();
+
+                    window.addEventListener("resize", e => { 
+                        setExtraBoxSize(box);
+                    });
+
                 }
                 
 
@@ -3110,8 +3229,6 @@
                 if (settings.customBarText) {
                     changeMainBarTexts();
                     //setStatBarObservers();
-                    
-
                     setInterval( () => {
                         changeMainBarTexts();
                     }, 25); //25
@@ -3119,15 +3236,16 @@
 
 
 
-                if (true) {
+                if (settings.ctxMenu.enable) {
                     setCustomCss(invContextMenuCss);
-                    invContextMenu();
-                    invContextMenuChecker();
+                    initCtxMenus();
+                    //invContextMenuChecker();
                 }
 
                 //setTabIcons();
 
-
+                insertLogoAreaInfo();
+                updateClock();
                 setObservers();
             }
         }, 5);
