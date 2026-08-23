@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.52
+// @version      1.0.55
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -58,6 +58,7 @@
             "◈Links◈": {
                 "Player Index": {icon:'/game/images/mobster/drea.png', url:'https://chazu.arkku.net/dragonrip/player-index/'},
                 "CW Grid img": {icon:'/game/images/wars/lavas.png', url:'https://files.catbox.moe/wt9lk5.png'},
+                "Pirate Site": {icon:'https://chazu.arkku.net/pirate/favicon.ico', url:'https://chazu.arkku.net/pirate/'},
             }
 
         },
@@ -1169,6 +1170,7 @@
 
         .inv-context-menu > .menu-items > .menu-item {
             width: 100%;
+            height: 30px;
             padding: 0px 5px 5px 5px;
             margin-bottom: 5px;
             xborder-bottom: 1px solid grey;
@@ -1181,27 +1183,78 @@
         }
 
         .inv-context-menu > .menu-items > .menu-item > .amount-input {
-            width: 100px !important;
+            width: 30% !important;
             height: 30px;
             padding: 5px;
-            margin-left: 5px;
+            xmargin-left: 5px;
             background-color: rgba(0, 0, 0, 0.8);
             border-radius: 0px;
-            border: 1px solid grey;
             border: 2px double #3d3d3d;
             font-family: consolas, monospace;
-
+            text-align: right;
         }
+        .inv-context-menu > .menu-items > .menu-item > .amount-input[type="number"] {
+            -webkit-appearance: textfield;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+        .inv-context-menu > .menu-items > .menu-item > .amount-input[type="number"]::-webkit-inner-spin-button, 
+        .inv-context-menu > .menu-items > .menu-item > .amount-input[type="number"]::-webkit-outer-spin-button { 
+            -webkit-appearance: none;
+        }
+
         .inv-context-menu > .menu-items > .menu-item > .amount-input:focus {
             xbackground-color: rgb(0, 32, 32);
             color: white;
             border-color: #00b359;
         }    
 
-        .inv-context-menu > .menu-items > .menu-item > .btn {
-            width: 100px !important;
+        /* Plus and minus buttons to change amount*/
+        .inv-context-menu > .menu-items > .menu-item > .amount-buttons {
+            xborder: 1px solid lime;
+            height: 100%;
+            width: 40%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 9999;
+            visibility: visible;
+            xmargin: 0px 5px 0px 5px;
+        }
+        .inv-context-menu > .menu-items > .menu-item > .amount-buttons > .btn {
+            xborder: 1px solid red;
+            height: 140%;
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0);
+            background-image: url('https://i.imgur.com/wQPBolf.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            cursor: pointer;
+            color: #fff9e2;
+            text-shadow: 0 0 1vw #fa1c16,0 0 3vw #fa1c16,0 0 5vw #fa1c16,0 0 5vw #fa1c16,0 0 .4vw #fed128;
+            font-family: Georgia,serif;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .inv-context-menu > .menu-items > .menu-item > .amount-buttons > .btn:hover {
+            filter: brightness(1.2);
+            xbackground-image: url('https://u.cubeupload.com/TrikTrak/RedButton2.png');
+            
+        }
+        .inv-context-menu > .menu-items > .menu-item > .amount-buttons > .btn:active {
+            background-image: url('https://i.imgur.com/Rq1EfYg.png');
+        }
+
+        .inv-context-menu > .menu-items > .menu-item > .action-btn {
+            width: 50% !important;
+            xflex; 1;
             padding: 5px;
-            margin-right: 5px;
+            xmargin-right: 5px;
             background-color: rgba(0, 0, 0, 1);
             background-color: #111315;
             border: 2px outset rgb(64, 69, 72);
@@ -1215,19 +1268,19 @@
             justify-content: start;
         }
 
-        .inv-context-menu > .menu-items > .menu-item > .btn > .icon-cont {
+        .inv-context-menu > .menu-items > .menu-item > .action-btn > .icon-cont {
             xborder: 1px solid lime;
             width: 20px;
             height: 20px;
         }
 
-        .inv-context-menu > .menu-items > .menu-item > .btn > .icon-cont > img.icon {
+        .inv-context-menu > .menu-items > .menu-item > .action-btn > .icon-cont > img.icon {
             width: 100%;
             height: 100%;
             filter: drop-shadow(0px 0px 2px cyan) drop-shadow(0px 0px 3px rgba(0, 0 , 0, 0.0));
         }
 
-        .inv-context-menu > .menu-items > .menu-item > .btn > .label {
+        .inv-context-menu > .menu-items > .menu-item > .action-btn > .label {
             xborder: 1px solid lime;
             font-size: 1em;
             flex: 1;
@@ -1246,13 +1299,13 @@
 
 
 
-        .inv-context-menu > .menu-items > .menu-item > .btn:hover {
+        .inv-context-menu > .menu-items > .menu-item > .action-btn:hover {
             xbackground-color: rgb(37, 37, 37);
             xbackground-color: #01030e;
             filter: brightness(0.8);
         }
 
-        .inv-context-menu > .menu-items > .menu-item > .btn:active {
+        .inv-context-menu > .menu-items > .menu-item > .action-btn:active {
             xbackground-color: rgba(150, 150, 150, 0.4);
             filter: brightness(0.5);
         }
@@ -2322,7 +2375,7 @@
         // Action button for ctx menu items
         const createActionButton = (textLabel, gameIconUrl) => {
             const button = document.createElement('div');
-            button.classList.add('btn');
+            button.classList.add('action-btn');
 
             const iconCont = document.createElement('div');
             iconCont.classList.add('icon-cont');
@@ -2352,19 +2405,63 @@
             return input;
         }
 
+        const createAmountButtons = (inputElem, maxAmount) => {
+            const cont = document.createElement('div');
+            cont.classList.add('amount-buttons');
+
+            const minus = document.createElement('div');
+            minus.classList.add('btn');
+            minus.classList.add('minus');
+            minus.innerText = '-';
+
+            const plus = document.createElement('div');
+            plus.classList.add('btn');
+            plus.classList.add('plus');
+            plus.innerText = '+';
+
+            
+            minus.addEventListener('click', () => {
+                if ( Number(inputElem.value) > 1 ) {
+                    inputElem.value = Number(inputElem.value) - 1;
+                } else {
+                    const mouse = { x: e.pageX, y: e.pageY }
+                    floatText("MIN amount", "orange", mouse);
+                }
+            });
+
+            plus.addEventListener('click', () => {
+                if ( Number(inputElem.value) < Number(maxAmount) ) {
+                    inputElem.value = Number(inputElem.value) + 1;
+                } else {
+                    const mouse = { x: e.pageX, y: e.pageY }
+                    floatText("MAX amount", "orange", mouse);
+                }
+            });
+
+            cont.append(minus);
+            cont.append(plus);
+            return cont;
+        }
+
         const createCtxMenuRow = (btnLabel, btnImg, defaultAmount, maxAmount) => {
             const row = document.createElement('div');
             row.classList.add('menu-item');
 
-            const btn = createActionButton(btnLabel, btnImg);
-            row.append(btn);
+            const actionButton = createActionButton(btnLabel, btnImg);
+           
 
             const amountInputLabel = ' x ';
-            row.append(amountInputLabel);
-
+            
             const amountInput = createAmountInput(defaultAmount, maxAmount);
 
+            const amountButtons = createAmountButtons(amountInput, maxAmount);
+   
+
             row.append(amountInput);
+            row.append(amountButtons);
+            //row.append(amountInputLabel);
+            row.append(actionButton);
+            
 
             return row;
         }
@@ -2492,81 +2589,77 @@
 
         if (menuType === 'inv') {
             const bankRow = createCtxMenuRow('Bank', '/game/images/icons/bank.png', item.amount, item.amount);
-            bankRow.querySelector('.btn').addEventListener('click', e => {
+            bankRow.querySelector('.action-btn').addEventListener('click', e => {
                 sendToBank(item, bankRow.querySelector('.amount-input').value, mouse,  menuElem, linkElemUrl);
             });
 
             const ruinsBankRow = createCtxMenuRow('Ruins', '/game/images/icons/ruins.png', item.amount, item.amount);
-            ruinsBankRow.querySelector('.btn').addEventListener('click', () => {
+            ruinsBankRow.querySelector('.action-btn').addEventListener('click', () => {
                 sendToRuinsBank(item, ruinsBankRow.querySelector('.amount-input').value, mouse, menuElem, linkElemUrl);
             });
 
+            // createCtxMenuRow = (btnLabel, btnImg, defaultAmount, maxAmount) 
+            const eatRow = createCtxMenuRow('Eat', item.image, 1, item.amount);
+            eatRow.querySelector('.action-btn').addEventListener('click', () => {
+                eat(item, eatRow.querySelector('.amount-input').value, mouse, menuElem, linkElemUrl);
+            });
 
-            const eatRow = document.createElement('div');
-            const eatOneRow = document.createElement('div');
-            const eatRawRow = document.createElement('div');
-            const drinkRow = document.createElement('div');
-            const drinkSpecRow = document.createElement('div');
+            const eatOneRow = createCtxMenuRow('Eat 1', item.image, 1, 1);
+            eatOneRow.querySelector('.action-btn').addEventListener('click', () => {
+                eat(item, 1, mouse, menuElem, linkElemUrl);
+            });
 
-            eatRow.classList.add('menu-item');
-            eatOneRow.classList.add('menu-item');
-            eatRawRow.classList.add('menu-item');
-            drinkRow.classList.add('menu-item');
-            drinkSpecRow.classList.add('menu-item');
+            const eatRawRow = createCtxMenuRow('Eat raw', item.image, 1, item.amount);
+            eatRawRow.querySelector('.action-btn').addEventListener('click', () => {
+                eatRaw(item, eatRawRow.querySelector('.amount-input').value, mouse, menuElem, linkElemUrl);
+            });
+
+            const drinkRow = createCtxMenuRow('Drink', item.image, 1, item.amount);
+            drinkRow.querySelector('.action-btn').addEventListener('click', () => {
+                drink(item, drinkRow.querySelector('.amount-input').value, mouse, menuElem, linkElemUrl);
+            });
+
+            const drinkSpecRow = createCtxMenuRow('Drink 1', item.image, 1, item.amount);
+            drinkSpecRow.querySelector('.action-btn').addEventListener('click', () => {
+                drinkSpec(item, 1, mouse, menuElem, linkElemUrl);
+            });
+
+
+   
+            //const drinkRow = document.createElement('div');
+            //const drinkSpecRow = document.createElement('div');
+
+
+     
+       
+            //drinkRow.classList.add('menu-item');
+            //drinkSpecRow.classList.add('menu-item');
 
             // Add to action button
-            const buttonEat = createActionButton('Eat', item.image);
-            const buttonEatOne = createActionButton('Eat 1', item.image);
-            const buttonEatRaw = createActionButton('Eat raw', item.image);
-            const buttonDrink = createActionButton('Drink', item.image);
-            const buttonDrinkSpec = createActionButton('Drink 1', item.image);
+     
+
+            //const buttonDrink = createActionButton('Drink', item.image);
+            //const buttonDrinkSpec = createActionButton('Drink 1', item.image);
 
 
-            eatRow.append(buttonEat);
-            eatOneRow.append(buttonEatOne);
-            eatRawRow.append(buttonEatRaw);
-            drinkRow.append(buttonDrink);
-            drinkSpecRow.append(buttonDrinkSpec);
+
+
+            //eatRawRow.append(buttonEatRaw);
+            //drinkRow.append(buttonDrink);
+            //drinkSpecRow.append(buttonDrinkSpec);
         
             const amountInputLabel = ' x '
             // Amount inputs for context menu rows
-            eatRow.append(amountInputLabel);
-            const eatAmount = createAmountInput(1, item.amount);
-            eatRow.append(eatAmount);
+   
 
-            eatRawRow.append(amountInputLabel);
-            const eatRawAmount = createAmountInput(1, item.amount);
-            eatRawRow.append(eatRawAmount);
-
-            drinkRow.append(amountInputLabel);
-            const drinkAmount = createAmountInput(1, item.amount);
-            drinkRow.append(drinkAmount);
+            //drinkRow.append(amountInputLabel);
+            //const drinkAmount = createAmountInput(1, item.amount);
+            //drinkRow.append(drinkAmount);
 
 
             // Click listeners for context menu row action buttons
 
 
-
-            
-            buttonEat.addEventListener('click', () => {
-                eat(item, eatAmount.value, mouse,  menuElem, linkElemUrl);
-            });
-
-            buttonEatOne.addEventListener('click', () => {
-                eat(item, 1, mouse,  menuElem, linkElemUrl);
-            });
-
-            buttonEatRaw.addEventListener('click', () => {
-                eatRaw(item, eatRawAmount.value, mouse,  menuElem, linkElemUrl);
-            });
-
-            buttonDrink.addEventListener('click', () => {
-                drink(item, drinkAmount.value, mouse,  menuElem, linkElemUrl);
-            });
-
-            buttonDrinkSpec.addEventListener('click', () => {
-                drinkSpec(item, 1, mouse, menuElem, linkElemUrl);
-            });
 
             
 
@@ -2603,7 +2696,7 @@
 
         if (menuType === 'bank') {
             const takeFromBankRow = createCtxMenuRow('Take', item.image, item.amount, item.amount);
-            takeFromBankRow.querySelector('.btn').addEventListener('click', () => {
+            takeFromBankRow.querySelector('.action-btn').addEventListener('click', () => {
                 takeFromBank(item, takeFromBankRow.querySelector('.amount-input').value, mouse, menuElem, linkElemUrl);
             });
             menuItems.append(takeFromBankRow);
@@ -2695,23 +2788,24 @@
             } else if (str.indexOf("Added to your bank.") > -1) {
                 floatText(`Added ${amountToSend} ${item.name} to Bank`, "lime", mouseCoords);
 
-                // Remove item from inventory if all items added
                 if (item.amount - amountToSend <= 0) {
-                    menuElem.remove();
-                    settings.ctxMenu.isOpen = false;
+                    // Remove item tile from inventory if no items left in inv
                     linkElem.remove();
                 } else {
-                    // Update item amount in inventory
+                    // Update item amount in inventory, some items are left
                     const newAmount = item.amount - amountToSend;
                     linkElem.querySelector('span.amouti').innerText = newAmount;
-                    menuElem.remove(); 
                 }
                 updateInvSpaceValue(-amountToSend);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
+                linkElem.remove();
             } else if (str.indexOf("Incorrect amount!") > -1) {
                 floatText("Incorrect amount!", "orange", mouseCoords);
             }
+            // Close menu after every button click
+            settings.ctxMenu.isOpen = false;
+            menuElem.remove(); 
         });
     }
 
@@ -2741,25 +2835,23 @@
 
                 // Remove item from inventory if all items added
                 if (item.amount - amountToSend <= 0) {
-                    menuElem.remove();
-                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
                     // Update item amount in inventory
                     const newAmount = item.amount - amountToSend;
                     linkElem.querySelector('span.amouti').innerText = newAmount;
-                    menuElem.remove();
                 }
                 updateInvSpaceValue(-amountToSend);
             } else if (str.indexOf("You can't add this item to your Ruins Bank!") > -1) {    
                 floatText("NOT RUINS BANKABLE", "orange", mouseCoords);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
+                linkElem.remove();
             } else if (str.indexOf("Incorrect amount!") > -1) {
                 floatText("Incorrect amount!", "orange", mouseCoords);
             }
-
-           
+            settings.ctxMenu.isOpen = false;
+            menuElem.remove(); 
         });
     }
 
@@ -2787,24 +2879,23 @@
                 floatText("NO INV SPACE", "red", mouseCoords);
             } else if (str.indexOf("Added to your Inventory.") > -1) {
                 floatText(`Took ${amountToTake} ${item.name}`, "lime", mouseCoords);
-
                 // Remove item from inventory if all items added
                 if (item.amount - amountToTake <= 0) {
-                    menuElem.remove();
-                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
                     // Update item amount in bank
                     const newAmount = item.amount - amountToTake;
                     linkElem.querySelector('span.amouti').innerText = newAmount;
-                    menuElem.remove(); 
                 }
                 updateInvSpaceValue(amountToTake);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
+                linkElem.remove();
             } else if (str.indexOf("Incorrect amount!") > -1) {
                 floatText("Incorrect amount!", "orange", mouseCoords);
             }
+            settings.ctxMenu.isOpen = false;
+            menuElem.remove(); 
         });
     }
 
@@ -2829,24 +2920,21 @@
             const str = html;
             if (str.indexOf("You ate") > -1) {
                 floatText(`Ate ${amountToEat} ${item.name}`, "lime", mouseCoords);
-
-                // Remove item from inventory if all items added
                 if (item.amount - amountToEat <= 0) {
-                    menuElem.remove();
-                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
-                    // Update item amount in inventory
                     const newAmount = item.amount - amountToEat;
                     linkElem.querySelector('span.amouti').innerText = newAmount;
-                    menuElem.remove();
                 }
                 updateInvSpaceValue(-amountToEat);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
                 floatText("You don't Have this item", "orange", mouseCoords);
+                linkElem.remove();
             } else if (str.indexOf("Incorrect amount!") > -1) {
                 floatText("Incorrect amount!", "orange", mouseCoords);
             }
+            settings.ctxMenu.isOpen = false;
+            menuElem.remove(); 
         });
     }
 
@@ -2870,24 +2958,21 @@
             const str = html;
             if (str.indexOf("You ate") > -1) {
                 floatText(`Ate ${amountToEat} ${item.name}`, "lime", mouseCoords);
-
-                // Remove item from inventory if all items added
                 if (item.amount - amountToEat <= 0) {
-                    menuElem.remove();
-                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
-                    // Update item amount in inventory
                     const newAmount = item.amount - amountToEat;
                     linkElem.querySelector('span.amouti').innerText = newAmount;
-                    menuElem.remove();
                 }
                 updateInvSpaceValue(-amountToEat);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
-                floatText("You don't Have this item", "orange", mouseCoords);
+                floatText("You don't have this item", "orange", mouseCoords);
+                linkElem.remove();
             } else if (str.indexOf("Incorrect amount!") > -1) {
                 floatText("Incorrect amount!", "orange", mouseCoords);
             }
+            settings.ctxMenu.isOpen = false;
+            menuElem.remove(); 
         });
     }
 
@@ -2912,24 +2997,23 @@
             const str = html;
             if (str.indexOf("You drank") > -1) {
                 floatText(`Drank ${amountToDrink} ${item.name}`, "lime", mouseCoords);
-
                 // Remove item from inventory if all items added
                 if (item.amount - amountToDrink <= 0) {
-                    menuElem.remove();
-                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
                     // Update item amount in inventory
                     const newAmount = item.amount - amountToDrink;
                     linkElem.querySelector('span.amouti').innerText = newAmount;
-                    menuElem.remove();
                 }
                 updateInvSpaceValue(-amountToDrink);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
-                floatText("You don't Have this item", "orange", mouseCoords);
+                floatText("You don't have this item", "orange", mouseCoords);
+                linkElem.remove();
             } else if (str.indexOf("Incorrect amount!") > -1) {
                 floatText("Incorrect amount!", "orange", mouseCoords);
             }
+            settings.ctxMenu.isOpen = false;
+            menuElem.remove(); 
         });
     }
     
@@ -2956,21 +3040,21 @@
 
                 // Remove item from inventory if all items added
                 if (item.amount - amountToDrink <= 0) {
-                    menuElem.remove();
-                    settings.ctxMenu.isOpen = false;
                     linkElem.remove();
                 } else {
                     // Update item amount in inventory
                     const newAmount = item.amount - amountToDrink;
                     linkElem.querySelector('span.amouti').innerText = newAmount;
-                    menuElem.remove();
                 }
                 updateInvSpaceValue(-amountToDrink);
             } else if (str.indexOf("You Don't Have THIS item!") > -1) {
-                floatText("You don't Have this item", "orange", mouseCoords);
+                floatText("You don't have this item", "orange", mouseCoords);
+                linkElem.remove();
             } else if (str.indexOf("Incorrect amount!") > -1) {
                 floatText("Incorrect amount!", "orange", mouseCoords);
             }
+            settings.ctxMenu.isOpen = false;
+            menuElem.remove();             
         });
     }
 
