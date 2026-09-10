@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.56
+// @version      1.0.57
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -945,8 +945,9 @@
 
         .extra-box > .box > .list > .item:active {
             filter: brightness(1.0);
-            outline: 1px solid #007cf8;
+            xoutline: 1px solid #007cf8;
             xbackground-color: lime;
+            transform: translateY(3px);
         } 
 
         .extra-box > .box > .list > .item > .image-cont {
