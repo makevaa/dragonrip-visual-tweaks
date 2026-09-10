@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.55
+// @version      1.0.56
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -130,6 +130,18 @@
         td > a:hover div,
         .leftsidemdfk > a:hover div {
             outline: 1px solid grey !important;
+        }
+
+        /* Inventory item tiles */
+        .leftsidemdfk > a > div.blockex {
+            border-image-source: url(' https://u.cubeupload.com/TrikTrak/wowborderdarker1.png');
+            border-image-slice: 10;
+            border-image-width: 7px;
+            border-image-outset: 1px;
+            border-image-repeat: stretch;
+            background: #0c0c0f;
+            background: linear-gradient(0deg, rgba(12, 12, 15, 1) 0%, rgba(43, 47, 51, 1) 100%);
+            border-radius: 5px;
         }
 
         /* Inventory, equipped items etc. tabs on right-side of screen */
@@ -713,6 +725,7 @@
             background-position: center center;
             background-repeat: repeat;
             min-height: 100vh;
+            max-width: 200px;
             scrollbar-width: thin;
             position: absolute;
             top: 0;
@@ -722,7 +735,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: start;
-            box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.6), inset 0px 0px 10px 10px rgba(0, 0, 0, 0.8);
+            box-shadow: 
+                5px 5px 5px 0px rgba(0, 0, 0, 0.6), 
+                inset 0px 0px 10px 10px rgba(0, 0, 0, 0.8)
+            ;
         }
         .extra-box.small {
             padding: 0px;
@@ -765,9 +781,10 @@
             pointer-events: none;
         }    
         .extra-box.small > .top-buttons > .button {
-            width: 100%;
-            xaspect-ratio: 1/1;
-            height: auto;
+            xwidth: 100%;
+            aspect-ratio: 1/1;
+            width: auto;
+            height: 35px;
             padding: 0px;
             xbackground-size: 100% 100%;
         }
@@ -871,11 +888,12 @@
             align-items: center;
             justify-content: start;
             overflow: hidden;
+            padding-top: 1px;
         }
             
         .extra-box.small > .box > .list {
             width: 100%;
-            xalign-items: start;
+            
         }
 
         .extra-box > .box > .list.hidden {
@@ -888,44 +906,51 @@
             display: flex;
             align-items: center;
             justify-content: start;
-            width: 100%;
+            width: 99%;
             height: 35px;
             background-color: rgba(0, 0, 0, 0.5);
-            box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8), 0px 0px 5px 5px rgba(0, 0, 0, 0.5);
-            border-radius: 30px 10px 10px 30px;
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(24, 27, 29) 100%);
+            box-shadow: 
+                inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8), 
+                0px 0px 5px 5px rgba(0, 0, 0, 0.5)
+            ;
+            xborder-radius: 30px 10px 10px 30px;
+            border-radius: 5px;
         }
         .extra-box.small > .box > .list > .item {
             border: none;
             width: auto;
-            border-radius: 0px;
+            border-radius: 5px;
             border: none;
             margin-bottom: 2px;
             box-shadow: none;
-            xbox-shadow: 
-                inset 0px 0px 3px 1px rgba(0, 0, 0, 1), 
-                0px 0px 5px 5px rgba(0, 0, 0, 1)
-            ;
-            
+            xbox-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 1), 0px 0px 5px 5px rgba(0, 0, 0, 1);
+
+
         }
+
 
         .extra-box > .box > .list > .item > * {
             pointer-events: none;
         }
 
         .extra-box > .box > .list > .item:hover  {
-            filter: brightness(1.3);
+            filter: brightness(1.1);
+            background: linear-gradient(0deg, rgb(18, 18, 22) 0%, rgb(34, 38, 40) 100%);
         } 
 
         .extra-box > .box > .list > .item:hover > .image-cont > .image {
             filter: saturate(1);
         }
 
-        .extra-box > .box > .item:active {
+        .extra-box > .box > .list > .item:active {
             filter: brightness(1.0);
+            outline: 1px solid #007cf8;
+            xbackground-color: lime;
         } 
 
         .extra-box > .box > .list > .item > .image-cont {
-        position: relative;
+            position: relative;
             width: 35px;
             height: 35px;
             aspect-ratio: 1/1;
@@ -935,12 +960,28 @@
             margin: 0px 5px 0px 0px;
             background-color: rgba(21, 21, 21, 1);
             border: 4px double rgba(41, 41, 41, 1);
-            border-radius: 100%;
+            xborder-radius: 100%;
+            border-radius: 5px;
+            xfilter: brightness(0.9);
+
+            border-style: solid;
+            xborder-image-source: url('https://u.cubeupload.com/TrikTrak/wowborder.png');
+            border-image-source: url(' https://u.cubeupload.com/TrikTrak/wowborderdarker1.png');
+
+        
+            border-image-slice: 10;
+            border-image-width: 7px;
+            border-image-outset: 1px;
+            border-image-repeat: stretch;
+            background: #0c0c0f;
+            background: linear-gradient(0deg, rgba(12, 12, 15, 1) 0%, rgba(43, 47, 51, 1) 100%);
+            xmargin-left: -5px;
+            box-shadow: 5px 0px 5px 0px rgba(0, 0, 0, 0.3);
         }
         .extra-box.small > .box > .list > .item > .image-cont {
             margin: 0px;
             border-radius: 5px;
-            border: 2px double #575757;
+            xborder: 2px double #575757;
         }
 
         .extra-box > .box > .list > .item > .image-cont > .shadow-layer {
@@ -949,26 +990,24 @@
             height: 100%;
             aspect-ratio: 1/1;
             box-shadow: inset 0px 0px 3px 2px rgba(0, 0, 0, 1);
-            border-radius: 100%;
+            xborder-radius: 100%;
             xbackground-color: green;
             z-index: 1;
         }
         .extra-box > .box > .list > .item:hover > .image-cont > .shadow-layer {
             box-shadow: inset 0px 0px 2px 1px rgba(0, 0, 0, 0.5);
         }
-        .extra-box.small > .box > .list > .item > .image-cont > .shadow-layer {
-            border-radius: 5px;
-            box-shadow: inset 0px 0px 3px 3px rgba(0, 0, 0, 1);
+        .extra-box.small > .box > .list > .item:hover > .image-cont > .shadow-layer {
+            xborder-radius: 5px;
+            box-shadow: inset 0px 0px 3px 3px rgba(0, 0, 0, 0.0);
         }
 
         .extra-box > .box > .list > .item > .image-cont > .image {
             width: 100%;
             height: 100%;
             aspect-ratio: 1/1;
-            xbox-shadow: 
-                inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8)
-            ;
-            border-radius: 100%;
+            xbox-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8);
+            xborder-radius: 100%;
         }
         .extra-box.small > .box > .list > .item > .image-cont > .image {
             border-radius: 5px;
@@ -981,6 +1020,7 @@
             text-align: left;
             font-family: consolas, monospace;
             font-size: 0.9em;
+            xletter-spacing: 1px;
             font-family: Georgia, serif;
             color: rgba(152, 152, 152, 1);
             text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5);
