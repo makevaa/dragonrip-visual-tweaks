@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.57
+// @version      1.0.58
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1762,10 +1762,9 @@
                 label: '<a href="/game/qztitan.php" class="red">[Quartz Titan]</a> event', 
                 imageUrl: '/game/images/imci/sum.png' 
             },
-          
             halloween: { 
-                label: '<a href="/game/pumpkinKing.php" class="red">[Pumpking]</a> appeared', 
-                imageUrl: '/game/images/bossimages/snowman.png' 
+                label: '<a href="/game/pumpkin.php" class="red">[Pumpking]</a> appeared', 
+                imageUrl: '/game/images/bossimages/pumpking.png' 
             },
             explorationDone: {
                 label: 'Pet exploration done', 
@@ -1845,6 +1844,7 @@
             winter: "Snowman appeared in the Ice Plains.",
             spring: "Event: Treant Elder appeared in the Reaper's Garden.",
             summer: "Event: Quartz Titan appeared in the Azure Coastline.",
+            halloween: "Event: Pumpkin King appeared in the Pumpkin Field. ",
             gemRain: "Hurry Home, the Gem Rain has started!"
             
             //halloween: "",
