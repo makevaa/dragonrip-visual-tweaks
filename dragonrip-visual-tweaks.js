@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.58
+// @version      1.0.59
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -93,6 +93,9 @@
             scrollbar-width: thin;
             border: none !important;
             color-scheme: dark !important;
+            x--ironborder: url('https://files.catbox.moe/csygyu.webp');
+            --ironborder: url('https://u.cubeupload.com/TrikTrak/4fcwowbordergeminitrans.png');
+          
         }
 
                 
@@ -147,21 +150,36 @@
         /* Inventory, equipped items etc. tabs on right-side of screen */
         .into > table:nth-child(1) > tbody > tr > td {
             cursor:pointer;
-            box-shadow: none !important;
+            
             width: auto;
             height: 40px !important;
             padding: 0px !important;
             background-color: rgba(0, 0, 0, 0);
-            background-image: url('https://i.imgur.com/Rq1EfYg.png');
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
+            xbackground-image: url('https://i.imgur.com/Rq1EfYg.png');
+            xbackground-position: center;
+            xbackground-repeat: no-repeat;
+            xbackground-size: contain;
+
+            box-shadow: 
+                inset 0px 0px 5px 5px
+            ;
+            border-radius: 7px;
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(24, 27, 29) 100%);
+
+            border-image-source: var(--ironborder);
+            border-image-slice: 155;
+            border-image-width: 10px;
+            border-image-outset: 0px;
+            border-image-repeat: stretch;
+
             filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.9)) brightness(1);
             touch-action: manipulation;
         }
 
         .into > table:nth-child(1) > tbody > tr > td:hover {
-            filter: brightness(0.7);
+            xfilter: brightness(0.7);
+            xoutline: 1px solid lime;
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(49, 55, 59) 100%);
         }
 
         /* Icon image inside right-side menu tabs */
@@ -177,8 +195,11 @@
         /* Selected right-side menu tab */
         .into > table:nth-child(1) > tbody > tr > td.inter {
             xborder:1px solid red !important;
-            background-image: url('https://i.imgur.com/wQPBolf.png');
+            xbackground-image: url('https://i.imgur.com/wQPBolf.png');
 	        filter: brightness(1.2);
+            transform: translateY(5px);
+            background: linear-gradient(0deg, rgb(0, 0, 0) 10%, rgba(168, 90, 0, 0.5) 100%);
+            box-shadow: 0px 0px 1px 1px rgb(255, 102, 0) !important;
         }
 
         /* Selected tab icon image, in the right-side menu tab */
@@ -187,10 +208,10 @@
                 sepia(1)
                 hue-rotate(-30deg)
                 saturate(4)
-                brightness(1.5)
+                brightness(1.8)
                 drop-shadow(2px 2px 0px black)
-                drop-shadow(0px 0px 1px rgba(0, 0, 0, 1.0))
-                drop-shadow(0px 0px 5px rgba(255, 102, 0, 1.0))
+                drop-shadow(0px 0px 2px rgba(0, 0, 0, 1.0))
+                drop-shadow(0px 0px 5px rgba(255, 102, 0, 0.55))
             ;
         }
 
@@ -767,15 +788,21 @@
             width: 100%;
             height: 100%;
             min-height: 40px;
-            background-color: rgba(0, 0, 0, 0);
-            background-image: url('https://u.cubeupload.com/TrikTrak/RedButton1.png');
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: 90% 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            xpadding: 5px;
+            border-image-source: var(--ironborder);
+            border-image-slice: 155;
+            border-image-width: 10px;
+            border-image-outset: 0px;
+            border-image-repeat: stretch;
+
+            background-color: rgba(0, 0, 0, 0.5);
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(24, 27, 29) 100%);
+            box-shadow: 
+                inset 0px 0px 5px 5px rgba(0, 0, 0, 0.8), 
+                0px 0px 5px 5px rgba(0, 0, 0, 0.5)
+            ;
         }
         .extra-box.small > .top-buttons > .button > * {
             pointer-events: none;
@@ -790,28 +817,34 @@
         }
 
         .extra-box > .top-buttons > .button:hover {
-            xfilter: brightness(1.2);
-            background-image: url('https://u.cubeupload.com/TrikTrak/RedButton2.png');
+            filter: brightness(1.2);
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(34, 38, 41) 100%);
             
         }
         .extra-box > .top-buttons > .button:active {
-            background-image: url('https://u.cubeupload.com/TrikTrak/RedButton3.png');
+           filter: brightness(0.7);
         }
 
         .extra-box > .top-buttons > .button > .label {
             width: 100%;
             height: 100%;
-            font-size: 0.9em;
+            font-size: 0.8em;
+            letter-spacing: 2px;
             text-transform: uppercase;
             text-align: center;
-            color: #ffeca6;
             color: #fff9e2;
-            text-shadow: 0 0 1vw #fa1c16,0 0 3vw #fa1c16,0 0 5vw #fa1c16,0 0 5vw #fa1c16,0 0 .4vw #fed128;
+            color: #a3a3a3;
+            xtext-shadow: 0 0 1vw #fa1c16,0 0 3vw #fa1c16,0 0 5vw #fa1c16,0 0 5vw #fa1c16,0 0 .4vw #fed128;
             font-family: Georgia,serif;
-                 display: flex;
+            display: flex;
             align-items: center;
             justify-content: center;
         }
+        .extra-box > .top-buttons > .button:hover > .label {
+            color: #fff9e2;
+            text-shadow: 0 0 1vw #fa1c16,0 0 3vw #fa1c16,0 0 5vw #fa1c16,0 0 5vw #fa1c16,0 0 .4vw #fed128; 
+        }
+         
 
         .extra-box.small > .top-buttons > .button > .label {
             font-size: 1.5em;
