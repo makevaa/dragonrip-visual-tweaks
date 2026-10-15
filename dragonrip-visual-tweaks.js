@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.59
+// @version      1.0.60
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -177,7 +177,7 @@
         }
 
         .into > table:nth-child(1) > tbody > tr > td:hover {
-            xfilter: brightness(0.7);
+            filter: brightness(1.3);
             xoutline: 1px solid lime;
             background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(49, 55, 59) 100%);
         }
@@ -196,10 +196,13 @@
         .into > table:nth-child(1) > tbody > tr > td.inter {
             xborder:1px solid red !important;
             xbackground-image: url('https://i.imgur.com/wQPBolf.png');
-	        filter: brightness(1.2);
+	        filter: brightness(1.3);
             transform: translateY(5px);
             background: linear-gradient(0deg, rgb(0, 0, 0) 10%, rgba(168, 90, 0, 0.5) 100%);
             box-shadow: 0px 0px 1px 1px rgb(255, 102, 0) !important;
+        }
+        .into > table:nth-child(1) > tbody > tr > td.inter:hover {
+            filter: brightness(1.5);
         }
 
         /* Selected tab icon image, in the right-side menu tab */
@@ -208,7 +211,7 @@
                 sepia(1)
                 hue-rotate(-30deg)
                 saturate(4)
-                brightness(1.8)
+                brightness(1.6)
                 drop-shadow(2px 2px 0px black)
                 drop-shadow(0px 0px 2px rgba(0, 0, 0, 1.0))
                 drop-shadow(0px 0px 5px rgba(255, 102, 0, 0.55))
