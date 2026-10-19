@@ -799,6 +799,7 @@
             border-image-width: 10px;
             border-image-outset: 0px;
             border-image-repeat: stretch;
+            transition: all 0.05s;
 
             background-color: rgba(0, 0, 0, 0.5);
             background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(24, 27, 29) 100%);
@@ -825,7 +826,8 @@
             
         }
         .extra-box > .top-buttons > .button:active {
-           filter: brightness(0.7);
+           filter: brightness(0.8);
+           transform: translateY(2px);
         }
 
         .extra-box > .top-buttons > .button > .label {
@@ -1399,11 +1401,8 @@
             font-family: Georgia, serif;
             font-size: 1em;
             user-select: none;
-            
             transition: opacity 2s, transform 2s;
             transition-timing-function: linear;
-          
-            
         }
     
            
