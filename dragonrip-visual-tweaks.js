@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.60
+// @version      1.0.61
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1396,13 +1396,12 @@
             color: white;
             padding: 3px 5px 3px 5px;
             border-radius: 3px;
-            xbox-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.8);
-            xfont-family: consolas, monospace;
             font-family: Georgia, serif;
             font-size: 1em;
             user-select: none;
             transition: opacity 2s, transform 2s;
             transition-timing-function: linear;
+            pointer-events: none;
         }
     
            
