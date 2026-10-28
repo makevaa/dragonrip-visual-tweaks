@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.61
+// @version      1.0.62
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -150,19 +150,11 @@
         /* Inventory, equipped items etc. tabs on right-side of screen */
         .into > table:nth-child(1) > tbody > tr > td {
             cursor:pointer;
-            
             width: auto;
             height: 40px !important;
             padding: 0px !important;
             background-color: rgba(0, 0, 0, 0);
-            xbackground-image: url('https://i.imgur.com/Rq1EfYg.png');
-            xbackground-position: center;
-            xbackground-repeat: no-repeat;
-            xbackground-size: contain;
-
-            box-shadow: 
-                inset 0px 0px 5px 5px
-            ;
+            box-shadow: inset 0px 0px 5px 5px;
             border-radius: 7px;
             background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(24, 27, 29) 100%);
 
@@ -1075,31 +1067,36 @@
 
         /* Chat box */
         body > .chatting {
-            width: 98vw !important;
+            width: 99vw !important;
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             box-sizing: border-box;
             overflow-x: hidden;
         }
 
+        .chatting > .chatenemy {
+            display: flex;
+        }
+
         /* Chat tab buttons */
-        .chatting > .chatenemy > input[type="button"] {
-           -webkit-box-sizing: border-box;
+        .chatting > .chatenemy > input[type="button"], .big-chat-btn {
+            -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             box-sizing: border-box;
-            xborder: 1px solid lime !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            font-family: consolas, monospace !important;
-            xcolor: white !important;
-            xfont-size: 1.1em !important;
-            xfont-weight: 800;
-     
-            width: 10% !important;
-            border-radius: 2px !important;
-            margin-right: 5px !important;
-            background-color: rgba(0, 0, 0, 0.4) !important;
-            outline: 1px solid grey !important;
-            
+            transition: all 0.05s;
+            opacity: 0.5;
+            color: #808080;
+            font-family: Georgia,serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 12% !important;
+            height: 100%;
+            margin-right: 0px !important;
+
             text-shadow:
                 0px 0px 3px black,
                 0px 0px 3px black,
@@ -1111,22 +1108,27 @@
             ;
 
             box-shadow: 
-                inset 0px 0px 3px 1px rgba(0, 0, 0, 0.0), 
+                inset 0px 0px 3px 1px rgba(0, 0, 0, 1), 
                 3px 3px 3px 0px rgba(0, 0, 0, 0.5)
             ;
+
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(24, 27, 29) 100%);
+            border-image-source: var(--ironborder) !important;
+            border-image-slice: 155;
+            border-image-width: 10px;
+            border-image-outset: 5px 0px;
+            border-image-repeat: stretch;
         }
 
-        .chatting > .chatenemy > input[type="button"]:hover {
-            background-color: rgba(20, 20, 20, 1) !important;
-            outline: 1px solid grey !important;
+        .chatting > .chatenemy > input[type="button"]:hover, .big-chat-btn:hover {
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(49, 55, 59) 100%);
+            opacity: 0.8;
+            color: #b1b1b1;
         } 
 
         /* Selected chat tab */
         .chatting > .chatenemy > input[type="button"].active {
-            outline: 1px solid #fea528ff !important;
-            color: lime !important;
-            background-color: rgba(0, 0, 0, 0.5) !important;
-
+            opacity: 1;
             color: #ffd748 !important;
             text-shadow: 
                 0 0 1vw #FA1C16, 
@@ -1135,13 +1137,64 @@
                 0 0 10vw #FA1C16, 
                 0 0 .4vw #FED128
             ;
-
-            box-shadow: 
-                0px 0px 3px 0px rgba(255, 183, 0, 0.5)
-            ;
-
-            
+            transform: translateY(2px);
+            background: linear-gradient(0deg, rgb(0, 0, 0) 10%, rgba(168, 90, 0, 0.2) 100%);
         }
+        .chatting > .chatenemy > input[type="button"].active:hover {
+            filter: brightness(1.1);
+        }
+
+        .big-chat-btn {
+            margin-left: 10px;
+            width: 50px !important;
+            height: 30px;
+            font-family: consolas, monospace;
+            user-select: none;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .big-chat-btn.on {
+            color: #00ff59;
+            opacity: 1;
+            float: right;
+        }
+
+        /* Style for the large chat box */
+        .chatting.big {
+            xborder: 2px solid lime !important;
+            xoutline: 5px solid red !important;
+            display: flex !important;
+            flex-direction: column;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: calc(100vw - 0px) !important;
+            height: 100vh !important;
+            xmargin: 0px;
+
+            xcolor: orange !important;
+            z-index: 2 !important;
+            xopacity: 0.3 !important;
+        }
+
+        /* Text input field line */
+        .chatting.big > .chatenemy:nth-child(1) {
+            xborder: 1px solid red; 
+            margin-bottom: 10px !important;
+        }
+
+        /* Chat messages box */ 
+        .chatting.big > .chatinto {
+            xheight: 90% !important;
+            flex: 1;
+        }
+
+    
+
+   
     `;
 
     const invContextMenuCss = `
@@ -2377,17 +2430,60 @@
 
     const setChatStyles = () => {
         setCustomCss(chatCss);
-        // Remove random whitepsaces from between some chat tabs (bug in vanilla game?)
+
         const chatTabContainer = document.querySelector('.chatting > .chatenemy');
-
         if (chatTabContainer === null) { return; }
-
         const childNodes = chatTabContainer.childNodes;
+
+        // Remove random whitepsaces from between some chat tabs (bug in vanilla game?)
         for (const node of childNodes) {
-            //log(node)
             if (node.nodeName === '#text') {
                 node.remove();
-            }
+            } 
+        }
+
+        // Override game's vanilla inline styles
+        const tabs = document.querySelectorAll('.chatting > .chatenemy > input[type="button"]');
+        for (const tab of tabs) {
+            console.log(tab);
+            //tab.style.border = 'default';
+            tab.style = '';
+        }
+
+        //Insert big-chat button
+        const bigChat = document.createElement('div');
+        bigChat.classList.add('big-chat-btn');
+        bigChat.setAttribute('data-big-chat', 0);
+        bigChat.innerText = '▤'
+        bigChat.addEventListener('click', e => {
+            toggleBigChat(e);
+        });
+        chatTabContainer.append(bigChat);
+        
+
+    }
+
+    const toggleBigChat = (e) => {
+        const button = e.target;
+        const currentState = button.getAttribute('data-big-chat');
+
+        console.log(currentState)
+
+        const target = document.querySelector('body > div.chatting')
+
+        if (currentState == 0) {
+            // Turn big chat on
+            button.setAttribute('data-big-chat', 1);
+            button.classList.add('on');
+            target.classList.add('big');
+            window.scrollTo(0, 0);
+            document.body.style.overflowY = 'hidden';
+        } else {
+            // Turn big chat off
+            button.setAttribute('data-big-chat', 0);
+            button.classList.remove('on');
+            target.classList.remove('big');
+            document.body.style.overflowY = 'auto';
         }
     }
 
