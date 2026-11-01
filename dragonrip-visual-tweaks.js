@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.62
+// @version      1.0.63
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -95,7 +95,9 @@
             color-scheme: dark !important;
             x--ironborder: url('https://files.catbox.moe/csygyu.webp');
             --ironborder: url('https://u.cubeupload.com/TrikTrak/4fcwowbordergeminitrans.png');
-          
+
+            --wowborder-dark: url('https://u.cubeupload.com/TrikTrak/wowborderdarker1.png');
+        
         }
 
                 
@@ -137,7 +139,7 @@
 
         /* Inventory item tiles */
         .leftsidemdfk > a > div.blockex {
-            border-image-source: url(' https://u.cubeupload.com/TrikTrak/wowborderdarker1.png');
+            border-image-source: var(--wowborder-dark);
             border-image-slice: 10;
             border-image-width: 7px;
             border-image-outset: 1px;
@@ -996,8 +998,7 @@
             xfilter: brightness(0.9);
 
             border-style: solid;
-            xborder-image-source: url('https://u.cubeupload.com/TrikTrak/wowborder.png');
-            border-image-source: url(' https://u.cubeupload.com/TrikTrak/wowborderdarker1.png');
+            border-image-source: var(--wowborder-dark);
 
         
             border-image-slice: 10;
@@ -1079,7 +1080,7 @@
         }
 
         /* Chat tab buttons */
-        .chatting > .chatenemy > input[type="button"], .big-chat-btn {
+        .chatting > .chatenemy > input[type="button"], .chat-options > .btn {
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             box-sizing: border-box;
@@ -1113,14 +1114,14 @@
             ;
 
             background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(24, 27, 29) 100%);
-            border-image-source: var(--ironborder) !important;
+            border-image-source: var(--ironborder);
             border-image-slice: 155;
             border-image-width: 10px;
             border-image-outset: 5px 0px;
             border-image-repeat: stretch;
         }
 
-        .chatting > .chatenemy > input[type="button"]:hover, .big-chat-btn:hover {
+        .chatting > .chatenemy > input[type="button"]:hover, .chat-options > .btn:hover {
             background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(49, 55, 59) 100%);
             opacity: 0.8;
             color: #b1b1b1;
@@ -1143,23 +1144,50 @@
         .chatting > .chatenemy > input[type="button"].active:hover {
             filter: brightness(1.1);
         }
+        
+        /* Chat options container */
+        .chat-options {
+            xborder: 1px solid lime;
+            xwidth: 300px;
+            xheight: 150%;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            margin-left: 20px;
+            margin-top: -10px;
+          
+        }
 
-        .big-chat-btn {
-            margin-left: 10px;
-            width: 50px !important;
-            height: 30px;
-            font-family: consolas, monospace;
-            user-select: none;
-            font-size: 1.3em;
+        /* Chat option buttons */
+        .chat-options > .btn {
+            width: 30px !important;
+            height: 30px !important;
+            
             display: flex;
             align-items: center;
             justify-content: center;
+            user-select: none;
+            font-family: consolas, monospace;
+            font-size: 1.3em;
+
+            xborder-style: solid;
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(17, 28, 36) 100%);
+            border-image-source: var(--wowborder-dark);
+            border-image-slice: 10;
+            border-image-width: 6px;
+            border-image-outset: 1px;
+            border-image-repeat: stretch;
         }
 
-        .big-chat-btn.on {
+        .chat-options > .btn.big-chat {
+    
+        }
+
+        .chat-options > .btn.active {
             color: #00ff59;
             opacity: 1;
-            float: right;
+           
         }
 
         /* Style for the large chat box */
@@ -1192,6 +1220,11 @@
             flex: 1;
         }
 
+        /* Style for the monospace chat box */
+        .chatting.monospace {
+            font-family: consolas, monospace !important;
+        }
+    
     
 
    
@@ -2449,41 +2482,71 @@
             //tab.style.border = 'default';
             tab.style = '';
         }
+        
+        const options = document.createElement('div');
+        options.classList.add('chat-options');
 
         //Insert big-chat button
         const bigChat = document.createElement('div');
-        bigChat.classList.add('big-chat-btn');
+        bigChat.classList.add('btn');
+        bigChat.classList.add('big-chat');
         bigChat.setAttribute('data-big-chat', 0);
         bigChat.innerText = '▤'
         bigChat.addEventListener('click', e => {
             toggleBigChat(e);
         });
-        chatTabContainer.append(bigChat);
-        
+        options.append(bigChat);
 
+         //Insert big-chat button
+        const monospaceChat = document.createElement('div');
+        monospaceChat.classList.add('btn');
+        monospaceChat.classList.add('monospace-chat');
+        monospaceChat.setAttribute('data-monospace-chat', 0);
+        monospaceChat.innerText = 'A'
+        monospaceChat.addEventListener('click', e => {
+            toggleMonospaceChat(e);
+        });
+        options.append(monospaceChat);
+        
+        chatTabContainer.append(options);
     }
 
     const toggleBigChat = (e) => {
         const button = e.target;
         const currentState = button.getAttribute('data-big-chat');
-
-        console.log(currentState)
-
         const target = document.querySelector('body > div.chatting')
 
         if (currentState == 0) {
             // Turn big chat on
             button.setAttribute('data-big-chat', 1);
-            button.classList.add('on');
+            button.classList.add('active');
             target.classList.add('big');
             window.scrollTo(0, 0);
             document.body.style.overflowY = 'hidden';
         } else {
             // Turn big chat off
             button.setAttribute('data-big-chat', 0);
-            button.classList.remove('on');
+            button.classList.remove('active');
             target.classList.remove('big');
             document.body.style.overflowY = 'auto';
+        }
+    }
+
+    const toggleMonospaceChat = (e) => {
+        const button = e.target;
+        const currentState = button.getAttribute('data-monospace-chat');
+        const target = document.querySelector('body > div.chatting')
+
+        if (currentState == 0) {
+            // Turn monospace chat on
+            button.setAttribute('data-monospace-chat', 1);
+            button.classList.add('active');
+            target.classList.add('monospace');
+        } else {
+            // Turn monospace chat off
+            button.setAttribute('data-monospace-chat', 0);
+            button.classList.remove('active');
+            target.classList.remove('monospace');
         }
     }
 
