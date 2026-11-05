@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.63
+// @version      1.0.65
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -95,7 +95,9 @@
             color-scheme: dark !important;
             x--ironborder: url('https://files.catbox.moe/csygyu.webp');
             --ironborder: url('https://u.cubeupload.com/TrikTrak/4fcwowbordergeminitrans.png');
-
+            --ironborder-light: url('https://u.cubeupload.com/TrikTrak/wowbordergeminitrans.png');
+           
+            --wowborder: url('https://u.cubeupload.com/TrikTrak/wowborder.png');
             --wowborder-dark: url('https://u.cubeupload.com/TrikTrak/wowborderdarker1.png');
         
         }
@@ -266,68 +268,92 @@
             height: 68px;
             display: flex;
             justify-content: start;
-            align-items: start;
+            align-items: center;
             padding: 5px 5px 5px 5px; !important;
-            xpadding: 0px; !important;
+            padding: 0px; !important;
+
+            
          
         }
 
         div.player > div.picture {
+            xposition: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+
             margin: 0px !important;
-            margin-left: 0px !important;
-            padding-left: 0px !important;
-            xmargin-right: 10px !important;
-            xwidth: 15% !important;
-            width: auto !important;
-            height: 100%;
-            min-width: 60px !important;
+            margin: 5px 5px 5px 5px !important;
+            xmargin-left: 0px !important;
+            xmargin-right: 5px !important;
+            border-radius: 10px;
+
+
+            width: 70px !important;
+            xheight: 100% !important;
             aspect-ratio: 1/1 !important;
-            height: 100% !important;
-            xpadding: 5px;
-            xborder: 4px solid #212121;
-            xborder-radius: 50px;
+     
+
+            xoverflow: hidden !important;
+
+            
+            border-style: solid;
+            border-image-source: var(--ironborder);
+            border-image-slice: 155;
+            border-image-width: 10px;
+            border-image-outset: 0px;
+            border-image-repeat: stretch;
+
+            background: linear-gradient(0deg, rgb(0, 0, 0) 10%, rgb(70, 23, 8) 100%) !important;
+            xbox-shadow: 0px 0px 10px 10px red;
+            
+
         }
 
         div.player > div.picture > a {
             display: flex;
             justify-content: center;
             align-items: center;
-            aspect-ratio: 1/1;
+     
             width: 100%;
             height: 100%;
-
+            aspect-ratio: 1/1;
+            xposition: absolute;
         }
        
         div.player > div.picture > a > div.kovsd {
             display: flex;
             flex-direction: column;
-            justify-content: end;
-            background-size: cover !important;
+            justify-content: center;
+            align-items: end;
+
+            xbackground-size: contain !important;
+            background-size: 85% !important;
             background-repeat: no-repeat;
-            outline: 4px double rgba(255, 255, 255, 0.35)!important;
-            xborder-radius: 100% 100% 0% 0%!important;
-            xborder-radius: 0% 0% 100% 100%!important;
-            border-radius: 100%;
-            aspect-ratio: 1/1;
-            width: 90% !important;
-            height: 90% !important;
-            max-height: 90% !important;
-            min-height: 90% !important;
+            background-position: center center;
+
+            xoutline: 4px double rgba(255, 255, 255, 0.35)!important;
+            xborder-radius: 100%;
+
+            xaspect-ratio: 1/1;
+            width: 100% !important;
+            height: 100% !important;
+
+
             overflow: hidden !important;
-            box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8), 0px 0px 5px 5px rgba(0, 0, 0, 0.5), 5px 5px 5px 0px rgba(0, 0, 0, 0.5);
+            xbox-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8), 0px 0px 5px 5px rgba(0, 0, 0, 0.5), 5px 5px 5px 0px rgba(0, 0, 0, 0.5);
+            border: none !important;
+
+         
         }
 
         div.player > div.picture > a:hover {
-            filter: brightness(1.1);
-             xoutline-color: #009258;
-            xbackground-color: green;
+            filter: brightness(1.3);
         }
 
         div.player > div.picture > a:hover > div.kovsd {
-             outline: 4px double rgb(35, 123, 75)!important;
+            xoutline: 4px double rgb(35, 123, 75)!important;
+            xfilter: brightness(1.3);
         }
 
         div.player > div.picture > a > div.kovsd:active {
@@ -335,23 +361,38 @@
         }
 
         div.player > div.picture > a > div.kovsd > span.amoutina {
+            xborder: 1px solid lime;
+
             display: flex;
             align-items: center;
             justify-content: center;
 
-            width: 100% !important;
-            height: 30%;
-            margin-top: 0px !important;
+
+    
+            width: 85% !important;
+            height: 15px;
+            xheight: 30%;
+            aspect-ratio: 1/1;
+            margin: 40px auto 0px auto !important;
             xborder-top: 4px double grey;
 
+            padding: 0px !important;
             font-family: consolas,monospace;
-            xborder-radius: 0px 4px !important;
+            xborder-radius: 100% !important;
+            border-radius: 0px !important;
             font-size: 0.8em;
            
-            color: rgb(111, 111, 255) !important;
+
             color: #f5e9d8 !important;
-            text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
+            text-shadow: 
+                0px 0px 10px rgba(0, 0, 0, 0.5), 
+                0px 0px 3px rgba(0, 0, 0, 0.5), 
+                2px 2px 0px rgba(55, 5, 5, 0.99), 
+                0px 0px 8px orange, 
+                0px 0px 3px rgb(255, 255, 255)
+            ;
             background-color: rgba(0, 0, 0, 0.8);
+            background: linear-gradient(90deg,rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
         }
 
  
@@ -373,6 +414,8 @@
             align-items: center;
             justify-content: center;
             user-select: none;
+
+
         }
 
         div.logo > br {
@@ -401,26 +444,49 @@
     const fancyBarsCss = `
         /* Bar container */
         .player > .bar {
-            xborder: 5px solid lime !important; 
-            width: 100%;
-            margin-left: 10px;
+            xborder: 1px solid lime !important; 
+            width: 100% !important;
+            height: 100% !important;
+            xmargin-left: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+            background: none !important;
         }
 
 
         /* Bars */
         .player > .bar > .healthbar {
             --border-color: rgba(40, 41, 44, 1);
-            background-color: #1a1a1a;
+            border-radius: 5px !important;
+            xbackground-color: #1a1a1a;
             background-color: rgba(0,0,0,0.2);
             padding: 0px !important;
-            background-color: black;
             position: relative;
-            border: 2px solid grey;
-            outline: 5px ridge var(--border-color)!important;
+            margin: 0px 0px 2px 0px !important;
+            overflow: hidden !important;
+            xborder-radius: 10px !important;
 
-            box-shadow: inset 0px 0px 5px 5px rgba(255, 0, 0, 0.9)
+            xborder: 2px solid grey;
+            xoutline: 5px ridge var(--border-color)!important;
+
+
+
+            xbox-shadow: inset 0px 0px 5px 5px rgba(255, 0, 0, 0.9)
             xborder: none !important;
             width: 100% !important;
+            height: 30% !important;
+            xheight: 20px !important;
+
+            border-style: solid !important;
+            border-image-source: var(--wowborder-dark) !important;
+            xborder-image-source: var(--ironborder) !important;
+            border-image-slice: 10 !important;
+            border-image-width: 6px !important;
+            border-image-outset: 2px !important;
+            border-image-repeat: stretch !important;
+
             
         }
 
@@ -437,6 +503,7 @@
             width: calc(100% - 0px);
             height: 50%;
             background: linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+            xborder-radius: 5px 5px 0px 0px;
         }
 
         /* Filled, colored bar */
@@ -445,7 +512,8 @@
             xwidth: 100% !important;
             background-position: 0% 0%;
             background-repeat: repeat;
-            
+            xborder-radius: 5px 5px 0px 0px;
+
         }
 
         /* Health bar, colored inner bar */
@@ -460,10 +528,11 @@
 
         /* XP bar, colored inner bar */
         .player > .bar > .healthbar:nth-child(5) > .healthbar2 {
-            xanimation: xpBarSlide 80s linear infinite;
+            xanimation: xpBarSlide 10s linear infinite;
             background-image: url('https://i.imgur.com/VeK3PfN.jpeg');
             border-right: 2px solid rgba(152, 78, 255, 0.9) !important;
             position:absolute;
+            xborder-radius: 5px 0px 0px 5px;
         }
 
         /* Bar text */
@@ -494,6 +563,7 @@
             background-color: rgb(0, 55, 103);
             opacity: 0.9;
             filter: saturate(5);
+            xborder-radius: 5px 0px 0px 5px !important;
         }
 
         .player > .bar > .healthbar:nth-child(1) > .healthbar2:after{
@@ -1155,15 +1225,15 @@
             align-items: center;
             justify-content: start;
             margin-left: 20px;
-            margin-top: -10px;
+            margin-top: -8px;
           
         }
 
         /* Chat option buttons */
         .chat-options > .btn {
-            width: 30px !important;
-            height: 30px !important;
-            
+            width: 35px !important;
+            height: 35px !important;
+            margin-left: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1179,9 +1249,8 @@
             border-image-outset: 1px;
             border-image-repeat: stretch;
         }
-
-        .chat-options > .btn.big-chat {
-    
+        .chat-options > .btn:first-child {
+            margin-left: 0px;
         }
 
         .chat-options > .btn.active {
@@ -1208,13 +1277,13 @@
             xopacity: 0.3 !important;
         }
 
-        /* Text input field line */
+        /* Big chat, user message input field */
         .chatting.big > .chatenemy:nth-child(1) {
             xborder: 1px solid red; 
             margin-bottom: 10px !important;
         }
 
-        /* Chat messages box */ 
+        /* Big chat, chat messages container */
         .chatting.big > .chatinto {
             xheight: 90% !important;
             flex: 1;
@@ -1223,6 +1292,54 @@
         /* Style for the monospace chat box */
         .chatting.monospace {
             font-family: consolas, monospace !important;
+        }
+
+
+        /* Message text input field */
+        .chatting > .chatenemy > input#msg {
+            xoutline: 5px solid lime;
+
+            xbackground: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(17, 28, 36) 100%);
+            background-color: rgba(255, 255, 255, 0.05);
+            border-image-source: var(--wowborder-dark);
+            border-image-slice: 10;
+            border-image-width: 6px;
+            border-image-outset: 1px;
+            border-image-repeat: stretch;
+        }
+        .chatting > .chatenemy > input#msg:hover {
+            xoutline: 1px solid orange;
+        }
+        chatting > .chatenemy > input#msg:focus  {
+            outline: 10px solid lime !important;
+            xbackground-color: red !important;
+        }
+
+
+        /* "Send" msg button for chat message */
+        .chatting > .chatenemy > input#bum{
+            xoutline: 5px solid lime;
+  
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(17, 28, 36) 100%);
+            border-image-source: var(--wowborder-dark);
+            border-image-slice: 10;
+            border-image-width: 6px;
+            border-image-outset: 1px;
+            border-image-repeat: stretch;
+            font-family: consolas, monospace;
+            xfont-family: Georgia,serif;
+            opacity: 0.5;
+            xtransition: all 0.05s;
+        }
+        .chatting > .chatenemy > input#bum:hover{    
+            opacity: 1;
+        }
+
+        .chatting > .chatenemy > input#bum:active {
+            border-color: rgba(0, 0, 0, 0) !important;
+            xoutline: 1px solid lime !important;
+            transform: translateY(1px);
+            opacity: 0.5;
         }
     
     
