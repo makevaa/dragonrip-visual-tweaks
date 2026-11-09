@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.65
+// @version      1.0.66
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -16,6 +16,7 @@
 
     const settings = {
         sessionId: '567fbb9ef99a13ffa5889f95fbb4c362', // PHPSESSID cookie value, needed for some fetch requests
+        mobilePortrait: false,
         removeGameLogo: true, // Remove the large Dragonrip.com logo
         clearGameLogoHtml: true, // Remove all elements from game logo area, eg. <br> tags
         usernameToShow: 'paxu', // Username to show in infobox
@@ -289,8 +290,8 @@
             border-radius: 10px;
 
 
-            width: 70px !important;
-            xheight: 100% !important;
+            width: 60px !important;
+            height: 60px !important;
             aspect-ratio: 1/1 !important;
      
 
@@ -328,35 +329,37 @@
             align-items: end;
 
             xbackground-size: contain !important;
-            background-size: 85% !important;
+            background-size: 100% !important;
             background-repeat: no-repeat;
             background-position: center center;
 
             xoutline: 4px double rgba(255, 255, 255, 0.35)!important;
-            xborder-radius: 100%;
-
-            xaspect-ratio: 1/1;
-            width: 100% !important;
-            height: 100% !important;
-
+            border-radius: 1px !important;
 
             overflow: hidden !important;
-            xbox-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.8), 0px 0px 5px 5px rgba(0, 0, 0, 0.5), 5px 5px 5px 0px rgba(0, 0, 0, 0.5);
+            aspect-ratio: 1/1 !important;
+            width: calc(100% - 8px) !important;
+            height: calc(100% - 8px) !important;
+            min-height: 5px !important;
+
+
+           
+            box-shadow: inset 0px 0px 5px 4px rgba(0, 0, 0, 0.5);
             border: none !important;
 
          
         }
 
-        div.player > div.picture > a:hover {
+        div.player > div.picture:hover {
             filter: brightness(1.3);
         }
 
-        div.player > div.picture > a:hover > div.kovsd {
+        div.player > div.picture:hover > a > div.kovsd {
             xoutline: 4px double rgb(35, 123, 75)!important;
             xfilter: brightness(1.3);
         }
 
-        div.player > div.picture > a > div.kovsd:active {
+        div.player > div.picture:active {
             filter: brightness(0.7);
         }
 
@@ -373,14 +376,14 @@
             height: 15px;
             xheight: 30%;
             aspect-ratio: 1/1;
-            margin: 40px auto 0px auto !important;
+            margin: 33px auto 0px auto !important;
             xborder-top: 4px double grey;
 
             padding: 0px !important;
             font-family: consolas,monospace;
             xborder-radius: 100% !important;
             border-radius: 0px !important;
-            font-size: 0.8em;
+            font-size: 0.7em;
            
 
             color: #f5e9d8 !important;
@@ -392,7 +395,7 @@
                 0px 0px 3px rgb(255, 255, 255)
             ;
             background-color: rgba(0, 0, 0, 0.8);
-            background: linear-gradient(90deg,rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+            background: linear-gradient(90deg,rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
         }
 
  
@@ -1759,10 +1762,31 @@
         {
             background-color: #0c4300;
         }
+    `;
 
+    // For portrait mode on mobile devices.
+    const mobilePortraitCss = `
+        div.player {
+            max-width: calc(100% - 40px) !important; 
+        }
 
+        div.logo {
+            width: calc(100% - 40px) !important;
+            float: none !important;
+        }
 
+        body > div.veik,
+        body > div.into {
+            width: calc(100% - 40px) !important;
+        }
 
+        .chatting > .chatenemy > input[type="button"], .chat-options > .btn {
+            width: 20% !important;
+        }
+
+        .chat-options {
+            display: none !important;
+        }
     `;
 
 
@@ -3682,6 +3706,8 @@
                 insertLogoAreaInfo();
                 updateClock();
                 setObservers();
+
+                  if(settings.mobilePortrait) { setCustomCss(mobilePortraitCss); }
             }
         }, 5);
     }
@@ -3700,6 +3726,7 @@
         if (settings.removeGameLogo) { setCustomCss(removeGameLogoCss); } 
         if (settings.removeGameFooter) { setCustomCss(removeGameFooterCss); } 
 
+      
 
 
 
