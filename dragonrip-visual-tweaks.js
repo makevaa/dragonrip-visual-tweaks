@@ -1801,7 +1801,6 @@
         }
 
         body > div.logo > .info > .item > .left {
-        border: 1px solid red;
             width: 70% !important;
         }
     `;
