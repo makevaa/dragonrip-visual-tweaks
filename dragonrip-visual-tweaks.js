@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.66
+// @version      1.0.68
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1773,6 +1773,8 @@
         div.logo {
             width: calc(100% - 40px) !important;
             float: none !important;
+            height: auto !important;
+            padding: 0px !important;
         }
 
         body > div.veik,
@@ -1786,6 +1788,21 @@
 
         .chat-options {
             display: none !important;
+        }
+
+        body > div.logo > .info > .item.server-name,
+        body > div.logo > .info > .item.game-name ,
+        body > div.logo > .info > .item.user {
+            display: none !important;
+        }
+
+        body > div.logo > .info > .item > .icon{
+            display: none !important;
+        }
+
+        body > div.logo > .info > .item > .left {
+        border: 1px solid red;
+            width: 70% !important;
         }
     `;
 
@@ -1955,9 +1972,12 @@
         address = address.replace('https://dragonrip.com', '');
         addressElem.innerText = address;
 
-   
+     
         infoArea.append( createGameName() );
         infoArea.append( createServerName() );
+        
+      
+    
         infoArea.append( createClock() );
  
         if (settings.serverTime.keepRunning) {
