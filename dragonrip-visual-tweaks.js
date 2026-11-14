@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.1.0
+// @version      1.1.1
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -591,7 +591,7 @@
             justify-content: center;
             width: 20%;
             height: 95%;
-            padding: 5px 10px;
+            padding: 0px 0px 0px 0px;
             
 
             text-align: left;
@@ -600,18 +600,18 @@
             text-shadow: 1px 1px 0px rgba(0, 0, 0, 1.0);
             color: grey;
       
-            border-radius: 10px;
-            background-color: #161616;
+            xborder-radius: 10px;
+            xbackground-color: #161616;
             color: #4e4e4e;
-            box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.9) !important;
+            xbox-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.9) !important;
 
-            border-image-source: var(--ironborder);
+            xborder-image-source: var(--ironborder);
             border-image-slice: 155;
             border-image-width: 10px;
             border-image-outset: 0px 0px;
             border-image-repeat: stretch;
 
-            background-image: var(--marble-dark);
+            xbackground-image: var(--marble-dark);
             background-size: contain;
             background-position: center;
             background-repeat: repeat;
@@ -653,9 +653,10 @@
         }
 
         body > div.logo > .info > .item.game-name > .name {
+            padding-left: 5px;
             width: 100%;
             font-size: 0.7em;
-            line-height: 0.8em;
+            line-height: 1em;
             xcolor: #009258;
             xcolor: #ce2b37;
             xcolor: #D70A53;
@@ -682,7 +683,7 @@
             justify-content: start;
             font-size: 0.8em;
             font-family: consolas, monospace;
-            margin: 0px 3px 0px 3px;
+            margin: 0px 0px 0px 3px;
             padding: 10px;
 
             border-image-source: var(--ironborder);
@@ -776,11 +777,11 @@
 
         .dragonrip-server-time-cont {
             xborder: 1px solid grey;
-            width: 92%;
+            width: 100%;
             xheight: 50%;
             xflex: 1;
             xmargin-bottom: 5px;
-            xmargin-top: 5px;
+            margin-top: 5px;
             
             display: flex;
             align-items: center;
