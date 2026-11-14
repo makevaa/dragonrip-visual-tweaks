@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.0.68
+// @version      1.1.0
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -81,27 +81,37 @@
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             box-sizing: border-box;
-            
+            scrollbar-width: thin;
         }
 
-        body, html {
-            background: #262626 url('https://i.imgur.com/gnerbEH.jpeg')!important;
-            background-image: url('https://i.imgur.com/gnerbEH.jpeg')!important;
-            background-size: auto !important;
-            background-repeat: repeat !important;
-            background-attachment: scroll;
-            margin: auto 0px auto 0px !important;
-            scrollbar-width: thin;
-            border: none !important;
-            color-scheme: dark !important;
+        :root {
             x--ironborder: url('https://files.catbox.moe/csygyu.webp');
             --ironborder: url('https://u.cubeupload.com/TrikTrak/4fcwowbordergeminitrans.png');
             --ironborder-light: url('https://u.cubeupload.com/TrikTrak/wowbordergeminitrans.png');
-           
             --wowborder: url('https://u.cubeupload.com/TrikTrak/wowborder.png');
             --wowborder-dark: url('https://u.cubeupload.com/TrikTrak/wowborderdarker1.png');
-        
+            --marble: url('https://u.cubeupload.com/TrikTrak/tileblackmarble96bb2.jpg');
+            --marble-dark: url('https://u.cubeupload.com/TrikTrak/marbledark1.jpg');
+            /* #343434 */
+            --border-main: 1.5px solid #262626 !important;
         }
+
+        body, html {
+            background: #262626 var(--marble) !important;
+            background-image: var(--marble) !important;
+
+            background-size: auto !important;
+            background-repeat: repeat !important;
+            background-attachment: scroll;
+            
+            margin: auto 0px auto 0px !important;
+            scrollbar-width: thin;
+            xborder: none !important;
+            color-scheme: dark !important;
+
+
+        }   
+
 
                 
         /* HP, Stamina, XP bars */
@@ -217,33 +227,6 @@
 
         
 
-        /* Change empty vial graphic to more visible icon */
-        div[style="background-image: url(/game/images/itemaa/weavialwat.png);"] {
-            background-image: url(https://i.imgur.com/mgV2Iyb.png) !important;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-        }
-
-        /* Change sapphire images */
-        /*
-        div[style="background-image:url(/game/images/itemaa/xpsupshar.png);"] {
-            background-image: url(https://i.imgur.com/874LjcD.png) !important;
-            background-repeat: no-repeat;
-            background-position: center;
-            xbackground-size: contain;
-            border: 2px solid rgba(30, 30, 30, 1);
-            border-radius: 3px;
-        }
-        img[src="/game/images/itemaa/xpsupshar.png"] {
-            content: url(https://i.imgur.com/874LjcD.png) !important;
-            border: 2px solid rgba(30, 30, 30, 1);
-        }
-        */
-
-       
-      
-
         /* Custom main bar percent value, value and symbol */
         .player > .bar > .healthbar > .healthbar2 > .tekstasHealthbar > .bar-percent {
             xcolor: grey !important;
@@ -270,10 +253,11 @@
             display: flex;
             justify-content: start;
             align-items: center;
-            padding: 5px 5px 5px 5px; !important;
+            xpadding: 5px 5px 5px 5px; !important;
             padding: 0px; !important;
-
-            
+            box-shadow: none !important;
+            border-bottom: var(--border-main);
+            overflow: hidden;
          
         }
 
@@ -411,22 +395,21 @@
             xpadding: 0px !important;
         }
 
-        div.logo {
-            height: 68px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-
-
+        /* The main play area */
+        body > .veik {
+            box-shadow: none !important;
+            box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 1) !important;
+            border: var(--border-main);
+            border-right: none;
+            xmargin-right: 5px;
         }
 
-        div.logo > br {
-            height: 0px !important;
-        }
-
-        div.logo > img {
-            height: 80%;
+        /* The right-side play area (inventory, levels etc.) */
+       body > .into {
+            box-shadow: none !important;
+            box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 1) !important;
+            border: var(--border-main);
+            margin-left: -2px;
         }
 
     `;
@@ -450,11 +433,10 @@
             xborder: 1px solid lime !important; 
             width: 100% !important;
             height: 100% !important;
-            xmargin-left: 5px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-evenly;
+            justify-content: center;
             background: none !important;
         }
 
@@ -462,35 +444,20 @@
         /* Bars */
         .player > .bar > .healthbar {
             --border-color: rgba(40, 41, 44, 1);
+            width: 100% !important;
+            height: 28.5% !important;
             border-radius: 5px !important;
-            xbackground-color: #1a1a1a;
             background-color: rgba(0,0,0,0.2);
             padding: 0px !important;
             position: relative;
             margin: 0px 0px 2px 0px !important;
             overflow: hidden !important;
-            xborder-radius: 10px !important;
-
-            xborder: 2px solid grey;
-            xoutline: 5px ridge var(--border-color)!important;
-
-
-
-            xbox-shadow: inset 0px 0px 5px 5px rgba(255, 0, 0, 0.9)
-            xborder: none !important;
-            width: 100% !important;
-            height: 30% !important;
-            xheight: 20px !important;
-
             border-style: solid !important;
             border-image-source: var(--wowborder-dark) !important;
-            xborder-image-source: var(--ironborder) !important;
             border-image-slice: 10 !important;
             border-image-width: 6px !important;
             border-image-outset: 2px !important;
             border-image-repeat: stretch !important;
-
-            
         }
 
         .player > .bar > .healthbar:nth-child(1), 
@@ -543,7 +510,7 @@
             position:absolute;
             color: #ffffff !important;
           
-            padding-top: 1px !important;
+            xpadding-top: 1px !important;
             font-family: consolas,monospace;
             font-size: 1.1em;
             text-shadow: 
@@ -601,22 +568,53 @@
 
     const infoAreaCss = `
         body > div.logo {
+            xborder: 2px solid lime;
+            border-bottom: var(--border-main);
+            border-right: var(--border-main);
             display: flex;
             flex-direction: row;
-            justify-content: start;
+            justify-content: center;
             align-items: center;
-            padding: 2px 5px 2px 10px;
+            xpadding: 2px 5px 2px 10px;
+            padding: 0px 0px 0px 0px !important;
+            xborder-radius: 10px;
+            xborder: none !important;
+            xbackground: black !important;
+            box-shadow: none !important;
         }
 
         body > div.logo > .info {
-            xborder: 1px solid lime;
-            border-right: 4px double rgba(68, 68, 68, 1);
-            width: 50%;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 20%;
+            height: 95%;
+            padding: 5px 10px;
+            
+
             text-align: left;
-            xpadding: 5px;
             font-size: 0.8em;
             font-family: consolas,monospace;
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 1.0);
             color: grey;
+      
+            border-radius: 10px;
+            background-color: #161616;
+            color: #4e4e4e;
+            box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.9) !important;
+
+            border-image-source: var(--ironborder);
+            border-image-slice: 155;
+            border-image-width: 10px;
+            border-image-outset: 0px 0px;
+            border-image-repeat: stretch;
+
+            background-image: var(--marble-dark);
+            background-size: contain;
+            background-position: center;
+            background-repeat: repeat;
         }	
 
         
@@ -624,9 +622,8 @@
             xborder: 1px solid red;
             display: flex;
             align-items: center;
-            justify-content: start;
-            xwidth: 80%;
-           
+            justify-content: center;
+            width: 95%;
         }
 
         body > div.logo > .info > .item > .icon {
@@ -640,29 +637,30 @@
             margin-right: 5px;
             padding: 5px;
             color: #009258;
-            font-size: 1.2em;
-            
+            font-size: 1.2em; 
         }        
 
         body > div.logo > .info > .item > .left {
+            xborder: 1px solid grey;
             xdisplay: flex;
             width: 44%;
             text-align: right;
             margin-right: 5px;
         }
 
-
-
         body > div.logo > .info > .item.server-name > .name {
             xcolor: #009258;
         }
 
         body > div.logo > .info > .item.game-name > .name {
-            xborder: 1px solid grey;
-            xmargin: auto;
+            width: 100%;
+            font-size: 0.7em;
+            line-height: 0.8em;
             xcolor: #009258;
             xcolor: #ce2b37;
             xcolor: #D70A53;
+            xcolor: rgb(111, 111, 255);
+        
         }
 
         body > div.logo > .info > .item.user > .name {
@@ -672,26 +670,26 @@
             xcolor: #009258;
         } 
 
-        body > div.logo > .info > .item.address {
-            xborder: 1px solid grey;
-            text-wrap: no-wrap;
-            width: 100%;
-            height: 20px;
-            xwhite-space: nowrap;
-            overflow: hidden;
-        }
 
         body > div.logo > .events {
             xborder: 1px solid cyan;
             width: 50%;
-            height: 100%;
+            height: 95%;
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: start;
             justify-content: start;
             font-size: 0.8em;
             font-family: consolas, monospace;
-            padding: 5px;
+            margin: 0px 3px 0px 3px;
+            padding: 10px;
+
+            border-image-source: var(--ironborder);
+            border-image-slice: 155;
+            border-image-width: 10px;
+            border-image-outset: 0px 0px;
+            border-image-repeat: stretch;
         }
 
         body > div.logo > .events > .no-events {
@@ -773,25 +771,50 @@
             -moz-box-sizing: border-box;
             box-sizing: border-box;
             user-select: none;
+            xborder: 1px solid grey;
         }
 
         .dragonrip-server-time-cont {
+            xborder: 1px solid grey;
+            width: 92%;
+            xheight: 50%;
+            xflex: 1;
+            xmargin-bottom: 5px;
+            xmargin-top: 5px;
+            
             display: flex;
-            flex-direction: row;
-            background-repeat: repeat;
-            background-size: contain;
-            xfont-family: consolas, monospace;
-            xcolor: grey;
+            align-items: center;
+            justify-content: center;
         }
 
         .dragonrip-server-time-cont > .label {
-            xmargin-right: 10px;
+            xmargin-right: 5px;
+            xpadding: 0px 5px;
+            text-align: right;
+            line-height: 0.8em;
+            width: 50%;
+            
+        }
+
+        .dragonrip-server-time-cont > .icon {
+            color: orange;
+            xmargin-bottom: 2px;
+            xmargin-right: 5px;
         }
 
         .dragonrip-server-time-cont > .time {
             color: #de6c09;
-            xcolor: #6633ff;
-            xcolor: #7a3c05;
+            xpadding: 4px 5px;
+            xmargin-right: 5px;
+            xwidth: 50%;
+            text-align: center;
+
+            xbackground: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(17, 28, 36) 100%);
+            xborder-image-source: var(--wowborder-dark);
+            border-image-slice: 10;
+            border-image-width: 7px;
+            border-image-outset: 3px;
+            border-image-repeat: stretch;
         }
 
         body > .logo {
@@ -799,18 +822,13 @@
         }
     `;
 
-    const serverTimeFancyBoxCss = `    
-        .dragonrip-server-time-cont {
-            border: 2px solid rgba(255,255,255,0.15);
-            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.8);
-            background-image: url('https://i.imgur.com/vjJ8ugC.jpeg');
-            background-size: cover;
-        }
-    `;
+
 
     const extraBoxCss = `    
         .extra-box {
             border: 1px solid rgba(255,255,255,0.15);
+
+              border: var(--border-main);
             box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.8);
             background: url('/img/mc/center.jpg');
             background-position: center center;
@@ -1146,10 +1164,19 @@
             -moz-box-sizing: border-box;
             box-sizing: border-box;
             overflow-x: hidden;
+            box-shadow: none !important;
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 1) !important;
+            border: var(--border-main);
         }
 
         .chatting > .chatenemy {
             display: flex;
+        }
+
+        /* Chat messages container */
+        .chatting > .chatinto {
+            box-shadow: none !important;
+            border: var(--border-main);
         }
 
         /* Chat tab buttons */
@@ -1840,12 +1867,12 @@
     
     const createClock = () => {
         const elem = document.createElement('div');
-        elem.classList.add('item');
+        //elem.classList.add('item');
         elem.classList.add('dragonrip-server-time-cont');
 
         const icon = document.createElement('div');
         icon.classList.add('icon');
-        icon.innerText = '◈';
+        icon.innerText = '🌐';
 
         // Create text label
         const label = document.createElement('div');
@@ -1857,8 +1884,8 @@
         const time = document.createElement('div');
         time.classList.add('time');
         
-        elem.append(label);
-        elem.append(icon);
+        //elem.append(label);
+        //elem.append(icon);
         elem.append(time);
 
         return elem;
@@ -1886,10 +1913,12 @@
 
         const name = document.createElement('div');
         name.classList.add('name');
-        name.innerHTML = `DragonRip`;
+        const ver = GM_info.script.version;
+        const scriptName = GM_info.script.name;
+        name.innerHTML = `${scriptName} v${ver}`;
         
-        elem.append(label);
-        elem.append(icon);
+        //elem.append(label);
+        //elem.append(icon);
         elem.append(name);
         return elem;
     }
@@ -1973,7 +2002,7 @@
 
      
         infoArea.append( createGameName() );
-        infoArea.append( createServerName() );
+        //infoArea.append( createServerName() );
         
       
     
@@ -1985,13 +2014,15 @@
             }, 1000);
         }
 
-        infoArea.append( createUsernameLabel() );
+        //infoArea.append( createUsernameLabel() );
         //infoArea.append(addressElem);
-        targetElem.append(infoArea);
+     
 
         const eventsArea = document.createElement('div');
         eventsArea.classList.add('events');
+
         targetElem.append(eventsArea);
+        targetElem.append(infoArea);
 
 
         if (settings.eventAlerts) {
@@ -2458,7 +2489,7 @@
         }
 
         const viewportW = document.documentElement.clientWidth;
-        boxW = viewportW - gameAreaW;
+        boxW = viewportW - gameAreaW - 3;
         const boxWStr = `${boxW}px`;
         elem.style.width = boxWStr;
 
@@ -3741,7 +3772,7 @@
         setCustomCss(serverTimeMainCss);
         setCustomCss(serverTimeMainCss);
         
-        if (settings.serverTime.fancyBox) { setCustomCss(serverTimeFancyBoxCss); } 
+       
         if (settings.removeGameLogo) { setCustomCss(removeGameLogoCss); } 
         if (settings.removeGameFooter) { setCustomCss(removeGameFooterCss); } 
 
