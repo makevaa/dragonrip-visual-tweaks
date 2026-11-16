@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.1.1
+// @version      1.1.2
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -617,59 +617,69 @@
             background-repeat: repeat;
         }	
 
-        
-        body > div.logo > .info > .item {
-            xborder: 1px solid red;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 95%;
-        }
-
-        body > div.logo > .info > .item > .icon {
+        body > div.logo > .info > .script-name-cont  {
             xborder: 1px solid grey;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 10px;
-            height: 10px;
-            aspect-ratio: 1/1;
-            margin-right: 5px;
+            width: 90%;
+            xheight: 50%;
+            line-height: 0.5em;
             padding: 5px;
-            color: #009258;
-            font-size: 1.2em; 
-        }        
-
-        body > div.logo > .info > .item > .left {
-            xborder: 1px solid grey;
-            xdisplay: flex;
-            width: 44%;
-            text-align: right;
-            margin-right: 5px;
+            border-radius: 3px;
+            border-image-source: var(--wowborder-dark);
+            border-image-slice: 10;
+            border-image-width: 6px;
+            border-image-outset: 3px;
+            border-image-repeat: stretch;
+            background-color: #101010;
         }
 
-        body > div.logo > .info > .item.server-name > .name {
-            xcolor: #009258;
-        }
-
-        body > div.logo > .info > .item.game-name > .name {
-            padding-left: 5px;
-            width: 100%;
-            font-size: 0.7em;
-            line-height: 1em;
+        body > div.logo > .info > .script-name-cont > .script-name {
+            xpadding-left: 5px;
+            xwidth: 100%;
+            font-size: 0.6em;
+    
+            color: grey;            
             xcolor: #009258;
             xcolor: #ce2b37;
             xcolor: #D70A53;
             xcolor: rgb(111, 111, 255);
-        
+        }
+        body > div.logo > .info > .script-name-cont > .script-name:hover {
+            color: #bababa;
+        } 
+        body > div.logo > .info > .script-name-cont > .script-name:active {
+            color: rgb(111, 111, 255);
+        } 
+
+
+        body > div.logo > .info > .server-time-cont {
+            border: 1px solid grey;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            margin-top: 5px;
+    
+            background-color: #101010;
+            xbox-shadow: inset 0px 0px 5px 3px rgba(0, 0, 0, 1);
+
+            border-radius: 3px;
+            border-image-source: var(--wowborder-dark);
+            border-image-slice: 10;
+            border-image-width: 6px;
+            border-image-outset: 3px;
+            border-image-repeat: stretch;
+
+
+
         }
 
-        body > div.logo > .info > .item.user > .name {
-            xcolor: #6633ff;
-            xcolor: rgb(111, 111, 255);
-            xcolor: #167676;
-            xcolor: #009258;
-        } 
+
+        body > div.logo > .info > .server-time-cont > .time {
+            color: #de6c09;
+            xtext-align: center;
+            xwidth: 100%;
+            xheight: 100%;
+        }
 
 
         body > div.logo > .events {
@@ -685,6 +695,10 @@
             font-family: consolas, monospace;
             margin: 0px 0px 0px 3px;
             padding: 10px;
+            xbackground-color: red;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 10px 10px rgba(0, 0, 0, 1);
 
             border-image-source: var(--ironborder);
             border-image-slice: 155;
@@ -766,62 +780,7 @@
 
     `;
 
-    const serverTimeMainCss = `
-        .dragonrip-server-time-cont > * {
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            user-select: none;
-            xborder: 1px solid grey;
-        }
 
-        .dragonrip-server-time-cont {
-            xborder: 1px solid grey;
-            width: 100%;
-            xheight: 50%;
-            xflex: 1;
-            xmargin-bottom: 5px;
-            margin-top: 5px;
-            
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .dragonrip-server-time-cont > .label {
-            xmargin-right: 5px;
-            xpadding: 0px 5px;
-            text-align: right;
-            line-height: 0.8em;
-            width: 50%;
-            
-        }
-
-        .dragonrip-server-time-cont > .icon {
-            color: orange;
-            xmargin-bottom: 2px;
-            xmargin-right: 5px;
-        }
-
-        .dragonrip-server-time-cont > .time {
-            color: #de6c09;
-            xpadding: 4px 5px;
-            xmargin-right: 5px;
-            xwidth: 50%;
-            text-align: center;
-
-            xbackground: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(17, 28, 36) 100%);
-            xborder-image-source: var(--wowborder-dark);
-            border-image-slice: 10;
-            border-image-width: 7px;
-            border-image-outset: 3px;
-            border-image-repeat: stretch;
-        }
-
-        body > .logo {
-            position: relative;
-        }
-    `;
 
 
 
@@ -1399,25 +1358,25 @@
             box-sizing: border-box; 
             position: absolute;
             z-index: 1000;
-            min-width: 225px;
-            xmin-height: 100px;
-            background-color: rgba(21, 21, 21, 0.95);
+            min-width: 250px;
+            min-height: 100px;
+        
             xborder: 1px solid grey;
             box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.8);
-            border-radius: 5px;
+            border-radius: 3px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: start;
             user-select: none;
-            padding: 10px;
+            padding: 5px;
 
-            background-color: #01061b;
+            background-color: #0b0e19;
             border-style: solid;
-            border-image-source: url('https://u.cubeupload.com/TrikTrak/wowtooltip.png');
+            border-image-source: var(--wowborder);
             border-image-slice: 10;
-            border-image-width: 10px;
-            border-image-outset: 0;
+            border-image-width: 8px;
+            border-image-outset: 4px;
             border-image-repeat: stretch;
                     
         }
@@ -1436,37 +1395,47 @@
             align-items: center;
             justify-content: start;
             padding: 5px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
 
         }
 
         .inv-context-menu > .top > .item-image {
-            width: 24px;
-            height: 24px;
-            margin-right: 3px;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
+            
+            border-image-source: var(--wowborder-dark);
+            border-image-slice: 10;
+            border-image-width: 7px;
+            border-image-outset: 4px;
+            border-image-repeat: stretch;
+            border-radius: 5px;
         }
 
         .inv-context-menu > .top > .item-name {
             xborder: 1px solid grey;
             display: flex;
             align-items: center;
-            xtext-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 1);
             font-size: 0.9em;
-            color: #e6e6e6ff;
+            color: rgb(207, 207, 207);
             font-family: Georgia, serif;
         }
 
         .inv-context-menu > .top > .amount-owned {
-            xborder: 1px solid grey;
+            xborder: 1px solid #161616;
+            background-color: rgba(255, 255, 255, 0.05);
+            xborder-radius: 5px;
             xmin-width: 30px;
             display: flex;
             align-items: center;
             justify-content: start;
             margin: 0px 0px 0px 10px;
-            xtext-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5), 0px 0px 3px rgba(0, 0, 0, 0.5), 2px 2px 0px rgba(55, 5, 5, 0.99), 0px 0px 8px orange, 0px 0px 3px rgb(255, 255, 255);
+            padding: 5px 10px;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 1);
             font-size: 0.8em;
             color: #b0b0b0ff;
             xfont-family: Georgia, serif;
@@ -1492,7 +1461,7 @@
             xcursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: start;
+            justify-content: space-between;
         }
 
         .inv-context-menu > .menu-items > .menu-item > .amount-input {
@@ -1567,7 +1536,7 @@
             width: 50% !important;
             xflex; 1;
             padding: 5px;
-            xmargin-right: 5px;
+            margin-left: 5px;
             background-color: rgba(0, 0, 0, 1);
             background-color: #111315;
             border: 2px outset rgb(64, 69, 72);
@@ -1868,40 +1837,25 @@
     
     const createClock = () => {
         const elem = document.createElement('div');
-        //elem.classList.add('item');
-        elem.classList.add('dragonrip-server-time-cont');
+        elem.classList.add('server-time-cont');
 
-        const icon = document.createElement('div');
-        icon.classList.add('icon');
-        icon.innerText = '🌐';
-
-        // Create text label
-        const label = document.createElement('div');
-        label.classList.add('left');
-        label.classList.add('label');
-        label.innerHTML = settings.serverTime.label;
-
-        // Create time
         const time = document.createElement('div');
         time.classList.add('time');
         
-        //elem.append(label);
-        //elem.append(icon);
         elem.append(time);
-
         return elem;
     }
 
     const updateClock = () => {
-        const elem = document.querySelector('body > .logo > .info > .dragonrip-server-time-cont > .time');
+        const elem = document.querySelector('body > .logo > .info > .server-time-cont > .time');
         elem.innerText = getTime();
     }
 
     
-    const createGameName = () => {
+    const createScriptNameLabel = () => {
         const elem = document.createElement('div');
         elem.classList.add('item');
-        elem.classList.add('game-name');
+        elem.classList.add('script-name-cont');
 
         const icon = document.createElement('div');
         icon.classList.add('icon');
@@ -1912,8 +1866,10 @@
         label.classList.add('label');
         label.innerText = 'System';
 
-        const name = document.createElement('div');
-        name.classList.add('name');
+        const name = document.createElement('a');
+        name.classList.add('script-name');
+        name.setAttribute('href', 'https://github.com/makevaa/dragonrip-visual-tweaks')
+        name.setAttribute('target', '_blank');
         const ver = GM_info.script.version;
         const scriptName = GM_info.script.name;
         name.innerHTML = `${scriptName} v${ver}`;
@@ -1994,19 +1950,13 @@
         const infoArea = document.createElement('div');
         infoArea.classList.add('info');
 
-        const addressElem = document.createElement('span');
-        addressElem.classList.add('item');
-        addressElem.classList.add('address');
-        let address = document.location.href;
-        address = address.replace('https://dragonrip.com', '');
-        addressElem.innerText = address;
 
      
-        infoArea.append( createGameName() );
+
+     
+        infoArea.append( createScriptNameLabel() );
         //infoArea.append( createServerName() );
         
-      
-    
         infoArea.append( createClock() );
  
         if (settings.serverTime.keepRunning) {
@@ -3770,8 +3720,6 @@
         insertCustomFavicon();
         setCustomCss(mainCss);
         setCustomCss(infoAreaCss); 
-        setCustomCss(serverTimeMainCss);
-        setCustomCss(serverTimeMainCss);
         
        
         if (settings.removeGameLogo) { setCustomCss(removeGameLogoCss); } 
