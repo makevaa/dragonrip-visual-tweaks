@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.1.2
+// @version      1.1.4
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -15,7 +15,6 @@
     'use strict';
 
     const settings = {
-        sessionId: '567fbb9ef99a13ffa5889f95fbb4c362', // PHPSESSID cookie value, needed for some fetch requests
         mobilePortrait: false,
         removeGameLogo: true, // Remove the large Dragonrip.com logo
         clearGameLogoHtml: true, // Remove all elements from game logo area, eg. <br> tags
@@ -85,7 +84,6 @@
         }
 
         :root {
-            x--ironborder: url('https://files.catbox.moe/csygyu.webp');
             --ironborder: url('https://u.cubeupload.com/TrikTrak/4fcwowbordergeminitrans.png');
             --ironborder-light: url('https://u.cubeupload.com/TrikTrak/wowbordergeminitrans.png');
             --wowborder: url('https://u.cubeupload.com/TrikTrak/wowborder.png');
@@ -203,13 +201,14 @@
         .into > table:nth-child(1) > tbody > tr > td.inter {
             xborder:1px solid red !important;
             xbackground-image: url('https://i.imgur.com/wQPBolf.png');
-	        filter: brightness(1.3);
+	        filter: brightness(1.0);
             transform: translateY(5px);
             background: linear-gradient(0deg, rgb(0, 0, 0) 10%, rgba(168, 90, 0, 0.5) 100%);
-            box-shadow: 0px 0px 1px 1px rgb(255, 102, 0) !important;
+            box-shadow: 0px 0px 3px 0px rgba(255, 102, 0, 1) !important;
+            border-image-source: var(--ironborder-light);
         }
         .into > table:nth-child(1) > tbody > tr > td.inter:hover {
-            filter: brightness(1.5);
+            filter: brightness(1.1);
         }
 
         /* Selected tab icon image, in the right-side menu tab */
@@ -1362,7 +1361,10 @@
             min-height: 100px;
         
             xborder: 1px solid grey;
-            box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.8);
+            box-shadow: 
+                0px 0px 5px 5px rgba(0, 0, 0, 1),
+                5px 5px 5px 5px rgba(0, 0, 0, 0.8)
+            ;
             border-radius: 3px;
             display: flex;
             flex-direction: column;
@@ -1387,13 +1389,15 @@
             box-sizing: border-box;
         }
 
+
+
         .inv-context-menu > .top {
             width: 100%;
             height: 30px;
             xborder-bottom: 2px solid grey;  
             display: flex;
             align-items: center;
-            justify-content: start;
+            justify-content: space-between;
             padding: 5px;
             margin-bottom: 15px;
 
@@ -1440,6 +1444,24 @@
             color: #b0b0b0ff;
             xfont-family: Georgia, serif;
         }
+
+        .inv-context-menu > .top > .close {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            border: 1px solid #525252;
+            padding: 5px;
+            background-color: #1a1a1a;
+            border-radius: 4px;
+            box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        .inv-context-menu > .top > .close:hover {
+            filter: brightness(1.2);
+        } 
+        .inv-context-menu > .top > .close:active {
+            filter: brightness(0.9);
+        } 
 
         .inv-context-menu > .menu-items {
             width: 100%;
@@ -2884,6 +2906,7 @@
         const menuElem = document.createElement('div');
         menuElem.classList.add('inv-context-menu');
 
+
         // Menu top area with item image, anme etc.
         const top = document.createElement('div');
         top.classList.add('top');
@@ -2900,9 +2923,18 @@
         itemName.classList.add('item-name');
         itemName.innerText = `${item.name}`;
 
+        // Close button
+        const close = document.createElement('div');
+        close.classList.add('close');
+        close.innerText = '×';
+   
+
         top.append(itemImage);
         top.append(itemName);
         top.append(amountOwned);
+        top.append(close);
+
+
         menuElem.append(top);
 
         // Position menu at mouse position
@@ -2935,6 +2967,13 @@
         // Remove menu when right-clicking on the menu
         //log("Adding context menu right-click listener...");
         menuElem.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            menuElem.remove();
+            settings.ctxMenu.isOpen = false;
+        }, { once: true });
+
+        // Remove menu on close button
+        close.addEventListener('click', e => {
             e.preventDefault();
             menuElem.remove();
             settings.ctxMenu.isOpen = false;
@@ -3073,6 +3112,7 @@
         if (menuType === 'bank') {
             const takeFromBankRow = createCtxMenuRow('Take', item.image, item.amount, item.amount);
             takeFromBankRow.querySelector('.action-btn').addEventListener('click', () => {
+                console.log(takeFromBankRow.querySelector('.amount-input').value)
                 takeFromBank(item, takeFromBankRow.querySelector('.amount-input').value, mouse, menuElem, linkElemUrl);
             });
             menuItems.append(takeFromBankRow);
@@ -3150,7 +3190,7 @@
             body: `amount=${amountToSend}`,
             headers: {
               "Content-type": "application/x-www-form-urlencoded",
-              "Cookie": `PHPSESSID=${settings.sessionId}`,
+              //"Cookie": `PHPSESSID=${settings.sessionId}`,
             }
         })
         .then((res) => {
@@ -3195,7 +3235,7 @@
             body: `amount=${amountToSend}`,
             headers: {
               "Content-type": "application/x-www-form-urlencoded",
-              "Cookie": `PHPSESSID=${settings.sessionId}`,
+              //"Cookie": `PHPSESSID=${settings.sessionId}`,
             }
         })
         .then((res) => {
@@ -3236,13 +3276,13 @@
         const url = `https://dragonrip.com/game/bank.php?go=2&ko=${item.id}`;
         const linkElemSelector = `body > .veik > .leftsidemdfk > a[href="${linkElemUrl}"]`;
         const linkElem = document.querySelector(linkElemSelector);
+        console.log(amountToTake);
 
         await fetch(url, {
             method: "POST",
             body: `amount=${amountToTake}`,
             headers: {
               "Content-type": "application/x-www-form-urlencoded",
-              "Cookie": `PHPSESSID=${settings.sessionId}`,
             }
         })
         .then((res) => {
@@ -3286,7 +3326,6 @@
             body: `amount=${amountToEat}`,
             headers: {
               "Content-type": "application/x-www-form-urlencoded",
-              "Cookie": `PHPSESSID=${settings.sessionId}`,
             }
         })
         .then((res) => {
@@ -3324,7 +3363,6 @@
             body: `amount=${amountToEat}`,
             headers: {
               "Content-type": "application/x-www-form-urlencoded",
-              "Cookie": `PHPSESSID=${settings.sessionId}`,
             }
         })
         .then((res) => {
@@ -3363,7 +3401,6 @@
             body: `amount=${amountToDrink}`,
             headers: {
               "Content-type": "application/x-www-form-urlencoded",
-              "Cookie": `PHPSESSID=${settings.sessionId}`,
             }
         })
         .then((res) => {
@@ -3403,7 +3440,6 @@
             method: "GET",
             headers: {
               "Content-type": "application/x-www-form-urlencoded",
-              "Cookie": `PHPSESSID=${settings.sessionId}`,
             }
         })
         .then((res) => {
