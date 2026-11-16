@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.1.4
+// @version      1.1.6
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -675,9 +675,8 @@
 
         body > div.logo > .info > .server-time-cont > .time {
             color: #de6c09;
-            xtext-align: center;
-            xwidth: 100%;
-            xheight: 100%;
+            xcolor: red;
+            letter-spacing: 2px;
         }
 
 
@@ -785,9 +784,7 @@
 
     const extraBoxCss = `    
         .extra-box {
-            border: 1px solid rgba(255,255,255,0.15);
-
-              border: var(--border-main);
+            border: var(--border-main);
             box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.8);
             background: url('/img/mc/center.jpg');
             background-position: center center;
@@ -830,7 +827,8 @@
             margin-bottom: 0px;
         }
 
-        .extra-box > .top-buttons > .button {
+        .extra-box > .top-buttons > .button,
+        .button.reload {
             xborder: 1px solid lime;
             width: 100%;
             height: 100%;
@@ -856,25 +854,26 @@
             pointer-events: none;
         }    
         .extra-box.small > .top-buttons > .button {
-            xwidth: 100%;
             aspect-ratio: 1/1;
             width: auto;
             height: 35px;
             padding: 0px;
-            xbackground-size: 100% 100%;
         }
 
-        .extra-box > .top-buttons > .button:hover {
+        .extra-box > .top-buttons > .button:hover,
+        .button.reload:hover {
             filter: brightness(1.2);
             background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(34, 38, 41) 100%);
             
         }
-        .extra-box > .top-buttons > .button:active {
+        .extra-box > .top-buttons > .button:active,
+        .button.reload:active{
            filter: brightness(0.8);
            transform: translateY(2px);
         }
 
-        .extra-box > .top-buttons > .button > .label {
+        .extra-box > .top-buttons > .button > .label,
+        .button.reload > .label {
             width: 100%;
             height: 100%;
             font-size: 0.8em;
@@ -889,7 +888,8 @@
             align-items: center;
             justify-content: center;
         }
-        .extra-box > .top-buttons > .button:hover > .label {
+        .extra-box > .top-buttons > .button:hover > .label,
+        .button.reload:hover > .label {
             color: #fff9e2;
             text-shadow: 0 0 1vw #fa1c16,0 0 3vw #fa1c16,0 0 5vw #fa1c16,0 0 5vw #fa1c16,0 0 .4vw #fed128; 
         }
@@ -899,7 +899,8 @@
             font-size: 1.5em;
         } 
         .extra-box > .top-buttons > .button > .label.alt,
-        .extra-box.small > .top-buttons > .button > .main  {
+        .extra-box.small > .top-buttons > .button > .main,
+        .button.reload > .label.alt  {
             display: none;   
         }
         .extra-box.small > .top-buttons > .button > .label.alt {
@@ -2491,9 +2492,10 @@
         const topButtons = document.createElement('div');
         topButtons.classList.add('top-buttons');
         
-        const createTopButton = (labelText, altLabelText, url) => {
+        const createTopButton = (labelText, altLabelText, url, cssClass) => {
             const button = document.createElement('a');
             button.classList.add('button');
+            button.classList.add(cssClass);
             button.href = url;
 
             // Main button label
@@ -2513,7 +2515,7 @@
             return button;
         }
 
-        topButtons.append( createTopButton("Reload", "⟳", "") );
+        topButtons.append( createTopButton("Reload", "⟳", "", 'reload') );
         elem.append(topButtons);
 
         // Create extra box contents
@@ -3614,6 +3616,20 @@
             tabImage.src = iconData[tabTitle];
         }
     }
+    
+    const checkSpeedLimit = () => {
+      
+        const speedElem = document.querySelector('body > .ground');
+        if (speedElem !== undefined && speedElem !== null) {
+            const reloadButton = document.querySelector('.extra-box > .top-buttons > .button.reload')
+
+            const newReloadButton = reloadButton.cloneNode(true);
+            newReloadButton.style.height = '100px';
+            newReloadButton.style.marginTop = '10px';
+            newReloadButton.style.fontSize = '3em';
+            speedElem.append(newReloadButton);
+        }
+    }
 
     const setCustomCss = str => {
         const styleElem = document.createElement("style");
@@ -3745,6 +3761,8 @@
                 setObservers();
 
                   if(settings.mobilePortrait) { setCustomCss(mobilePortraitCss); }
+
+                checkSpeedLimit();
             }
         }, 5);
     }
