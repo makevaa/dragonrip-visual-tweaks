@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.1.6
+// @version      1.1.7
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -410,6 +410,49 @@
             border: var(--border-main);
             margin-left: -2px;
         }
+
+        /* Navigation breadcrumbs at the bottom of play area */
+        .goingback {
+            padding: 5px;
+            margin-top: 5px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            font-family: Georgia,serif;
+          
+        }
+
+        .goingback > a {
+            border: 1px solid #565656;
+            padding: 10px;
+            margin: 12px 10px 10px 10px;
+            border-radius: 10px;
+            color: #b8b8b8 !important;
+            text-shadow: 2px 2px 0px black;
+            letter-spacing: 1px;
+      
+
+            background-color: #0e0e0e;
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(24, 27, 29) 100%);
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(24, 27, 29) 100%);
+            box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.7);
+           
+
+            border-image-source: var(--ironborder);
+            border-image-slice: 155;
+            border-image-width: 10px;
+            border-image-outset: 0px 0px;
+            border-image-repeat: stretch;
+        }
+        .goingback > a:hover {
+            background-color: #4a4a4a;
+            background: linear-gradient(0deg, rgb(8, 8, 10) 0%, rgb(49, 55, 59) 100%);
+            color: #ffb766 !important;
+        }  
+        .goingback > a:active {
+             background: linear-gradient(0deg, rgb(0, 0, 0) 10%, rgba(168, 90, 0, 0.5) 100%);
+        }    
 
     `;
 
