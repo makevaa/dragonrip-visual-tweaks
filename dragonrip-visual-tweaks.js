@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.1.8
+// @version      1.1.9
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1821,8 +1821,8 @@
         {
             background-color: #000000;
         }
-        table.seed-table > tbody > .row > .seed-item > div.juod:active, table.seed-table > tbody > .row > .seed-item > div.juod:active *
-        {
+        table.seed-table > tbody > .row > .seed-item > div.juod:active, 
+        table.seed-table > tbody > .row > .seed-item > div.juod:active * {
             background-color: #0c4300;
         }
     `;
@@ -1928,7 +1928,7 @@
         const scriptVer = GM_info.script.version;
         const scriptName = GM_info.script.name;
         let nameLabel =  `${scriptName} v${scriptVer}`
-        if (mobilePortrait) { nameLabel = `v${scriptVer}`; }
+        if (settings.mobilePortrait) { nameLabel = `v${scriptVer}`; }
         name.innerHTML = nameLabel;
         
         //elem.append(label);
@@ -3794,7 +3794,7 @@
                 updateClock();
                 setObservers();
 
-                  if(settings.mobilePortrait) { setCustomCss(mobilePortraitCss); }
+                if(settings.mobilePortrait) { setCustomCss(mobilePortraitCss); }
 
                 checkSpeedLimit();
             }
