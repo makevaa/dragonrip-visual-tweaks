@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.1.7
+// @version      1.1.8
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1853,18 +1853,12 @@
             display: none !important;
         }
 
-        body > div.logo > .info > .item.server-name,
-        body > div.logo > .info > .item.game-name ,
-        body > div.logo > .info > .item.user {
-            display: none !important;
+        body > div.logo > .info > script-name-cont {
+            xdisplay: none !important;
         }
 
-        body > div.logo > .info > .item > .icon{
+        body > div.logo > .info > .item > .icon {
             display: none !important;
-        }
-
-        body > div.logo > .info > .item > .left {
-            width: 70% !important;
         }
     `;
 
@@ -1927,18 +1921,15 @@
         icon.classList.add('icon');
         icon.innerText = '◈';
 
-        const label = document.createElement('div');
-        label.classList.add('left');
-        label.classList.add('label');
-        label.innerText = 'System';
-
         const name = document.createElement('a');
         name.classList.add('script-name');
         name.setAttribute('href', 'https://github.com/makevaa/dragonrip-visual-tweaks')
         name.setAttribute('target', '_blank');
-        const ver = GM_info.script.version;
+        const scriptVer = GM_info.script.version;
         const scriptName = GM_info.script.name;
-        name.innerHTML = `${scriptName} v${ver}`;
+        let nameLabel =  `${scriptName} v${scriptVer}`
+        if (mobilePortrait) { nameLabel = `v${scriptVer}`; }
+        name.innerHTML = nameLabel;
         
         //elem.append(label);
         //elem.append(icon);
