@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Dragonrip Visual Tweaks
 // @namespace    http://tampermonkey.net/
-// @version      1.1.9
+// @version      1.1.10
 // @description  Visual CSS tweaks for Dragonrip.com
 // @author       paxu
 // @match         *://*.dragonrip.com/*
@@ -1859,6 +1859,10 @@
 
         body > div.logo > .info > .item > .icon {
             display: none !important;
+        }
+
+        body > div.logo > .events > .item > .image {
+            max-height: 15px !important;
         }
     `;
 
